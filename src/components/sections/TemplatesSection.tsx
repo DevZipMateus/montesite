@@ -32,9 +32,9 @@ const TemplatesSection: React.FC<TemplatesSectionProps> = ({ templates, categori
   }, [activeCategory, templates]);
 
   return (
-    <section id="templates" className="py-20 px-6 md:px-10">
+    <section id="templates" className="py-16 px-6 md:px-10">
       <div className="max-w-7xl mx-auto">
-        <FadeIn className="text-center mb-12">
+        <FadeIn className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Escolha o Template Ideal
           </h2>
@@ -51,7 +51,7 @@ const TemplatesSection: React.FC<TemplatesSectionProps> = ({ templates, categori
           />
         </FadeIn>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 md:gap-6">
           {filteredTemplates.map((template, index) => (
             <FadeIn key={template.id} delay={index * 100}>
               <TemplateCard {...template} />
@@ -59,8 +59,8 @@ const TemplatesSection: React.FC<TemplatesSectionProps> = ({ templates, categori
           ))}
         </div>
         
-        <FadeIn className="mt-16 text-center">
-          <p className="text-muted-foreground mb-6">
+        <FadeIn className="mt-12 text-center">
+          <p className="text-muted-foreground mb-4">
             Não encontrou o que precisava? Temos outras opções para seu negócio.
           </p>
           <Button 

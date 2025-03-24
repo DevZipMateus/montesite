@@ -20,24 +20,24 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
   formUrl
 }) => {
   return (
-    <Card className="overflow-hidden rounded-xl border border-gray-200 bg-white">
+    <Card className="overflow-hidden rounded-xl border border-gray-200 bg-white h-full">
       <div className="relative overflow-hidden bg-gray-100">
-        <AspectRatio ratio={16/9}>
+        <AspectRatio ratio={16/10}>
           <div className="relative">
             <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-primary/10 rounded-xl blur-xl"></div>
             <img 
               id={`template-image-${id}`}
               src={imageUrl}
               alt={`Preview of ${title} template`}
-              className="relative w-full h-full object-cover z-10"
+              className="relative w-full h-full object-contain z-10"
             />
           </div>
         </AspectRatio>
       </div>
       
-      <div className="p-5">
-        <h3 className="text-xl font-semibold mb-2">{title}</h3>
-        <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{description}</p>
+      <div className="p-4">
+        <h3 className="text-lg font-semibold mb-1">{title}</h3>
+        <p className="text-muted-foreground text-xs mb-3 line-clamp-2">{description}</p>
         
         <div className="flex justify-between items-center">
           <Button
@@ -52,7 +52,8 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
           </Button>
           
           <Button 
-            className="rounded-full"
+            size="sm"
+            className="rounded-full text-xs"
             asChild
           >
             <a href={formUrl} target="_blank" rel="noopener noreferrer">
