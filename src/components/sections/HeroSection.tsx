@@ -97,7 +97,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToTemplates }) => {
                       key={index}
                       src={src}
                       alt={`Template Preview ${index + 1}`} 
-                      className={`w-full max-w-md mx-auto z-10 transition-opacity duration-500 absolute inset-0 ${
+                      className={`w-full max-w-md mx-auto z-10 transition-opacity duration-1000 absolute inset-0 ${
                         index === currentImageIndex ? 'opacity-100' : 'opacity-0'
                       }`}
                       style={{ objectFit: 'contain' }}
