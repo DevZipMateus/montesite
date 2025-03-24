@@ -1,8 +1,7 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 
 interface TemplateCardProps {
   id: string;
@@ -19,10 +18,7 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
   imageUrl,
   formUrl
 }) => {
-  const [imageError, setImageError] = useState(false);
-  
-  // Simplified image path handling - use exactly what's provided
-  const imagePath = imageUrl;
+  console.log(`Rendering template card for: ${title} with image: ${imageUrl}`);
   
   return (
     <Card 
@@ -31,13 +27,12 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
       <div className="relative aspect-[16/9] overflow-hidden">
         <img 
           id={`template-image-${id}`}
-          src={imageError ? 'https://placehold.co/600x400/gray/white?text=Template+Image' : imagePath}
+          src={imageUrl}
           alt={`Preview of ${title} template`}
           className="w-full h-full object-cover"
           onError={(e) => {
             console.error(`Image failed to load: ${imageUrl}`);
             console.error(e);
-            setImageError(true);
           }}
         />
       </div>
