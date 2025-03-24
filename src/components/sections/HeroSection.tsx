@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { ChevronDown, ArrowLeft, ArrowRight } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import FadeIn from '@/components/animations/FadeIn';
 
 interface HeroSectionProps {
@@ -28,22 +28,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToTemplates }) => {
     return () => clearInterval(interval);
   }, []);
   
-  const goToPrevImage = () => {
-    setCurrentImageIndex((prevIndex) => 
-      prevIndex === 0 ? TEMPLATE_IMAGES.length - 1 : prevIndex - 1
-    );
-  };
-  
-  const goToNextImage = () => {
-    setCurrentImageIndex((prevIndex) => 
-      (prevIndex + 1) % TEMPLATE_IMAGES.length
-    );
-  };
-  
   return (
     <section 
       id="home" 
-      className="pt-32 pb-20 md:pt-40 md:pb-32 px-6 md:px-10 relative overflow-hidden"
+      className="pt-32 pb-20 md:pt-40 md:pb-32 relative overflow-hidden"
       style={{
         background: 'linear-gradient(135deg, #f5f7fa 0%, #e4ecfb 100%)'
       }}
@@ -97,7 +85,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToTemplates }) => {
                       key={index}
                       src={src}
                       alt={`Template Preview ${index + 1}`} 
-                      className={`w-full max-w-md mx-auto z-10 transition-opacity duration-1000 absolute inset-0 ${
+                      className={`w-full mx-auto z-10 transition-opacity duration-1000 absolute inset-0 ${
                         index === currentImageIndex ? 'opacity-100' : 'opacity-0'
                       }`}
                       style={{ objectFit: 'contain' }}
@@ -107,7 +95,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToTemplates }) => {
                   <img 
                     src={TEMPLATE_IMAGES[currentImageIndex]}
                     alt="Template Preview" 
-                    className="invisible w-full max-w-md mx-auto"
+                    className="invisible w-full mx-auto"
                     style={{ objectFit: 'contain' }}
                   />
                   
@@ -125,22 +113,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToTemplates }) => {
                       />
                     ))}
                   </div>
-                  
-                  <button 
-                    onClick={goToPrevImage}
-                    className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md transition-all"
-                    aria-label="Previous image"
-                  >
-                    <ArrowLeft size={16} />
-                  </button>
-                  
-                  <button 
-                    onClick={goToNextImage}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md transition-all"
-                    aria-label="Next image"
-                  >
-                    <ArrowRight size={16} />
-                  </button>
                 </div>
               </div>
             </FadeIn>
