@@ -21,33 +21,19 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
 }) => {
   const [imageError, setImageError] = useState(false);
   
-  // Fix the image path handling
-  let imagePath = imageUrl;
-  
-  // If it's a relative path (not starting with http or https), don't modify it
-  // The browser will resolve it relative to the base URL automatically
-  if (!imageUrl.startsWith('http')) {
-    console.log(`Using relative image path: ${imageUrl}`);
-  } else {
-    console.log(`Using external image URL: ${imageUrl}`);
-  }
+  // Simplified image path handling - use exactly what's provided
+  const imagePath = imageUrl;
   
   return (
     <Card 
-      className={cn(
-        "overflow-hidden rounded-xl border border-gray-200 transition-all duration-300",
-        "hover:shadow-lg hover:-translate-y-1 bg-white"
-      )}
+      className="overflow-hidden rounded-xl border border-gray-200 bg-white"
     >
       <div className="relative aspect-[16/9] overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10"></div>
         <img 
           id={`template-image-${id}`}
           src={imageError ? 'https://placehold.co/600x400/gray/white?text=Template+Image' : imagePath}
           alt={`Preview of ${title} template`}
-          className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-          data-editable="image"
-          data-editable-id={`template-image-${id}`}
+          className="w-full h-full object-cover"
           onError={(e) => {
             console.error(`Image failed to load: ${imageUrl}`);
             console.error(e);
@@ -64,7 +50,7 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
           <Button
             variant="outline"
             size="sm"
-            className="rounded-full hover:bg-secondary text-xs"
+            className="rounded-full text-xs"
             asChild
           >
             <a href={`#template-${id}`} onClick={(e) => e.preventDefault()}>
@@ -73,7 +59,7 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
           </Button>
           
           <Button 
-            className="btn-hover-effect rounded-full"
+            className="rounded-full"
             asChild
           >
             <a href={formUrl} target="_blank" rel="noopener noreferrer">
