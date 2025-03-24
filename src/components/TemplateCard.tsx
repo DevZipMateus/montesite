@@ -21,11 +21,16 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
 }) => {
   const [imageError, setImageError] = useState(false);
   
-  // Determinar se a imagem é uma URL externa ou um recurso local
-  const isExternalUrl = imageUrl.startsWith('http');
-  const imagePath = isExternalUrl ? imageUrl : `${window.location.origin}${imageUrl}`;
+  // Fix the image path handling
+  let imagePath = imageUrl;
   
-  console.log(`Loading image from: ${imagePath}`);
+  // If it's a relative path (not starting with http or https), don't modify it
+  // The browser will resolve it relative to the base URL automatically
+  if (!imageUrl.startsWith('http')) {
+    console.log(`Using relative image path: ${imageUrl}`);
+  } else {
+    console.log(`Using external image URL: ${imageUrl}`);
+  }
   
   return (
     <Card 
