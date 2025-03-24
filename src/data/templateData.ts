@@ -30,9 +30,9 @@ export const categories: TemplateCategory[] = [
 export const allTemplates: Template[] = [
   {
     id: '6',
-    title: 'Modelo 1',
+    title: 'Harmônica Contabilidade',
     description: 'Template completo que transforma contabilidade em um diferencial competitivo para sua empresa.',
-    imageUrl: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d',
+    imageUrl: '/lovable-uploads/cabc727c-285b-4fbb-9799-5b3203b21694.png',
     formUrl: 'https://forms.google.com',
     category: 'contabilidade'
   },
