@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -45,29 +44,24 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
     setImageLoaded(true);
   };
   
+  // Determine the image source - if the URL is a placeholder, use it directly
+  // otherwise attempt to load the actual image with error handling
+  const isPlaceholder = imageUrl === '/placeholder.svg';
+  const displayImageUrl = isPlaceholder ? imageUrl : (imageError ? fallbackImageUrl : imageUrl);
+  
   return (
     <Card className="overflow-hidden rounded-xl border border-gray-200 bg-white">
       <div className="relative overflow-hidden bg-gray-100">
         <AspectRatio ratio={16/9}>
-          {!imageError ? (
-            <img 
-              id={`template-image-${id}`}
-              src={imageUrl}
-              alt={`Preview of ${title} template`}
-              className="w-full h-full object-cover transition-opacity"
-              style={{ opacity: imageLoaded ? 1 : 0 }}
-              onLoad={handleImageLoad}
-              onError={handleImageError}
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gray-200">
-              <img 
-                src={fallbackImageUrl}
-                alt="Imagem não disponível"
-                className="w-1/2 h-1/2 object-contain opacity-50"
-              />
-            </div>
-          )}
+          <img 
+            id={`template-image-${id}`}
+            src={displayImageUrl}
+            alt={`Preview of ${title} template`}
+            className="w-full h-full object-cover transition-opacity"
+            style={{ opacity: imageLoaded || isPlaceholder ? 1 : 0 }}
+            onLoad={!isPlaceholder ? handleImageLoad : undefined}
+            onError={!isPlaceholder ? handleImageError : undefined}
+          />
         </AspectRatio>
       </div>
       
