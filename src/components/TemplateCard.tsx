@@ -1,7 +1,8 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
 
 interface TemplateCardProps {
   id: string;
@@ -18,23 +19,56 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
   imageUrl,
   formUrl
 }) => {
-  console.log(`Rendering template card for: ${title} with image: ${imageUrl}`);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  const { toast } = useToast();
+  
+  // Log for debugging
+  console.log(`TemplateCard rendering: ${title} with image: ${imageUrl}`);
+  
+  const fallbackImageUrl = '/placeholder.svg';
+  
+  const handleImageError = () => {
+    console.error(`Image failed to load: ${imageUrl} for template: ${title}`);
+    setImageError(true);
+    toast({
+      title: "Erro ao carregar imagem",
+      description: `Não foi possível carregar a imagem para o template ${title}`,
+      variant: "destructive",
+    });
+  };
+  
+  const handleImageLoad = () => {
+    console.log(`Image loaded successfully: ${imageUrl}`);
+    setImageLoaded(true);
+  };
   
   return (
     <Card 
       className="overflow-hidden rounded-xl border border-gray-200 bg-white"
     >
-      <div className="relative aspect-[16/9] overflow-hidden">
-        <img 
-          id={`template-image-${id}`}
-          src={imageUrl}
-          alt={`Preview of ${title} template`}
-          className="w-full h-full object-cover"
-          onError={(e) => {
-            console.error(`Image failed to load: ${imageUrl}`);
-            console.error(e);
-          }}
-        />
+      <div className="relative aspect-[16/9] overflow-hidden bg-gray-100">
+        {!imageError && (
+          <img 
+            id={`template-image-${id}`}
+            src={imageUrl}
+            alt={`Preview of ${title} template`}
+            className="w-full h-full object-cover transition-opacity"
+            style={{ opacity: imageLoaded ? 1 : 0 }}
+            onLoad={handleImageLoad}
+            onError={handleImageError}
+          />
+        )}
+        
+        {imageError && (
+          <div className="w-full h-full flex items-center justify-center bg-gray-200">
+            <img 
+              src={fallbackImageUrl}
+              alt="Imagem não disponível"
+              className="w-1/2 h-1/2 object-contain opacity-50"
+            />
+          </div>
+        )}
       </div>
       
       <div className="p-5">

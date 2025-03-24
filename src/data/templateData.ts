@@ -1,3 +1,4 @@
+
 import { LayoutTemplate, Tag } from 'lucide-react';
 import React from 'react';
 import { TemplateCategory } from '@/components/TemplateCategories';
@@ -39,7 +40,7 @@ export const allTemplates: Template[] = [
     id: '5',
     title: 'Modelo 2',
     description: 'Design sofisticado para serviços contábeis personalizados para o sucesso do seu negócio.',
-    imageUrl: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7',
+    imageUrl: '/placeholder.svg',
     formUrl: 'https://forms.google.com',
     category: 'contabilidade'
   },
@@ -47,7 +48,7 @@ export const allTemplates: Template[] = [
     id: '4',
     title: 'Modelo 3',
     description: 'Layout profissional para soluções contábeis inteligentes para empresas de todos os portes.',
-    imageUrl: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1',
+    imageUrl: '/placeholder.svg',
     formUrl: 'https://forms.google.com',
     category: 'contabilidade'
   },
@@ -55,7 +56,7 @@ export const allTemplates: Template[] = [
     id: '3',
     title: 'Modelo 4',
     description: 'Template com foco em simplicidade e precisão para escritórios contábeis.',
-    imageUrl: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b',
+    imageUrl: '/placeholder.svg',
     formUrl: 'https://forms.google.com',
     category: 'contabilidade'
   },
@@ -63,7 +64,7 @@ export const allTemplates: Template[] = [
     id: '2',
     title: 'Modelo 5',
     description: 'Design para empresas de contabilidade digital com soluções simplificadas para negócios.',
-    imageUrl: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6',
+    imageUrl: '/placeholder.svg',
     formUrl: 'https://forms.google.com',
     category: 'contabilidade'
   },
@@ -71,7 +72,7 @@ export const allTemplates: Template[] = [
     id: '1',
     title: 'Modelo 6',
     description: 'Template moderno para escritórios de contabilidade, com design clean e profissional.',
-    imageUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475', 
+    imageUrl: '/placeholder.svg', 
     formUrl: 'https://forms.google.com',
     category: 'contabilidade'
   }
