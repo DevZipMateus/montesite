@@ -1,14 +1,45 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, ArrowLeft, ArrowRight } from 'lucide-react';
 import FadeIn from '@/components/animations/FadeIn';
 
 interface HeroSectionProps {
   scrollToTemplates: (e: React.MouseEvent) => void;
 }
 
+const TEMPLATE_IMAGES = [
+  "/imagens/contabilidade-harmonica.png",
+  "/imagens/contabilidade-template.png",
+  "/imagens/easy-financial-solutions.png",
+  "/imagens/conta-connection-hub.png",
+  "/imagens/contador-simplicity.png",
+  "/imagens/contabilify-modern-site.png"
+];
+
 const HeroSection: React.FC<HeroSectionProps> = ({ scrollToTemplates }) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % TEMPLATE_IMAGES.length);
+    }, 5000);
+    
+    return () => clearInterval(interval);
+  }, []);
+  
+  const goToPrevImage = () => {
+    setCurrentImageIndex((prevIndex) => 
+      prevIndex === 0 ? TEMPLATE_IMAGES.length - 1 : prevIndex - 1
+    );
+  };
+  
+  const goToNextImage = () => {
+    setCurrentImageIndex((prevIndex) => 
+      (prevIndex + 1) % TEMPLATE_IMAGES.length
+    );
+  };
+  
   return (
     <section 
       id="home" 
@@ -59,11 +90,58 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToTemplates }) => {
             <FadeIn direction="right" delay={200}>
               <div className="relative">
                 <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-primary/10 rounded-xl blur-xl"></div>
-                <img 
-                  src="/lovable-uploads/00edb883-d253-4be4-a00c-96dc2057fd11.png"
-                  alt="Template Preview" 
-                  className="relative rounded-xl shadow-2xl w-full max-w-md mx-auto z-10 border border-white"
-                />
+                
+                <div className="relative overflow-hidden rounded-xl border border-white shadow-2xl bg-white">
+                  {TEMPLATE_IMAGES.map((src, index) => (
+                    <img 
+                      key={index}
+                      src={src}
+                      alt={`Template Preview ${index + 1}`} 
+                      className={`w-full max-w-md mx-auto z-10 transition-opacity duration-500 absolute inset-0 ${
+                        index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+                      }`}
+                      style={{ objectFit: 'contain' }}
+                    />
+                  ))}
+                  
+                  <img 
+                    src={TEMPLATE_IMAGES[currentImageIndex]}
+                    alt="Template Preview" 
+                    className="invisible w-full max-w-md mx-auto"
+                    style={{ objectFit: 'contain' }}
+                  />
+                  
+                  <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1">
+                    {TEMPLATE_IMAGES.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentImageIndex(index)}
+                        className={`w-2 h-2 rounded-full transition-all ${
+                          index === currentImageIndex 
+                            ? 'bg-primary w-4' 
+                            : 'bg-gray-300 hover:bg-gray-400'
+                        }`}
+                        aria-label={`Go to slide ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+                  
+                  <button 
+                    onClick={goToPrevImage}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md transition-all"
+                    aria-label="Previous image"
+                  >
+                    <ArrowLeft size={16} />
+                  </button>
+                  
+                  <button 
+                    onClick={goToNextImage}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md transition-all"
+                    aria-label="Next image"
+                  >
+                    <ArrowRight size={16} />
+                  </button>
+                </div>
               </div>
             </FadeIn>
           </div>
