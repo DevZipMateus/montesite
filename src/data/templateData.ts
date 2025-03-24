@@ -32,7 +32,7 @@ export const allTemplates: Template[] = [
     id: '6',
     title: 'Harmônica Contabilidade',
     description: 'Template completo que transforma contabilidade em um diferencial competitivo para sua empresa.',
-    imageUrl: '/lovable-uploads/00edb883-d253-4be4-a00c-96dc2057fd11.png', // Using the same image as in HeroSection
+    imageUrl: '/lovable-uploads/00edb883-d253-4be4-a00c-96dc2057fd11.png', // Using the same image from HeroSection
     formUrl: 'https://forms.google.com',
     category: 'contabilidade'
   },
@@ -40,7 +40,7 @@ export const allTemplates: Template[] = [
     id: '5',
     title: 'Modelo 2',
     description: 'Design sofisticado para serviços contábeis personalizados para o sucesso do seu negócio.',
-    imageUrl: '/placeholder.svg',
+    imageUrl: '/lovable-uploads/00edb883-d253-4be4-a00c-96dc2057fd11.png', // Using the same image
     formUrl: 'https://forms.google.com',
     category: 'contabilidade'
   },
@@ -48,7 +48,7 @@ export const allTemplates: Template[] = [
     id: '4',
     title: 'Modelo 3',
     description: 'Layout profissional para soluções contábeis inteligentes para empresas de todos os portes.',
-    imageUrl: '/placeholder.svg',
+    imageUrl: '/lovable-uploads/00edb883-d253-4be4-a00c-96dc2057fd11.png', // Using the same image
     formUrl: 'https://forms.google.com',
     category: 'contabilidade'
   },
@@ -56,7 +56,7 @@ export const allTemplates: Template[] = [
     id: '3',
     title: 'Modelo 4',
     description: 'Template com foco em simplicidade e precisão para escritórios contábeis.',
-    imageUrl: '/placeholder.svg',
+    imageUrl: '/lovable-uploads/00edb883-d253-4be4-a00c-96dc2057fd11.png', // Using the same image
     formUrl: 'https://forms.google.com',
     category: 'contabilidade'
   },
@@ -64,7 +64,7 @@ export const allTemplates: Template[] = [
     id: '2',
     title: 'Modelo 5',
     description: 'Design para empresas de contabilidade digital com soluções simplificadas para negócios.',
-    imageUrl: '/placeholder.svg',
+    imageUrl: '/lovable-uploads/00edb883-d253-4be4-a00c-96dc2057fd11.png', // Using the same image
     formUrl: 'https://forms.google.com',
     category: 'contabilidade'
   },
@@ -72,7 +72,7 @@ export const allTemplates: Template[] = [
     id: '1',
     title: 'Modelo 6',
     description: 'Template moderno para escritórios de contabilidade, com design clean e profissional.',
-    imageUrl: '/placeholder.svg', 
+    imageUrl: '/lovable-uploads/00edb883-d253-4be4-a00c-96dc2057fd11.png', // Using the same image
     formUrl: 'https://forms.google.com',
     category: 'contabilidade'
   }
