@@ -1,8 +1,7 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { useToast } from '@/components/ui/use-toast';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 
 interface TemplateCardProps {
@@ -20,10 +19,9 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
   imageUrl,
   formUrl
 }) => {
-  const { toast } = useToast();
+  // Using the static image path instead of the dynamic one from props
+  const staticImageUrl = '/lovable-uploads/00edb883-d253-4be4-a00c-96dc2057fd11.png';
   
-  console.log(`TemplateCard rendering: ${title} with image: ${imageUrl}`);
-
   return (
     <Card className="overflow-hidden rounded-xl border border-gray-200 bg-white">
       <div className="relative overflow-hidden bg-gray-100">
@@ -32,18 +30,9 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
             <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-primary/10 rounded-xl blur-xl"></div>
             <img 
               id={`template-image-${id}`}
-              src={imageUrl}
+              src={staticImageUrl}
               alt={`Preview of ${title} template`}
               className="relative w-full h-full object-cover z-10"
-              onError={(e) => {
-                console.error(`Image failed to load: ${imageUrl} for template: ${title}`);
-                e.currentTarget.src = '/placeholder.svg';
-                toast({
-                  title: "Erro ao carregar imagem",
-                  description: `Não foi possível carregar a imagem para o template ${title}`,
-                  variant: "destructive",
-                });
-              }}
             />
           </div>
         </AspectRatio>
