@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -19,6 +19,8 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
   imageUrl,
   formUrl
 }) => {
+  const [imageError, setImageError] = useState(false);
+  
   return (
     <Card 
       className={cn(
@@ -30,16 +32,14 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10"></div>
         <img 
           id={`template-image-${id}`}
-          src={imageUrl}
+          src={imageError ? 'https://placehold.co/600x400/gray/white?text=Template+Image' : imageUrl}
           alt={`Preview of ${title} template`}
           className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
           data-editable="image"
           data-editable-id={`template-image-${id}`}
-          onError={(e) => {
+          onError={() => {
             console.log(`Image failed to load: ${imageUrl}`);
-            const target = e.target as HTMLImageElement;
-            target.src = 'https://placehold.co/600x400/gray/white?text=Template+Image';
-            target.onerror = null;
+            setImageError(true);
           }}
         />
       </div>
