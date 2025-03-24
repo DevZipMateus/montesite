@@ -33,8 +33,9 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
           alt={`Preview of ${title} template`}
           className="w-full h-full object-cover object-top transition-transform duration-700 hover:scale-105"
           onError={(e) => {
+            console.log(`Image failed to load: ${imageUrl}`);
             const target = e.target as HTMLImageElement;
-            target.src = '/placeholder.svg';
+            target.src = 'https://placehold.co/600x400/gray/white?text=Template+Image';
             target.onerror = null;
           }}
         />

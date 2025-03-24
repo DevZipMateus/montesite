@@ -32,7 +32,7 @@ export const allTemplates: Template[] = [
     id: '6',
     title: 'Modelo 1',
     description: 'Template completo que transforma contabilidade em um diferencial competitivo para sua empresa.',
-    imageUrl: 'https://via.placeholder.com/800x450/3498db/ffffff?text=Modelo+1',
+    imageUrl: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d',
     formUrl: 'https://forms.google.com',
     category: 'contabilidade'
   },
@@ -40,7 +40,7 @@ export const allTemplates: Template[] = [
     id: '5',
     title: 'Modelo 2',
     description: 'Design sofisticado para serviços contábeis personalizados para o sucesso do seu negócio.',
-    imageUrl: 'https://via.placeholder.com/800x450/2ecc71/ffffff?text=Modelo+2',
+    imageUrl: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7',
     formUrl: 'https://forms.google.com',
     category: 'contabilidade'
   },
@@ -48,7 +48,7 @@ export const allTemplates: Template[] = [
     id: '4',
     title: 'Modelo 3',
     description: 'Layout profissional para soluções contábeis inteligentes para empresas de todos os portes.',
-    imageUrl: 'https://via.placeholder.com/800x450/e74c3c/ffffff?text=Modelo+3',
+    imageUrl: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1',
     formUrl: 'https://forms.google.com',
     category: 'contabilidade'
   },
@@ -56,7 +56,7 @@ export const allTemplates: Template[] = [
     id: '3',
     title: 'Modelo 4',
     description: 'Template com foco em simplicidade e precisão para escritórios contábeis.',
-    imageUrl: 'https://via.placeholder.com/800x450/f39c12/ffffff?text=Modelo+4',
+    imageUrl: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b',
     formUrl: 'https://forms.google.com',
     category: 'contabilidade'
   },
@@ -64,7 +64,7 @@ export const allTemplates: Template[] = [
     id: '2',
     title: 'Modelo 5',
     description: 'Design para empresas de contabilidade digital com soluções simplificadas para negócios.',
-    imageUrl: 'https://via.placeholder.com/800x450/9b59b6/ffffff?text=Modelo+5',
+    imageUrl: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6',
     formUrl: 'https://forms.google.com',
     category: 'contabilidade'
   },
@@ -72,7 +72,7 @@ export const allTemplates: Template[] = [
     id: '1',
     title: 'Modelo 6',
     description: 'Template moderno para escritórios de contabilidade, com design clean e profissional.',
-    imageUrl: 'https://via.placeholder.com/800x450/1abc9c/ffffff?text=Modelo+6', 
+    imageUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475', 
     formUrl: 'https://forms.google.com',
     category: 'contabilidade'
   }
