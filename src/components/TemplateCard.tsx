@@ -26,7 +26,7 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
         "hover:shadow-lg hover:-translate-y-1 bg-white"
       )}
     >
-      <div className="relative aspect-[16/10] overflow-hidden">
+      <div className="relative aspect-video overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10"></div>
         <img 
           src={imageUrl}
