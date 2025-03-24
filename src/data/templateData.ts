@@ -1,4 +1,3 @@
-
 import { LayoutTemplate, Tag } from 'lucide-react';
 import React from 'react';
 import { TemplateCategory } from '@/components/TemplateCategories';
@@ -32,7 +31,7 @@ export const allTemplates: Template[] = [
     id: '6',
     title: 'Harmônica Contabilidade',
     description: 'Template completo que transforma contabilidade em um diferencial competitivo para sua empresa.',
-    imageUrl: '/lovable-uploads/cabc727c-285b-4fbb-9799-5b3203b21694.png',
+    imageUrl: '/lovable-uploads/8e346705-6e4a-479f-a827-f5c0b58b3a09.png',
     formUrl: 'https://forms.google.com',
     category: 'contabilidade'
   },
