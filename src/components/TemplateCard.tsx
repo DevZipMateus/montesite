@@ -19,9 +19,6 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
   imageUrl,
   formUrl
 }) => {
-  // Using the static image path instead of the dynamic one from props
-  const staticImageUrl = '/lovable-uploads/00edb883-d253-4be4-a00c-96dc2057fd11.png';
-  
   return (
     <Card className="overflow-hidden rounded-xl border border-gray-200 bg-white">
       <div className="relative overflow-hidden bg-gray-100">
@@ -30,7 +27,7 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
             <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-primary/10 rounded-xl blur-xl"></div>
             <img 
               id={`template-image-${id}`}
-              src={staticImageUrl}
+              src={imageUrl}
               alt={`Preview of ${title} template`}
               className="relative w-full h-full object-cover z-10"
             />
