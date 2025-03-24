@@ -32,7 +32,7 @@ export const allTemplates: Template[] = [
     id: '6',
     title: 'Modelo 1',
     description: 'Template completo que transforma contabilidade em um diferencial competitivo para sua empresa.',
-    imageUrl: '/lovable-uploads/d5307f42-031e-49f3-b12b-f94176569ecc.png',
+    imageUrl: '/lovable-uploads/a0040ce2-0312-42c4-99a9-fd6ab7696156.png',
     formUrl: 'https://forms.google.com',
     category: 'contabilidade'
   },
