@@ -31,7 +31,7 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
         <img 
           src={imageUrl}
           alt={`Preview of ${title} template`}
-          className="w-full h-full object-cover object-top transition-transform duration-700 hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
         />
       </div>
       

@@ -26,49 +26,49 @@ const categories: TemplateCategory[] = [
 const allTemplates = [
   {
     id: '1',
-    title: 'Contador Profissional',
-    description: 'Template ideal para contadores e escritórios de contabilidade que buscam uma presença online profissional.',
-    imageUrl: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80',
+    title: 'Contabilify',
+    description: 'Template moderno para escritórios de contabilidade, com design clean e profissional.',
+    imageUrl: '/lovable-uploads/00edb883-d253-4be4-a00c-96dc2057fd11.png',
     formUrl: 'https://forms.google.com',
     category: 'contabilidade'
   },
   {
     id: '2',
-    title: 'Consultoria Fiscal',
-    description: 'Design moderno para empresas de consultoria fiscal e tributária que desejam transmitir confiança.',
-    imageUrl: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&q=80',
+    title: 'ContaConnection',
+    description: 'Design para empresas de contabilidade digital com soluções simplificadas para negócios.',
+    imageUrl: '/lovable-uploads/cadc2174-8a57-4f42-b005-431d0b953561.png',
     formUrl: 'https://forms.google.com',
     category: 'contabilidade'
   },
   {
     id: '3',
-    title: 'Contabilidade Digital',
-    description: 'Template com foco em contabilidade digital e serviços online com design clean e intuitivo.',
-    imageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80',
+    title: 'ContaPrecisão',
+    description: 'Template com foco em simplicidade e precisão para escritórios contábeis.',
+    imageUrl: '/lovable-uploads/8c90c0b5-e286-47b2-9632-910b4da93d5f.png',
     formUrl: 'https://forms.google.com',
     category: 'contabilidade'
   },
   {
     id: '4',
-    title: 'Auditoria Empresarial',
-    description: 'Layout profissional para empresas de auditoria, com seções para serviços especializados.',
-    imageUrl: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80',
+    title: 'ContaPlus',
+    description: 'Layout profissional para soluções contábeis inteligentes para empresas de todos os portes.',
+    imageUrl: '/lovable-uploads/df8ce4c3-be57-41f0-b2d5-e56a52e1af11.png',
     formUrl: 'https://forms.google.com',
     category: 'contabilidade'
   },
   {
     id: '5',
-    title: 'Contabilidade Corporativa',
-    description: 'Design sofisticado para contadores que atendem grandes empresas e corporações.',
-    imageUrl: 'https://images.unsplash.com/photo-1586486855514-8c633cc6fd38?auto=format&fit=crop&q=80',
+    title: 'Contabilidade Business',
+    description: 'Design sofisticado para serviços contábeis personalizados para o sucesso do seu negócio.',
+    imageUrl: '/lovable-uploads/e1b654f1-c43c-4c60-9bf2-2731f71743ba.png',
     formUrl: 'https://forms.google.com',
     category: 'contabilidade'
   },
   {
     id: '6',
-    title: 'Assessoria Contábil',
-    description: 'Template completo para escritórios de assessoria contábil com foco em atendimento personalizado.',
-    imageUrl: 'https://images.unsplash.com/photo-1496171367470-9ed9a91ea931?auto=format&fit=crop&q=80',
+    title: 'Harmônica Contabilidade',
+    description: 'Template completo que transforma contabilidade em um diferencial competitivo para sua empresa.',
+    imageUrl: '/lovable-uploads/d5307f42-031e-49f3-b12b-f94176569ecc.png',
     formUrl: 'https://forms.google.com',
     category: 'contabilidade'
   }
@@ -172,7 +172,7 @@ const Index = () => {
                 <div className="relative">
                   <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-primary/10 rounded-xl blur-xl"></div>
                   <img 
-                    src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80"
+                    src="/lovable-uploads/00edb883-d253-4be4-a00c-96dc2057fd11.png"
                     alt="Template Preview" 
                     className="relative rounded-xl shadow-2xl w-full max-w-md mx-auto z-10 border border-white"
                   />
