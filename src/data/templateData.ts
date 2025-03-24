@@ -32,7 +32,7 @@ export const allTemplates: Template[] = [
     id: '6',
     title: 'Harmônica Contabilidade',
     description: 'Template completo que transforma contabilidade em um diferencial competitivo para sua empresa.',
-    imageUrl: '/placeholder.svg', // Using a reliable placeholder image that exists
+    imageUrl: '/lovable-uploads/00edb883-d253-4be4-a00c-96dc2057fd11.png', // Using the same image as in HeroSection
     formUrl: 'https://forms.google.com',
     category: 'contabilidade'
   },
