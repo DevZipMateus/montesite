@@ -21,6 +21,10 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
 }) => {
   const [imageError, setImageError] = useState(false);
   
+  // Determinar se a imagem é uma URL externa ou um recurso local
+  const isExternalUrl = imageUrl.startsWith('http');
+  const imagePath = isExternalUrl ? imageUrl : `${window.location.origin}${imageUrl}`;
+  
   return (
     <Card 
       className={cn(
@@ -32,7 +36,7 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10"></div>
         <img 
           id={`template-image-${id}`}
-          src={imageError ? 'https://placehold.co/600x400/gray/white?text=Template+Image' : imageUrl}
+          src={imageError ? 'https://placehold.co/600x400/gray/white?text=Template+Image' : imagePath}
           alt={`Preview of ${title} template`}
           className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
           data-editable="image"
