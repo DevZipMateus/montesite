@@ -25,6 +25,8 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
   const isExternalUrl = imageUrl.startsWith('http');
   const imagePath = isExternalUrl ? imageUrl : `${window.location.origin}${imageUrl}`;
   
+  console.log(`Loading image from: ${imagePath}`);
+  
   return (
     <Card 
       className={cn(
@@ -41,8 +43,9 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
           className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
           data-editable="image"
           data-editable-id={`template-image-${id}`}
-          onError={() => {
-            console.log(`Image failed to load: ${imageUrl}`);
+          onError={(e) => {
+            console.error(`Image failed to load: ${imageUrl}`);
+            console.error(e);
             setImageError(true);
           }}
         />
