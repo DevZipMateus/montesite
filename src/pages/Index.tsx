@@ -1,7 +1,6 @@
 
 import React, { useEffect } from 'react';
 import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import HeroSection from '@/components/sections/HeroSection';
 import TemplatesSection from '@/components/sections/TemplatesSection';
 import FeaturesSection from '@/components/sections/FeaturesSection';
@@ -47,7 +46,6 @@ const Index = () => {
       <TemplatesSection templates={allTemplates} categories={categories} />
       <FeaturesSection />
       <CTASection />
-      <Footer />
     </div>
   );
 };
