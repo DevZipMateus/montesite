@@ -12,7 +12,6 @@ interface NavItem {
 const navItems: NavItem[] = [
   { label: 'Home', href: '#home' },
   { label: 'Templates', href: '#templates' },
-  { label: 'Depoimentos', href: '#depoimentos' },
   { label: 'Contato', href: '#contato' }
 ];
 
@@ -50,7 +49,7 @@ const Header = () => {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <a href="#home" className="text-2xl font-bold text-primary tracking-tight">
-          Template<span className="text-foreground">Hub</span>
+          Monte<span className="text-foreground">Site</span>
         </a>
 
         {/* Desktop Navigation */}

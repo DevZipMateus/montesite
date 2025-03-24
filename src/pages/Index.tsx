@@ -1,82 +1,91 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import TemplateCard from '@/components/TemplateCard';
-import TestimonialCard from '@/components/TestimonialCard';
 import FadeIn from '@/components/animations/FadeIn';
 import { Button } from '@/components/ui/button';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, LayoutTemplate, Tag } from 'lucide-react';
+import TemplateCategories, { TemplateCategory } from '@/components/TemplateCategories';
+
+// Template categories
+const categories: TemplateCategory[] = [
+  {
+    id: 'all',
+    name: 'Todos',
+    icon: <LayoutTemplate className="h-4 w-4" />
+  },
+  {
+    id: 'contabilidade',
+    name: 'Contabilidade',
+    icon: <Tag className="h-4 w-4" />
+  }
+];
 
 // Mock data for templates
-const templates = [
+const allTemplates = [
   {
     id: '1',
     title: 'Contador Profissional',
     description: 'Template ideal para contadores e escritórios de contabilidade que buscam uma presença online profissional.',
     imageUrl: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80',
-    formUrl: 'https://forms.google.com'
+    formUrl: 'https://forms.google.com',
+    category: 'contabilidade'
   },
   {
     id: '2',
     title: 'Consultoria Fiscal',
     description: 'Design moderno para empresas de consultoria fiscal e tributária que desejam transmitir confiança.',
     imageUrl: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&q=80',
-    formUrl: 'https://forms.google.com'
+    formUrl: 'https://forms.google.com',
+    category: 'contabilidade'
   },
   {
     id: '3',
     title: 'Contabilidade Digital',
     description: 'Template com foco em contabilidade digital e serviços online com design clean e intuitivo.',
     imageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80',
-    formUrl: 'https://forms.google.com'
+    formUrl: 'https://forms.google.com',
+    category: 'contabilidade'
   },
   {
     id: '4',
     title: 'Auditoria Empresarial',
     description: 'Layout profissional para empresas de auditoria, com seções para serviços especializados.',
     imageUrl: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80',
-    formUrl: 'https://forms.google.com'
+    formUrl: 'https://forms.google.com',
+    category: 'contabilidade'
   },
   {
     id: '5',
     title: 'Contabilidade Corporativa',
     description: 'Design sofisticado para contadores que atendem grandes empresas e corporações.',
     imageUrl: 'https://images.unsplash.com/photo-1586486855514-8c633cc6fd38?auto=format&fit=crop&q=80',
-    formUrl: 'https://forms.google.com'
+    formUrl: 'https://forms.google.com',
+    category: 'contabilidade'
   },
   {
     id: '6',
     title: 'Assessoria Contábil',
     description: 'Template completo para escritórios de assessoria contábil com foco em atendimento personalizado.',
     imageUrl: 'https://images.unsplash.com/photo-1496171367470-9ed9a91ea931?auto=format&fit=crop&q=80',
-    formUrl: 'https://forms.google.com'
-  }
-];
-
-// Mock data for testimonials
-const testimonials = [
-  {
-    name: 'Carlos Silva',
-    role: 'Contador, CS Contabilidade',
-    content: 'O template que adquiri superou todas as minhas expectativas. Meus clientes comentam sobre o profissionalismo do site e isso tem me ajudado a conquistar novos contratos.',
-    rating: 5
-  },
-  {
-    name: 'Ana Oliveira',
-    role: 'Consultora Tributária',
-    content: 'Extremamente satisfeita com a qualidade e facilidade de personalização. Em poucos dias já estava com meu site no ar, sem complicações.',
-    rating: 5
-  },
-  {
-    name: 'Roberto Almeida',
-    role: 'Escritório Contábil Almeida',
-    content: 'Excelente custo-benefício. O design é moderno e transmite exatamente a confiabilidade que buscamos para nossa marca.',
-    rating: 4
+    formUrl: 'https://forms.google.com',
+    category: 'contabilidade'
   }
 ];
 
 const Index = () => {
+  const [activeCategory, setActiveCategory] = useState('all');
+  const [filteredTemplates, setFilteredTemplates] = useState(allTemplates);
+
+  useEffect(() => {
+    if (activeCategory === 'all') {
+      setFilteredTemplates(allTemplates);
+    } else {
+      setFilteredTemplates(allTemplates.filter(template => template.category === activeCategory));
+    }
+  }, [activeCategory]);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -152,7 +161,7 @@ const Index = () => {
                     className="rounded-full text-lg"
                     asChild
                   >
-                    <a href="#depoimentos">Ver Depoimentos</a>
+                    <a href="#contato">Fale Conosco</a>
                   </Button>
                 </div>
               </FadeIn>
@@ -188,17 +197,25 @@ const Index = () => {
       {/* Templates Section */}
       <section id="templates" className="py-20 px-6 md:px-10">
         <div className="max-w-7xl mx-auto">
-          <FadeIn className="text-center mb-16">
+          <FadeIn className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Templates para Contabilidade
+              Escolha o Template Ideal
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Escolha entre nossos templates premium, desenvolvidos especificamente para profissionais da área contábil e financeira.
+              Explore nossa galeria de templates premium para diversos segmentos de mercado.
             </p>
           </FadeIn>
           
+          <FadeIn delay={100}>
+            <TemplateCategories 
+              categories={categories} 
+              activeCategory={activeCategory} 
+              onChange={setActiveCategory} 
+            />
+          </FadeIn>
+          
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {templates.map((template, index) => (
+            {filteredTemplates.map((template, index) => (
               <FadeIn key={template.id} delay={index * 100}>
                 <TemplateCard {...template} />
               </FadeIn>
@@ -214,7 +231,7 @@ const Index = () => {
               className="rounded-full"
               asChild
             >
-              <a href="#">Ver mais templates</a>
+              <a href="#contato">Solicitar template personalizado</a>
             </Button>
           </FadeIn>
         </div>
@@ -284,39 +301,8 @@ const Index = () => {
         </div>
       </section>
       
-      {/* Testimonials Section */}
-      <section id="depoimentos" className="py-20 px-6 md:px-10">
-        <div className="max-w-7xl mx-auto">
-          <FadeIn className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              O que nossos clientes dizem
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Confira a experiência de quem já está utilizando nossos templates para impulsionar seus negócios.
-            </p>
-          </FadeIn>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-            {testimonials.map((testimonial, index) => (
-              <FadeIn key={index} delay={index * 100}>
-                <TestimonialCard {...testimonial} />
-              </FadeIn>
-            ))}
-          </div>
-          
-          <FadeIn className="mt-16 text-center">
-            <Button 
-              className="rounded-full btn-hover-effect"
-              asChild
-            >
-              <a href="#templates">Escolher meu template</a>
-            </Button>
-          </FadeIn>
-        </div>
-      </section>
-      
       {/* CTA Section */}
-      <section className="py-20 px-6 md:px-10 relative overflow-hidden">
+      <section id="contato" className="py-20 px-6 md:px-10 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-primary/5"></div>
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="glass rounded-3xl p-10 md:p-16 shadow-xl">
