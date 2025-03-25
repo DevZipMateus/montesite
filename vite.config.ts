@@ -22,4 +22,7 @@ export default defineConfig(({ mode }) => ({
       stream: "stream-browserify",  // Alias para o stream
     },
   },
+  define: {
+    global: 'globalThis', // Isso pode ajudar a evitar o erro de "global is not defined"
+  },
 }));
