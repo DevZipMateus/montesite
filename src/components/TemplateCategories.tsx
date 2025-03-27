@@ -21,19 +21,19 @@ const TemplateCategories: React.FC<TemplateCategoriesProps> = ({
   onChange
 }) => {
   return (
-    <div className="mb-8">
+    <div className="mb-12">
       <Tabs 
         defaultValue={activeCategory} 
         value={activeCategory}
         onValueChange={onChange}
         className="w-full"
       >
-        <TabsList className="w-full max-w-md mx-auto bg-muted/50 p-1 rounded-full">
+        <TabsList className="w-full max-w-md mx-auto bg-muted/50 p-1.5 rounded-full">
           {categories.map((category) => (
             <TabsTrigger 
               key={category.id} 
               value={category.id}
-              className="flex items-center gap-2 px-4 py-2 rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm"
             >
               {category.icon}
               <span>{category.name}</span>

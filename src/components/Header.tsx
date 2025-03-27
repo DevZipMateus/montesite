@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -41,8 +42,8 @@ const Header = () => {
   return (
     <header 
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-6 md:px-10',
-        isScrolled ? 'glass py-3 shadow-md' : 'py-5'
+        'fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-8 md:px-14',
+        isScrolled ? 'glass py-4 shadow-md' : 'py-6'
       )}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -51,13 +52,13 @@ const Header = () => {
         </a>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
+        <nav className="hidden md:flex items-center space-x-10">
           {navItems.map((item) => (
             <a
               key={item.label}
               href={item.href}
               onClick={(e) => scrollToSection(e, item.href)}
-              className="text-foreground hover:text-primary transition-colors font-medium relative overflow-hidden group"
+              className="text-foreground hover:text-primary transition-colors font-medium relative overflow-hidden group px-2 py-1"
             >
               {item.label}
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
@@ -66,7 +67,7 @@ const Header = () => {
           <Button 
             size="default" 
             variant="default" 
-            className="btn-hover-effect rounded-full font-medium"
+            className="btn-hover-effect rounded-full font-medium px-6 ml-4"
             asChild
           >
             <a href="#templates">Ver Templates</a>
@@ -91,10 +92,10 @@ const Header = () => {
       <div 
         className={cn(
           "md:hidden absolute top-full left-0 right-0 glass shadow-md overflow-hidden transition-all duration-300 ease-in-out",
-          isMobileMenuOpen ? "max-h-[300px] py-4" : "max-h-0"
+          isMobileMenuOpen ? "max-h-[300px] py-6" : "max-h-0"
         )}
       >
-        <nav className="flex flex-col space-y-4 px-6">
+        <nav className="flex flex-col space-y-6 px-8">
           {navItems.map((item) => (
             <a
               key={item.label}
