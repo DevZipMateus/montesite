@@ -33,7 +33,7 @@ const Index = () => {
     const section = document.querySelector('#templates');
     if (section) {
       window.scrollTo({
-        top: section.getBoundingClientRect().top + window.scrollY - 80,
+        top: section.getBoundingClientRect().top + window.scrollY - 60,
         behavior: 'smooth'
       });
     }

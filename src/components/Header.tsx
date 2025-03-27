@@ -32,7 +32,7 @@ const Header = () => {
     const section = document.querySelector(href);
     if (section) {
       window.scrollTo({
-        top: section.getBoundingClientRect().top + window.scrollY - 80,
+        top: section.getBoundingClientRect().top + window.scrollY - 60,
         behavior: 'smooth'
       });
       setIsMobileMenuOpen(false);
@@ -43,7 +43,7 @@ const Header = () => {
     <header 
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-8 md:px-14',
-        isScrolled ? 'glass py-4 shadow-md' : 'py-6'
+        isScrolled ? 'glass py-3 shadow-md' : 'py-4'
       )}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">

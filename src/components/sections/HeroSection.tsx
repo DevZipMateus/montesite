@@ -32,7 +32,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   return (
     <section 
       id="home" 
-      className="pt-32 pb-24 md:pt-40 md:pb-32 relative overflow-hidden" 
+      className="pt-24 pb-16 md:pt-32 md:pb-24 relative overflow-hidden" 
       style={{
         background: 'linear-gradient(135deg, #f5f7fa 0%, #e4ecfb 100%)'
       }}
@@ -43,16 +43,16 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       </div>
       
       <div className="max-w-7xl mx-auto relative z-10 px-8 md:px-12">
-        <div className="flex flex-col md:flex-row items-center gap-16">
+        <div className="flex flex-col md:flex-row items-center gap-12">
           <div className="flex-1">
             <FadeIn direction="left">
-              <span className="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary font-medium text-sm mb-8">
+              <span className="inline-block px-4 py-1 rounded-full bg-primary/10 text-primary font-medium text-sm mb-6">
                 Lançamento de Templates Profissionais
               </span>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-6">
                 Crie Seu Site Institucional com Nossos Templates
               </h1>
-              <p className="text-lg text-muted-foreground mb-10 max-w-xl">
+              <p className="text-lg text-muted-foreground mb-8 max-w-xl">
                 Templates profissionais, personalizáveis e com design moderno para elevar o seu negócio. Implantação rápida e suporte especializado.
               </p>
               <div className="flex flex-wrap gap-6">
@@ -63,7 +63,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             </FadeIn>
           </div>
           
-          <div className="flex-1 mt-8 md:mt-0">
+          <div className="flex-1 mt-4 md:mt-0">
             <FadeIn direction="right" delay={200}>
               <div className="relative">
                 <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 via-indigo-300/20 to-primary/10 rounded-xl blur-xl"></div>
@@ -106,9 +106,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
         </div>
         
-        <div className="flex justify-center mt-16">
+        <div className="flex justify-center mt-10">
           <a href="#templates" onClick={scrollToTemplates} className="animate-float flex flex-col items-center text-sm text-muted-foreground hover:text-primary transition-colors">
-            <span className="mb-3">Role para ver os templates</span>
+            <span className="mb-2">Role para ver os templates</span>
             <ChevronDown className="animate-bounce" />
           </a>
         </div>
