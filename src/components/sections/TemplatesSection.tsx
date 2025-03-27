@@ -11,6 +11,7 @@ interface Template {
   description: string;
   imageUrl: string;
   formUrl: string;
+  previewUrl: string; // Added this property to match TemplateCard's props
   category: string;
 }
 
