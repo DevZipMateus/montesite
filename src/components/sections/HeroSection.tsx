@@ -32,7 +32,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   return (
     <section 
       id="home" 
-      className="pt-40 pb-28 md:pt-48 md:pb-36 relative overflow-hidden" 
+      className="pt-32 pb-24 md:pt-40 md:pb-32 relative overflow-hidden" 
       style={{
         background: 'linear-gradient(135deg, #f5f7fa 0%, #e4ecfb 100%)'
       }}
@@ -63,7 +63,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             </FadeIn>
           </div>
           
-          <div className="flex-1 mt-12 md:mt-0">
+          <div className="flex-1 mt-8 md:mt-0">
             <FadeIn direction="right" delay={200}>
               <div className="relative">
                 <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 via-indigo-300/20 to-primary/10 rounded-xl blur-xl"></div>
@@ -106,7 +106,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
         </div>
         
-        <div className="flex justify-center mt-20">
+        <div className="flex justify-center mt-16">
           <a href="#templates" onClick={scrollToTemplates} className="animate-float flex flex-col items-center text-sm text-muted-foreground hover:text-primary transition-colors">
             <span className="mb-3">Role para ver os templates</span>
             <ChevronDown className="animate-bounce" />
