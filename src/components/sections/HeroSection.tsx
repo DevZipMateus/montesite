@@ -57,7 +57,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToTemplates }) => {
               <div className="flex flex-wrap gap-4">
                 <Button 
                   size="lg" 
-                  className="rounded-full btn-hover-effect text-lg"
+                  className="rounded-full btn-hover-effect text-lg bg-gradient-to-r from-primary to-indigo-500 hover:from-indigo-500 hover:to-primary transition-all duration-300"
                   asChild
                 >
                   <a href="#templates">Escolher Template</a>
@@ -65,7 +65,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToTemplates }) => {
                 <Button 
                   variant="outline" 
                   size="lg" 
-                  className="rounded-full text-lg"
+                  className="rounded-full text-lg border-primary/20 text-primary hover:bg-primary/10 hover:text-primary hover:border-primary transition-all duration-300"
                   asChild
                 >
                   <a href="#contato">Fale Conosco</a>
@@ -77,7 +77,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToTemplates }) => {
           <div className="flex-1">
             <FadeIn direction="right" delay={200}>
               <div className="relative">
-                <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-primary/10 rounded-xl blur-xl"></div>
+                <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 via-indigo-300/20 to-primary/10 rounded-xl blur-xl"></div>
                 
                 <div className="relative overflow-hidden rounded-xl border border-white shadow-2xl bg-white">
                   {TEMPLATE_IMAGES.map((src, index) => (
@@ -126,7 +126,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToTemplates }) => {
             className="animate-float flex flex-col items-center text-sm text-muted-foreground hover:text-primary transition-colors"
           >
             <span className="mb-2">Role para ver os templates</span>
-            <ChevronDown />
+            <ChevronDown className="animate-bounce" />
           </a>
         </div>
       </div>
