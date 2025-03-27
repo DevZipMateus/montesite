@@ -64,8 +64,8 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
                 </a>
               </Button>
             </HoverCardTrigger>
-            <HoverCardContent className="p-2 bg-white shadow-lg border-none">
-              <p className="text-xs">Visualize os detalhes deste template</p>
+            <HoverCardContent className="p-3 bg-white shadow-lg border border-gray-100 z-50">
+              <p className="text-xs font-medium text-gray-800">Visualize os detalhes deste template</p>
             </HoverCardContent>
           </HoverCard>
           
