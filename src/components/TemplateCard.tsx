@@ -12,6 +12,7 @@ interface TemplateCardProps {
   description: string;
   imageUrl: string;
   formUrl: string;
+  previewUrl: string;
 }
 
 const TemplateCard: React.FC<TemplateCardProps> = ({
@@ -19,7 +20,8 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
   title,
   description,
   imageUrl,
-  formUrl
+  formUrl,
+  previewUrl
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   
@@ -58,7 +60,7 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
                 className="rounded-full text-xs h-8 px-3 transition-all duration-300 border-primary/30 text-primary hover:bg-primary/10 hover:text-primary hover:border-primary group"
                 asChild
               >
-                <a href={`#template-${id}`} onClick={(e) => e.preventDefault()}>
+                <a href={previewUrl} target="_blank" rel="noopener noreferrer">
                   <Eye className="h-3.5 w-3.5 mr-1 transition-transform group-hover:scale-110" />
                   <span>Visualizar</span>
                 </a>
