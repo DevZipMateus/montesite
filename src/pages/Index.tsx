@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import Header from '@/components/Header';
 import HeroSection from '@/components/sections/HeroSection';
+import MonteSitePromoSection from '@/components/sections/MonteSitePromoSection';
 import TemplatesSection from '@/components/sections/TemplatesSection';
 import FeaturesSection from '@/components/sections/FeaturesSection';
 import CTASection from '@/components/sections/CTASection';
@@ -43,6 +44,7 @@ const Index = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       <HeroSection scrollToTemplates={scrollToTemplates} />
+      <MonteSitePromoSection />
       <TemplatesSection templates={allTemplates} categories={categories} />
       <FeaturesSection />
       <CTASection />
