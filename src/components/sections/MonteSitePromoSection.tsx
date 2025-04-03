@@ -10,7 +10,8 @@ const MonteSitePromoSection: React.FC = () => {
             <FadeIn direction="left">
               <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Gere uma prévia do seu site Institucional</h2>
               <p className="text-lg text-muted-foreground mb-6">Crie rapidamente uma prévia do seu site profissional para sua empresa. 
-Preencha o formulário e tenha uma prévia de como ficará o site com um dos modelos disponíveis.</p>
+Preencha o formulário e tenha uma prévia de como ficará o site com um dos modelos disponíveis.
+            </p>
               <Button size="lg" className="rounded-full text-lg px-8 py-6 bg-blue-600 hover:bg-blue-700 transition-colors flex items-center gap-2" asChild>
                 <a href="https://montesite.com" target="_blank" rel="noopener noreferrer">
                   Criar Novo Site <ExternalLink className="ml-1 h-5 w-5" />
