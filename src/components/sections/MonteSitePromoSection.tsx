@@ -10,13 +10,18 @@ const MonteSitePromoSection: React.FC = () => {
         <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
           <div className="flex-1">
             <FadeIn direction="left">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Gere uma prévia do seu site Institucional</h2>
-              <p className="text-lg text-muted-foreground mb-6">Crie rapidamente uma prévia do seu site profissional para sua empresa. 
-Preencha o formulário e tenha uma prévia de como ficará o site com um dos modelos disponíveis.
-            </p>
-              <Button size="lg" className="rounded-full text-lg px-8 py-6 bg-blue-600 hover:bg-blue-700 transition-colors flex items-center gap-2" asChild>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
+                <span className="bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text">Crie seu site profissional</span> em minutos
+              </h2>
+              <p className="text-lg text-muted-foreground mb-2">
+                MonteSite permite que você tenha um <span className="font-semibold text-blue-600">site institucional completo</span> para sua empresa de forma rápida e profissional.
+              </p>
+              <p className="text-lg text-muted-foreground mb-6">
+                Basta preencher um formulário simples e você receberá instantaneamente uma <span className="italic">prévia personalizada</span> com seu conteúdo em um dos nossos modelos premium.
+              </p>
+              <Button size="lg" className="rounded-full text-lg px-8 py-6 bg-blue-600 hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 flex items-center gap-2" asChild>
                 <a href="https://montesite.com" target="_blank" rel="noopener noreferrer">
-                  Criar Novo Site <ExternalLink className="ml-1 h-5 w-5" />
+                  Criar Meu Site Agora <ExternalLink className="ml-1 h-5 w-5" />
                 </a>
               </Button>
             </FadeIn>
