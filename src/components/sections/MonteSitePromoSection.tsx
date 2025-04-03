@@ -11,17 +11,20 @@ const MonteSitePromoSection: React.FC = () => {
           <div className="flex-1">
             <FadeIn direction="left">
               <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
-                <span className="bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text">Crie seu site profissional</span> em minutos
+                <span className="bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text">Crie uma prévia</span> do seu site profissional
               </h2>
               <p className="text-lg text-muted-foreground mb-2">
-                MonteSite permite que você tenha um <span className="font-semibold text-blue-600">site institucional completo</span> para sua empresa de forma rápida e profissional.
+                MonteSite permite que você visualize uma <span className="font-semibold text-blue-600">prévia temporária</span> do seu site institucional de forma rápida e prática.
+              </p>
+              <p className="text-lg text-muted-foreground mb-2">
+                Basta preencher um formulário simples e você receberá instantaneamente uma <span className="italic">demonstração personalizada</span> com seu conteúdo em um dos nossos modelos premium.
               </p>
               <p className="text-lg text-muted-foreground mb-6">
-                Basta preencher um formulário simples e você receberá instantaneamente uma <span className="italic">prévia personalizada</span> com seu conteúdo em um dos nossos modelos premium.
+                <span className="bg-yellow-100 px-2 py-1 rounded-md font-medium text-gray-800">⏱️ Importante:</span> A prévia ficará disponível por <span className="font-bold text-blue-600">tempo limitado</span> para sua avaliação.
               </p>
               <Button size="lg" className="rounded-full text-lg px-8 py-6 bg-blue-600 hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 flex items-center gap-2" asChild>
                 <a href="https://montesite.com" target="_blank" rel="noopener noreferrer">
-                  Criar Meu Site Agora <ExternalLink className="ml-1 h-5 w-5" />
+                  Criar Minha Prévia Agora <ExternalLink className="ml-1 h-5 w-5" />
                 </a>
               </Button>
             </FadeIn>
