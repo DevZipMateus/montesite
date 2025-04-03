@@ -1,9 +1,7 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import FadeIn from '@/components/animations/FadeIn';
 import { ExternalLink } from 'lucide-react';
-
 const MonteSitePromoSection: React.FC = () => {
   return <section className="py-16 px-8 md:px-14 bg-gradient-to-r from-blue-50 to-indigo-50">
       <div className="max-w-7xl mx-auto">
@@ -29,7 +27,7 @@ Preencha o formulário e tenha uma prévia de como ficará o site com um dos mod
                 <div className="relative overflow-hidden rounded-xl border border-white shadow-2xl bg-white">
                   <div className="grid grid-cols-1 gap-2">
                     <img src="/lovable-uploads/c0a75ee5-0350-43be-a331-64beab3212c0.png" alt="MonteSite Preview" className="w-full mx-auto object-contain" />
-                    <img src="/lovable-uploads/d25e41eb-715c-4fda-93e0-a506267e7518.png" alt="MonteSite Form" className="w-full mx-auto object-contain" />
+                    <img alt="MonteSite Form" className="w-full mx-auto object-contain" src="/lovable-uploads/7aa1f9a5-0942-4622-9ca7-4fcceec86beb.png" />
                   </div>
                 </div>
               </div>
@@ -39,5 +37,4 @@ Preencha o formulário e tenha uma prévia de como ficará o site com um dos mod
       </div>
     </section>;
 };
-
 export default MonteSitePromoSection;
