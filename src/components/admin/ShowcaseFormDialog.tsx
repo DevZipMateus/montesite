@@ -45,8 +45,7 @@ const ShowcaseFormDialog: React.FC<ShowcaseFormDialogProps> = ({ showcase, trigg
     if (showcase) {
       await updateMutation.mutateAsync({ id: showcase.id, data });
     } else {
-      // Criar um novo showcase
-      await createMutation.mutateAsync(data);
+      await createMutation.mutateAsync(data as Omit<Showcase, 'id' | 'created_at' | 'updated_at'>);
     }
   };
 

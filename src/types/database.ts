@@ -1,4 +1,3 @@
-
 export interface Category {
   id: string;
   name: string;
@@ -36,7 +35,7 @@ export interface Showcase {
   site_url: string;
   image_url: string;
   description?: string;
-  category_id: string | null;
+  category_id: string | null;  // Changed to allow null values
   featured: boolean;
   created_at: string;
   updated_at: string;
