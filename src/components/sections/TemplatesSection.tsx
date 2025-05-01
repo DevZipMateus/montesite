@@ -1,35 +1,43 @@
+
 import React, { useEffect, useState } from 'react';
 import FadeIn from '@/components/animations/FadeIn';
 import { Button } from '@/components/ui/button';
 import TemplateCard from '@/components/TemplateCard';
 import TemplateCategories, { TemplateCategory } from '@/components/TemplateCategories';
-interface Template {
-  id: string;
-  title: string;
-  description: string;
-  imageUrl: string;
-  formUrl: string;
-  previewUrl: string;
-  category: string;
-}
+import { Template } from '@/types/database';
+import { fetchCategories, fetchTemplates } from '@/services/templateService';
+import { useQuery } from '@tanstack/react-query';
+import { Loader2 } from 'lucide-react';
+
 interface TemplatesSectionProps {
-  templates: Template[];
-  categories: TemplateCategory[];
+  templates?: Template[];
+  categories?: TemplateCategory[];
 }
-const TemplatesSection: React.FC<TemplatesSectionProps> = ({
-  templates,
-  categories
-}) => {
+
+const TemplatesSection: React.FC<TemplatesSectionProps> = () => {
   const [activeCategory, setActiveCategory] = useState('all');
-  const [filteredTemplates, setFilteredTemplates] = useState(templates);
-  useEffect(() => {
-    if (activeCategory === 'all') {
-      setFilteredTemplates(templates);
-    } else {
-      setFilteredTemplates(templates.filter(template => template.category === activeCategory));
-    }
-  }, [activeCategory, templates]);
-  return <section id="templates" className="px-8 md:px-14 py-[47px]">
+  
+  const { data: categoriesData = [], isLoading: isLoadingCategories } = useQuery({
+    queryKey: ['categories'],
+    queryFn: fetchCategories,
+  });
+  
+  const { data: templatesData = [], isLoading: isLoadingTemplates } = useQuery({
+    queryKey: ['templates', activeCategory],
+    queryFn: () => fetchTemplates(activeCategory !== 'all' ? activeCategory : undefined),
+  });
+  
+  const categories: TemplateCategory[] = [
+    { id: 'all', name: 'Todos' },
+    ...categoriesData.map((category) => ({
+      id: category.slug,
+      name: category.name,
+      icon: category.icon
+    }))
+  ];
+  
+  return (
+    <section id="templates" className="px-8 md:px-14 py-[47px]">
       <div className="max-w-7xl mx-auto">
         <FadeIn className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-5">
@@ -41,15 +49,41 @@ const TemplatesSection: React.FC<TemplatesSectionProps> = ({
         </FadeIn>
         
         <FadeIn delay={100}>
-          <TemplateCategories categories={categories} activeCategory={activeCategory} onChange={setActiveCategory} />
+          <TemplateCategories 
+            categories={categories} 
+            activeCategory={activeCategory} 
+            onChange={setActiveCategory} 
+          />
         </FadeIn>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
-          {filteredTemplates.map((template, index) => <FadeIn key={template.id} delay={index * 100}>
-              <TemplateCard {...template} />
-            </FadeIn>)}
-        </div>
+        {(isLoadingCategories || isLoadingTemplates) && (
+          <div className="flex justify-center items-center py-20">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <span className="ml-2 text-lg text-muted-foreground">Carregando templates...</span>
+          </div>
+        )}
+        
+        {!isLoadingTemplates && templatesData.length === 0 && (
+          <div className="text-center py-20">
+            <p className="text-lg text-muted-foreground mb-4">
+              Nenhum template encontrado para esta categoria.
+            </p>
+            <Button onClick={() => setActiveCategory('all')}>Ver todos os templates</Button>
+          </div>
+        )}
+        
+        {!isLoadingTemplates && templatesData.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
+            {templatesData.map((template, index) => (
+              <FadeIn key={template.id} delay={index * 100}>
+                <TemplateCard {...template} />
+              </FadeIn>
+            ))}
+          </div>
+        )}
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default TemplatesSection;

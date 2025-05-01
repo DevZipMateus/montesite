@@ -6,7 +6,6 @@ import MonteSitePromoSection from '@/components/sections/MonteSitePromoSection';
 import TemplatesSection from '@/components/sections/TemplatesSection';
 import FeaturesSection from '@/components/sections/FeaturesSection';
 import CTASection from '@/components/sections/CTASection';
-import { allTemplates, categories } from '@/data/templateData';
 
 const Index = () => {
   useEffect(() => {
@@ -45,7 +44,7 @@ const Index = () => {
       <Header />
       <HeroSection scrollToTemplates={scrollToTemplates} />
       <MonteSitePromoSection />
-      <TemplatesSection templates={allTemplates} categories={categories} />
+      <TemplatesSection />
       <FeaturesSection />
       <CTASection />
     </div>
