@@ -3,9 +3,34 @@ import React from 'react';
 import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const Footer = () => {
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
+
+  const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    // Only handle anchor navigation on home page
+    if (!isHomePage && href.includes('#')) {
+      // Navigate to home page with the section
+      window.location.href = href;
+      return;
+    }
+    
+    if (isHomePage && href.includes('#')) {
+      e.preventDefault();
+      const targetId = href.split('#')[1];
+      const section = document.querySelector(`#${targetId}`);
+      
+      if (section) {
+        window.scrollTo({
+          top: section.getBoundingClientRect().top + window.scrollY - 60,
+          behavior: 'smooth'
+        });
+      }
+    }
+  };
+
   return (
     <footer className="bg-gray-50 pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-8 md:px-14">
@@ -35,9 +60,29 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold text-lg mb-4">Links Rápidos</h3>
             <ul className="space-y-3">
-              <li><a href="/#home" className="text-muted-foreground hover:text-primary transition-colors">Home</a></li>
-              <li><a href="/#templates" className="text-muted-foreground hover:text-primary transition-colors">Templates</a></li>
-              <li><Link to="/vitrine" className="text-muted-foreground hover:text-primary transition-colors">Vitrine</Link></li>
+              <li>
+                <a 
+                  href="/#home" 
+                  onClick={(e) => handleAnchorClick(e, "/#home")}
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Home
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="/#templates" 
+                  onClick={(e) => handleAnchorClick(e, "/#templates")}
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Templates
+                </a>
+              </li>
+              <li>
+                <Link to="/vitrine" className="text-muted-foreground hover:text-primary transition-colors">
+                  Vitrine
+                </Link>
+              </li>
             </ul>
           </div>
           

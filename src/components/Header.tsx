@@ -21,6 +21,7 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const isHomePage = location.pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,6 +36,14 @@ const Header = () => {
     if (isExternalRoute) return; // Don't handle scroll for external routes
     
     e.preventDefault();
+    
+    // If not on home page and trying to navigate to a section on the home page
+    if (!isHomePage && href.includes('#')) {
+      // Navigate to home page with the section
+      window.location.href = href;
+      return;
+    }
+    
     const targetId = href.split('#')[1];
     const section = document.querySelector(`#${targetId}`);
     
@@ -89,7 +98,9 @@ const Header = () => {
             className="btn-hover-effect rounded-full font-medium px-6 ml-4"
             asChild
           >
-            <a href="/#templates" onClick={(e) => scrollToSection(e, '/#templates', false)}>Ver Templates</a>
+            <a href={isHomePage ? "/#templates" : "/#templates"} onClick={isHomePage ? (e) => scrollToSection(e, '/#templates', false) : undefined}>
+              Ver Templates
+            </a>
           </Button>
         </nav>
 
@@ -142,7 +153,9 @@ const Header = () => {
             className="btn-hover-effect rounded-full font-medium w-full mt-2"
             asChild
           >
-            <a href="/#templates" onClick={(e) => scrollToSection(e, '/#templates', false)}>Ver Templates</a>
+            <a href={isHomePage ? "/#templates" : "/#templates"} onClick={isHomePage ? (e) => scrollToSection(e, '/#templates', false) : undefined}>
+              Ver Templates
+            </a>
           </Button>
         </nav>
       </div>
