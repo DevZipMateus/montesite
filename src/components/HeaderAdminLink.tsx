@@ -3,9 +3,21 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { Shield } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
 const HeaderAdminLink: React.FC = () => {
-  // In a real application, this would check if the user is authenticated and has admin rights
+  const { data: session } = useQuery({
+    queryKey: ['session'],
+    queryFn: async () => {
+      const { data } = await supabase.auth.getSession();
+      return data.session;
+    },
+  });
+
+  // Only show admin link if user is authenticated
+  if (!session) return null;
+
   return (
     <Button variant="ghost" size="sm" asChild className="hidden lg:flex">
       <Link to="/admin" className="flex items-center gap-1">
