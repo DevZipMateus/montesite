@@ -60,7 +60,7 @@ export async function fetchTemplates(categorySlug?: string): Promise<Template[]>
 }
 
 // New functions for template management
-export async function createTemplate(template: Omit<Template, 'id' | 'created_at' | 'updated_at'>) {
+export async function createTemplate(template: Omit<Template, 'id' | 'created_at' | 'updated_at' | 'categories'>) {
   try {
     const { data, error } = await supabase
       .from('templates')
@@ -88,7 +88,7 @@ export async function createTemplate(template: Omit<Template, 'id' | 'created_at
   }
 }
 
-export async function updateTemplate(id: string, template: Partial<Omit<Template, 'id' | 'created_at' | 'updated_at'>>) {
+export async function updateTemplate(id: string, template: Partial<Omit<Template, 'id' | 'created_at' | 'updated_at' | 'categories'>>) {
   try {
     const { data, error } = await supabase
       .from('templates')

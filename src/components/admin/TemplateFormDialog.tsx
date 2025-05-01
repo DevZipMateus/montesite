@@ -45,7 +45,18 @@ const TemplateFormDialog: React.FC<TemplateFormDialogProps> = ({ template, trigg
     if (template) {
       await updateMutation.mutateAsync({ id: template.id, data });
     } else {
-      await createMutation.mutateAsync(data);
+      // Ensure all required fields are set for a new template
+      const newTemplate = {
+        title: data.title,
+        description: data.description,
+        image_url: data.image_url,
+        form_url: data.form_url,
+        preview_url: data.preview_url,
+        category_id: data.category_id,
+        status: data.status,
+        order_index: data.order_index,
+      };
+      await createMutation.mutateAsync(newTemplate);
     }
   };
 

@@ -20,6 +20,7 @@ export interface Template {
   order_index: number;
   created_at: string;
   updated_at: string;
+  categories?: Category; // Added this field for the joined data from Supabase
 }
 
 export interface Showcase {
