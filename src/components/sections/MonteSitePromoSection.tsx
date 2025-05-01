@@ -3,6 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import FadeIn from '@/components/animations/FadeIn';
 import { ExternalLink } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const MonteSitePromoSection: React.FC = () => {
   return (
@@ -11,11 +12,11 @@ const MonteSitePromoSection: React.FC = () => {
         <div className="container mx-auto max-w-5xl">
           <div className="flex flex-col items-center text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-              Destaque seu negócio com um site profissional
+              Descubra nossa Vitrine de Sites Prontos
             </h2>
             <p className="text-white/90 text-lg mb-8 max-w-2xl">
-              Transforme sua presença online com sites personalizados, responsivos e otimizados para SEO.
-              Nossa plataforma ajuda você a criar uma presença digital profissional.
+              Explore nossa coleção de sites desenvolvidos para diversos clientes e segmentos.
+              Veja exemplos reais de nossos trabalhos e inspire-se para seu próximo projeto digital.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button 
@@ -23,7 +24,7 @@ const MonteSitePromoSection: React.FC = () => {
                 size="lg"
                 asChild
               >
-                <a href="#templates">Ver Templates</a>
+                <Link to="/vitrine">Ver Vitrine Completa</Link>
               </Button>
               <Button 
                 variant="outline" 
@@ -31,9 +32,9 @@ const MonteSitePromoSection: React.FC = () => {
                 size="lg"
                 asChild
               >
-                <a href="https://montesite.com" target="_blank" rel="noopener noreferrer">
-                  Visitar Site <ExternalLink className="ml-2 h-4 w-4" />
-                </a>
+                <Link to="#showcase">
+                  Ver Destaques <ExternalLink className="ml-2 h-4 w-4" />
+                </Link>
               </Button>
             </div>
           </div>
