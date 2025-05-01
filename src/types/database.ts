@@ -40,4 +40,12 @@ export interface Showcase {
   featured: boolean;
   created_at: string;
   updated_at: string;
+  categories?: {
+    id: string;
+    name: string;
+    slug: string;
+    icon?: string;
+    created_at: string;
+    updated_at: string;
+  };
 }

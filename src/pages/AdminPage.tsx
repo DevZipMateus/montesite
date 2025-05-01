@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { LogOut } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import AdminTemplatesTable from '@/components/admin/AdminTemplatesTable';
+import AdminShowcasesTable from '@/components/admin/AdminShowcasesTable';
 
 const AdminPage: React.FC = () => {
   const navigate = useNavigate();
@@ -44,6 +45,7 @@ const AdminPage: React.FC = () => {
           <TabsList className="mb-6">
             <TabsTrigger value="data-management">Gestão de Dados</TabsTrigger>
             <TabsTrigger value="templates">Templates</TabsTrigger>
+            <TabsTrigger value="showcases">Vitrine de Sites</TabsTrigger>
           </TabsList>
           
           <TabsContent value="data-management">
@@ -79,6 +81,20 @@ const AdminPage: React.FC = () => {
               </CardHeader>
               <CardContent>
                 <AdminTemplatesTable />
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="showcases">
+            <Card>
+              <CardHeader>
+                <CardTitle>Vitrine de Sites</CardTitle>
+                <CardDescription>
+                  Visualize e gerencie os sites disponíveis na vitrine.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <AdminShowcasesTable />
               </CardContent>
             </Card>
           </TabsContent>
