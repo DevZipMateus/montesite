@@ -1,52 +1,44 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
 import Header from '@/components/Header';
 import SeedDataButton from '@/components/admin/SeedDataButton';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Loader2 } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+import { Button } from '@/components/ui/button';
+import { LogOut } from 'lucide-react';
+import { useToast } from '@/components/ui/use-toast';
 import AdminTemplatesTable from '@/components/admin/AdminTemplatesTable';
 
 const AdminPage: React.FC = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   
-  const { data: session, isLoading: isLoadingSession } = useQuery({
-    queryKey: ['session'],
-    queryFn: async () => {
-      const { data } = await supabase.auth.getSession();
-      return data.session;
-    },
-  });
-
-  // Redirect to home if not authenticated
-  useEffect(() => {
-    if (!isLoadingSession && !session) {
-      navigate('/');
-    }
-  }, [session, isLoadingSession, navigate]);
-
-  if (isLoadingSession) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <p className="mt-2 text-muted-foreground">Verificando autenticação...</p>
-      </div>
-    );
-  }
-
-  // If not authenticated and not loading, don't render the admin content
-  if (!session) {
-    return null;
-  }
+  const handleLogout = () => {
+    // Remove login state from localStorage
+    localStorage.removeItem('admin_logged_in');
+    
+    // Show success toast
+    toast({
+      title: 'Logout realizado',
+      description: 'Você foi desconectado com sucesso.',
+    });
+    
+    // Redirect to home page
+    navigate('/');
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       <div className="container mx-auto py-10">
-        <h1 className="text-3xl font-bold mb-8">Admin Dashboard</h1>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+          <Button variant="outline" onClick={handleLogout} className="flex items-center gap-2">
+            <LogOut className="h-4 w-4" />
+            Sair
+          </Button>
+        </div>
         
         <Tabs defaultValue="data-management" className="w-full">
           <TabsList className="mb-6">

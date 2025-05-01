@@ -1,22 +1,33 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { Shield } from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
 
 const HeaderAdminLink: React.FC = () => {
-  const { data: session } = useQuery({
-    queryKey: ['session'],
-    queryFn: async () => {
-      const { data } = await supabase.auth.getSession();
-      return data.session;
-    },
-  });
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Check if the admin is logged in
+    const checkLoginStatus = () => {
+      const adminLoggedIn = localStorage.getItem('admin_logged_in') === 'true';
+      setIsLoggedIn(adminLoggedIn);
+    };
+
+    // Check initially
+    checkLoginStatus();
+
+    // Listen for storage events (if user logs in/out in another tab)
+    window.addEventListener('storage', checkLoginStatus);
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('storage', checkLoginStatus);
+    };
+  }, []);
 
   // Only show admin link if user is authenticated
-  if (!session) return null;
+  if (!isLoggedIn) return null;
 
   return (
     <Button variant="ghost" size="sm" asChild className="hidden lg:flex">

@@ -49,7 +49,7 @@ const AdminTemplatesTable: React.FC = () => {
               <TableCell className="font-mono text-xs">{template.id.substring(0, 8)}...</TableCell>
               <TableCell className="font-medium">{template.title}</TableCell>
               <TableCell>
-                {template.categories?.name || 'Sem categoria'}
+                {template.category_id ? template.category_id : 'Sem categoria'}
               </TableCell>
               <TableCell>
                 <Badge variant={template.status === 'active' ? 'default' : 'secondary'}>
