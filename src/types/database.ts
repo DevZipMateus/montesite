@@ -20,7 +20,14 @@ export interface Template {
   order_index: number;
   created_at: string;
   updated_at: string;
-  categories?: Category; // Added this field for the joined data from Supabase
+  categories?: {
+    id: string;
+    name: string;
+    slug: string;
+    icon?: string;
+    created_at: string;
+    updated_at: string;
+  }; // Changed to match the shape of data returned from Supabase join query
 }
 
 export interface Showcase {

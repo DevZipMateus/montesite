@@ -32,7 +32,7 @@ export async function fetchTemplates(categorySlug?: string): Promise<Template[]>
       .from('templates')
       .select(`
         *,
-        categories(id, name, slug)
+        categories(id, name, slug, icon, created_at, updated_at)
       `)
       .eq('status', 'active')
       .order('order_index');
@@ -151,7 +151,7 @@ export async function fetchAdminTemplates(): Promise<Template[]> {
       .from('templates')
       .select(`
         *,
-        categories(id, name, slug)
+        categories(id, name, slug, icon, created_at, updated_at)
       `)
       .order('order_index');
     
