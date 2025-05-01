@@ -39,6 +39,8 @@ serve(async (req) => {
       throw categoriesError;
     }
 
+    console.log('Categories seeded:', categoriesData);
+
     // Get the category IDs
     const categoryMap = categoriesData.reduce((acc, category) => {
       acc[category.slug] = category.id;
@@ -110,16 +112,57 @@ serve(async (req) => {
     ];
 
     // Insert templates
-    const { error: templatesError } = await supabaseClient
+    const { data: templatesData, error: templatesError } = await supabaseClient
       .from('templates')
-      .upsert(templates);
+      .upsert(templates, { onConflict: 'id' })
+      .select();
 
     if (templatesError) {
       throw templatesError;
     }
 
+    console.log('Templates seeded:', templatesData);
+
+    // Add a few showcase items
+    const showcases = [
+      {
+        client_name: 'Contábil Express',
+        site_url: 'https://contabilexpress.com',
+        image_url: '/imagens/contabilidade-template.png',
+        description: 'Escritório de contabilidade especializado em pequenas empresas.',
+        category_id: categoryMap['contabilidade'],
+        featured: true
+      },
+      {
+        client_name: 'Finanças & CIA',
+        site_url: 'https://financasecia.com',
+        image_url: '/imagens/conta-connection-hub.png',
+        description: 'Consultoria financeira e contábil para startups.',
+        category_id: categoryMap['contabilidade'],
+        featured: true
+      }
+    ];
+
+    // Insert showcases
+    const { data: showcasesData, error: showcasesError } = await supabaseClient
+      .from('showcases')
+      .upsert(showcases, { onConflict: 'id' })
+      .select();
+
+    if (showcasesError) {
+      throw showcasesError;
+    }
+
+    console.log('Showcases seeded:', showcasesData);
+
     return new Response(
-      JSON.stringify({ success: true, message: 'Data seeded successfully' }),
+      JSON.stringify({ 
+        success: true, 
+        message: 'Data seeded successfully', 
+        categories: categoriesData,
+        templates: templatesData,
+        showcases: showcasesData
+      }),
       {
         headers: {
           'Content-Type': 'application/json',
@@ -129,6 +172,7 @@ serve(async (req) => {
       }
     );
   } catch (error) {
+    console.error('Error seeding data:', error);
     return new Response(
       JSON.stringify({ error: error.message }),
       {

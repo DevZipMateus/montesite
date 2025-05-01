@@ -2,4 +2,5 @@
 project_id = "vaabpicspdbolvutnscp"
 
 [functions.seed-data]
-verify_jwt = true
+verify_jwt = false
+
