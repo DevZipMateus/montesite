@@ -1,36 +1,18 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import FadeIn from '@/components/animations/FadeIn';
 import { Button } from '@/components/ui/button';
 import ShowcaseCard from '@/components/ShowcaseCard';
-import TemplateCategories, { TemplateCategory } from '@/components/TemplateCategories';
-import { Showcase } from '@/types/database';
-import { fetchCategories } from '@/services/templateService';
-import { fetchShowcases } from '@/services/showcaseService';
 import { useQuery } from '@tanstack/react-query';
-import { Loader2 } from 'lucide-react';
+import { Loader2, ExternalLink } from 'lucide-react';
+import { fetchShowcases } from '@/services/showcaseService';
+import { Link } from 'react-router-dom';
 
 const ShowcaseSection: React.FC = () => {
-  const [activeCategory, setActiveCategory] = useState('all');
-  
-  const { data: categoriesData = [], isLoading: isLoadingCategories } = useQuery({
-    queryKey: ['categories'],
-    queryFn: fetchCategories,
-  });
-  
   const { data: showcasesData = [], isLoading: isLoadingShowcases } = useQuery({
-    queryKey: ['showcases', activeCategory],
-    queryFn: () => fetchShowcases(activeCategory !== 'all' ? activeCategory : undefined),
+    queryKey: ['featured-showcases'],
+    queryFn: () => fetchShowcases(undefined, true, 3), // Get only featured items, limit to 3
   });
-  
-  const categories: TemplateCategory[] = [
-    { id: 'all', name: 'Todos' },
-    ...categoriesData.map((category) => ({
-      id: category.slug,
-      name: category.name,
-      icon: category.icon
-    }))
-  ];
   
   return (
     <section id="showcase" className="px-8 md:px-14 py-[47px] bg-gray-50">
@@ -44,15 +26,7 @@ const ShowcaseSection: React.FC = () => {
           </p>
         </FadeIn>
         
-        <FadeIn delay={100}>
-          <TemplateCategories 
-            categories={categories} 
-            activeCategory={activeCategory} 
-            onChange={setActiveCategory} 
-          />
-        </FadeIn>
-        
-        {(isLoadingCategories || isLoadingShowcases) && (
+        {isLoadingShowcases && (
           <div className="flex justify-center items-center py-20">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
             <span className="ml-2 text-lg text-muted-foreground">Carregando sites...</span>
@@ -62,9 +36,8 @@ const ShowcaseSection: React.FC = () => {
         {!isLoadingShowcases && showcasesData.length === 0 && (
           <div className="text-center py-20">
             <p className="text-lg text-muted-foreground mb-4">
-              Nenhum site encontrado para esta categoria.
+              Nenhum site em destaque no momento.
             </p>
-            <Button onClick={() => setActiveCategory('all')}>Ver todos os sites</Button>
           </div>
         )}
         
@@ -77,6 +50,19 @@ const ShowcaseSection: React.FC = () => {
             ))}
           </div>
         )}
+        
+        <FadeIn delay={300} className="flex justify-center mt-12">
+          <Button 
+            size="lg" 
+            className="rounded-full gap-2 bg-gradient-to-r from-primary to-indigo-500 hover:from-indigo-500 hover:to-primary"
+            asChild
+          >
+            <Link to="/vitrine">
+              Ver todos os sites
+              <ExternalLink className="h-4 w-4" />
+            </Link>
+          </Button>
+        </FadeIn>
       </div>
     </section>
   );

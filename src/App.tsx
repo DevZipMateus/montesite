@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import AdminPage from "./pages/AdminPage";
 import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
+import ShowcasePage from "./pages/ShowcasePage";
 import { supabase } from "./integrations/supabase/client";
 
 // Create a simple admin authentication check
@@ -36,6 +37,7 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/vitrine" element={<ShowcasePage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route 
                 path="/admin" 

@@ -3,19 +3,28 @@ import { supabase } from "@/integrations/supabase/client";
 import { Showcase } from "@/types/database";
 import { toast } from "@/hooks/use-toast";
 
-export async function fetchShowcases(categorySlug?: string): Promise<Showcase[]> {
+export async function fetchShowcases(categorySlug?: string, featuredOnly?: boolean, limit?: number): Promise<Showcase[]> {
   try {
     let query = supabase
       .from('showcases')
       .select(`
         *,
         categories(id, name, slug, icon, created_at, updated_at)
-      `)
-      .order('client_name');
+      `);
     
     if (categorySlug && categorySlug !== 'all') {
       query = query.eq('categories.slug', categorySlug);
     }
+    
+    if (featuredOnly) {
+      query = query.eq('featured', true);
+    }
+    
+    if (limit) {
+      query = query.limit(limit);
+    }
+    
+    query = query.order('client_name');
     
     const { data, error } = await query;
     
