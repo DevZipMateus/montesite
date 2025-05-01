@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 interface NavItem {
   label: string;
@@ -12,14 +12,15 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { label: 'Home', href: '#home' },
-  { label: 'Templates', href: '#templates' },
+  { label: 'Home', href: '/#home' },
+  { label: 'Templates', href: '/#templates' },
   { label: 'Vitrine', href: '/vitrine', isExternalRoute: true }
 ];
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,7 +35,9 @@ const Header = () => {
     if (isExternalRoute) return; // Don't handle scroll for external routes
     
     e.preventDefault();
-    const section = document.querySelector(href);
+    const targetId = href.split('#')[1];
+    const section = document.querySelector(`#${targetId}`);
+    
     if (section) {
       window.scrollTo({
         top: section.getBoundingClientRect().top + window.scrollY - 60,
@@ -86,7 +89,7 @@ const Header = () => {
             className="btn-hover-effect rounded-full font-medium px-6 ml-4"
             asChild
           >
-            <a href="#templates">Ver Templates</a>
+            <a href="/#templates" onClick={(e) => scrollToSection(e, '/#templates', false)}>Ver Templates</a>
           </Button>
         </nav>
 
@@ -138,9 +141,8 @@ const Header = () => {
             variant="default" 
             className="btn-hover-effect rounded-full font-medium w-full mt-2"
             asChild
-            onClick={() => setIsMobileMenuOpen(false)}
           >
-            <a href="#templates">Ver Templates</a>
+            <a href="/#templates" onClick={(e) => scrollToSection(e, '/#templates', false)}>Ver Templates</a>
           </Button>
         </nav>
       </div>

@@ -6,6 +6,7 @@ import MonteSitePromoSection from '@/components/sections/MonteSitePromoSection';
 import TemplatesSection from '@/components/sections/TemplatesSection';
 import FeaturesSection from '@/components/sections/FeaturesSection';
 import CTASection from '@/components/sections/CTASection';
+import Footer from '@/components/Footer';
 
 const Index = () => {
   useEffect(() => {
@@ -42,11 +43,14 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <HeroSection scrollToTemplates={scrollToTemplates} />
-      <MonteSitePromoSection />
-      <TemplatesSection />
-      <FeaturesSection />
-      <CTASection />
+      <main>
+        <HeroSection scrollToTemplates={scrollToTemplates} />
+        <MonteSitePromoSection />
+        <TemplatesSection />
+        <FeaturesSection />
+        <CTASection />
+      </main>
+      <Footer />
     </div>
   );
 };
