@@ -1,6 +1,6 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { Category, Template } from "@/types/database";
+import { CategoryFormValues } from "@/schemas/showcaseSchema";
 import { toast } from "@/hooks/use-toast";
 
 export async function fetchCategories(): Promise<Category[]> {
@@ -23,6 +23,35 @@ export async function fetchCategories(): Promise<Category[]> {
       variant: "destructive",
     });
     return [];
+  }
+}
+
+export async function createCategory(category: CategoryFormValues): Promise<Category> {
+  try {
+    const { data, error } = await supabase
+      .from('categories')
+      .insert([category])
+      .select()
+      .single();
+    
+    if (error) {
+      throw error;
+    }
+    
+    toast({
+      title: "Categoria criada",
+      description: "A categoria foi criada com sucesso.",
+    });
+    
+    return data;
+  } catch (error) {
+    console.error('Error creating category:', error);
+    toast({
+      title: "Erro ao criar categoria",
+      description: "Não foi possível criar a categoria. Tente novamente mais tarde.",
+      variant: "destructive",
+    });
+    throw error;
   }
 }
 
