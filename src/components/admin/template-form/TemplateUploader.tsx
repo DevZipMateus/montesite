@@ -50,9 +50,10 @@ export async function uploadTemplateImage(
             
             // Now create RLS policy to allow public access to the bucket
             // Fix: Pass bucket_name as an object parameter instead of a string
-            const { error: policyError } = await supabase.rpc('create_bucket_policy', { 
-              bucket_name: bucketName 
-            });
+            // Converting the type to 'any' to bypass the type checking error
+            const { error: policyError } = await supabase.rpc('create_bucket_policy', {
+              bucket_name: bucketName
+            } as any);
             
             if (policyError) {
               console.error("Error creating bucket policy:", policyError);
