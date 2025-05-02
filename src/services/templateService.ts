@@ -97,10 +97,15 @@ export async function fetchTemplates(categorySlug?: string): Promise<Template[]>
   }
 }
 
-// Função modificada para criar template
+// Improved function for creating template
 export async function createTemplate(template: Omit<Template, 'id' | 'created_at' | 'updated_at' | 'categories'>) {
   try {
     console.log("Creating template with data:", template);
+    
+    // Validate required fields
+    if (!template.title || !template.description || !template.image_url || !template.form_url || !template.preview_url) {
+      throw new Error("Todos os campos obrigatórios devem ser preenchidos");
+    }
     
     const { data, error } = await supabase
       .from('templates')
@@ -131,13 +136,19 @@ export async function createTemplate(template: Omit<Template, 'id' | 'created_at
   }
 }
 
-// Função modificada para atualizar template
+// Improved function for updating template
 export async function updateTemplate(id: string, template: Partial<Template>) {
   try {
     console.log("Updating template with ID:", id);
     console.log("Update data:", template);
     
-    // Remover campos que não podem ser enviados na atualização
+    // Validate required fields if they're provided
+    if (template.title === "" || template.description === "" || template.image_url === "" 
+        || template.form_url === "" || template.preview_url === "") {
+      throw new Error("Os campos fornecidos não podem estar vazios");
+    }
+    
+    // Remove fields that should not be sent in the update
     const { categories, created_at, updated_at, ...updateData } = template as any;
     
     const { data, error } = await supabase
@@ -167,7 +178,9 @@ export async function updateTemplate(id: string, template: Partial<Template>) {
     console.error('Error updating template:', error);
     toast({
       title: "Erro ao atualizar template",
-      description: "Não foi possível atualizar o template. Tente novamente mais tarde.",
+      description: error instanceof Error 
+        ? error.message 
+        : "Não foi possível atualizar o template. Tente novamente mais tarde.",
       variant: "destructive",
     });
     throw error;

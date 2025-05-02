@@ -51,10 +51,22 @@ const TemplateForm: React.FC<TemplateFormProps> = ({ template, onSubmit, isSubmi
       console.log("Form data before image upload:", data);
       
       // Process form data with image if needed
-      let processedData = data;
+      let processedData = { ...data };
       
       if (imageFile || data.image_url === "pending-upload") {
-        processedData = await uploadTemplateImage(imageFile, data);
+        try {
+          processedData = await uploadTemplateImage(imageFile, data);
+        } catch (error) {
+          console.error("Error uploading image:", error);
+          toast({
+            title: "Erro no upload da imagem",
+            description: error instanceof Error 
+              ? error.message 
+              : "Ocorreu um erro ao processar a imagem. Por favor, tente novamente.",
+            variant: "destructive",
+          });
+          return; // Stop form submission if image upload fails
+        }
       }
       
       console.log("Form data after image processing:", processedData);
@@ -62,16 +74,11 @@ const TemplateForm: React.FC<TemplateFormProps> = ({ template, onSubmit, isSubmi
       // Call the parent onSubmit function
       await onSubmit(processedData);
       
-      // Show success toast
-      toast({
-        title: template ? "Template updated" : "Template created",
-        description: template ? "Template has been successfully updated." : "Template has been successfully created.",
-      });
     } catch (error) {
       console.error("Error submitting form:", error);
       toast({
-        title: "Error submitting form",
-        description: "An error occurred while processing the data. Please try again.",
+        title: "Erro ao enviar formulário",
+        description: "Ocorreu um erro ao processar os dados. Por favor, tente novamente.",
         variant: "destructive",
       });
     }

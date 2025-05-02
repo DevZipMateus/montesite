@@ -74,11 +74,11 @@ const TemplateFormDialog: React.FC<TemplateFormDialogProps> = ({ template, trigg
     
     try {
       if (template) {
-        // Para atualização, converte os dados do formulário para o formato de Template
+        // Convert form data to the format expected by the update function
         const templateData: Partial<Template> = {
           title: data.title,
           description: data.description,
-          image_url: data.image_url as string, // Ensure this is a string
+          image_url: data.image_url as string,
           form_url: data.form_url,
           preview_url: data.preview_url,
           category_id: data.category_id,
@@ -94,11 +94,11 @@ const TemplateFormDialog: React.FC<TemplateFormDialogProps> = ({ template, trigg
           data: templateData
         });
       } else {
-        // Para criação, converte os dados do formulário para o formato esperado
+        // For creation, ensure all required fields are present
         const newTemplateData = {
           title: data.title,
           description: data.description,
-          image_url: data.image_url as string, // Ensure this is a string
+          image_url: data.image_url as string,
           form_url: data.form_url,
           preview_url: data.preview_url,
           category_id: data.category_id,
@@ -112,6 +112,7 @@ const TemplateFormDialog: React.FC<TemplateFormDialogProps> = ({ template, trigg
       }
     } catch (error) {
       console.error("Error in form submission:", error);
+      // Toast notification is already handled in the mutation's onError
     }
   };
 

@@ -10,13 +10,14 @@ export async function uploadTemplateImage(
   try {
     let imageUrl = data.image_url;
     
-    // If we have a valid URL or no image, just return the data
-    if (typeof imageUrl === 'string' && imageUrl !== "pending-upload") {
+    // If there's no new image file and we have a valid URL that's not "pending-upload",
+    // just return the data with the existing image URL
+    if (!imageFile && typeof imageUrl === 'string' && imageUrl !== "pending-upload") {
       console.log("Using existing image URL:", imageUrl);
       return { ...data, image_url: imageUrl };
     }
     
-    // If we have a new image file, upload it to Supabase Storage
+    // If there's a new image file, upload it to Supabase Storage
     if (imageFile) {
       console.log("Starting image upload process for file:", imageFile.name);
       
@@ -24,31 +25,39 @@ export async function uploadTemplateImage(
       const bucketName = 'template-images';
       
       const timestamp = new Date().getTime();
+      const fileExt = imageFile.name.split('.').pop();
       const fileName = `${timestamp}-${imageFile.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
-      const filePath = fileName;
       
-      console.log(`Uploading template image to bucket: ${bucketName}, path: ${filePath}`);
+      console.log(`Uploading template image to bucket: ${bucketName}, path: ${fileName}`);
       
-      // First check if the bucket exists, create it if not
-      const { data: bucketExists } = await supabase.storage.getBucket(bucketName);
+      // Check if the bucket exists
+      const { data: bucketData, error: bucketError } = await supabase.storage.getBucket(bucketName);
       
-      if (!bucketExists) {
-        console.log(`Bucket ${bucketName} doesn't exist, creating it...`);
-        const { error: createBucketError } = await supabase.storage.createBucket(bucketName, {
-          public: true
-        });
-        
-        if (createBucketError) {
-          console.error("Error creating bucket:", createBucketError);
-          throw createBucketError;
+      if (bucketError) {
+        if (bucketError.message.includes("not found")) {
+          console.log(`Bucket ${bucketName} doesn't exist, creating it...`);
+          // Create the bucket if it doesn't exist
+          const { error: createBucketError } = await supabase.storage.createBucket(bucketName, {
+            public: true
+          });
+          
+          if (createBucketError) {
+            console.error("Error creating bucket:", createBucketError);
+            throw createBucketError;
+          }
+          console.log(`Bucket ${bucketName} created successfully`);
+        } else {
+          console.error("Error checking bucket:", bucketError);
+          throw bucketError;
         }
-        console.log(`Bucket ${bucketName} created successfully`);
+      } else {
+        console.log(`Bucket ${bucketName} already exists`);
       }
       
       // Upload the file
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from(bucketName)
-        .upload(filePath, imageFile, {
+        .upload(fileName, imageFile, {
           cacheControl: '3600',
           upsert: true
         });
@@ -63,7 +72,7 @@ export async function uploadTemplateImage(
       // Get the public URL for the uploaded image
       const { data: publicUrlData } = supabase.storage
         .from(bucketName)
-        .getPublicUrl(filePath);
+        .getPublicUrl(fileName);
       
       if (!publicUrlData || !publicUrlData.publicUrl) {
         throw new Error("Failed to get public URL for image");
@@ -71,26 +80,25 @@ export async function uploadTemplateImage(
       
       console.log("New template image public URL:", publicUrlData.publicUrl);
       imageUrl = publicUrlData.publicUrl;
-    } else if (imageUrl === "pending-upload") {
-      // If we don't have a file, but the value is "pending-upload", something went wrong
-      console.error("No image file was provided but image_url is 'pending-upload'");
-      throw new Error("No image was selected for upload.");
+    } else if (data.image_url === "pending-upload") {
+      // This means the user selected an image but then removed it
+      throw new Error("A imagem foi selecionada mas não foi fornecida. Por favor, selecione uma imagem ou forneça uma URL.");
     }
     
     // Return the form data with the updated image URL
-    const processedData = {
+    const updatedData = {
       ...data,
       image_url: imageUrl as string,
     };
     
-    console.log("Form data after image upload processing:", processedData);
+    console.log("Form data after image upload processing:", updatedData);
     
-    return processedData;
+    return updatedData;
   } catch (error) {
     console.error("Error uploading image:", error);
     toast({
-      title: "Error uploading image",
-      description: error instanceof Error ? error.message : "An error occurred while processing the image. Please try again.",
+      title: "Erro no upload da imagem",
+      description: error instanceof Error ? error.message : "Ocorreu um erro ao processar a imagem. Por favor, tente novamente.",
       variant: "destructive",
     });
     throw error;
