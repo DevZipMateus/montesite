@@ -14,9 +14,10 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({ isSubmitting, isEdit }) => 
       <Button 
         type="submit" 
         disabled={isSubmitting}
+        className="min-w-[140px]"
       >
         {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-        {isEdit ? 'Atualizar' : 'Criar'} Template
+        {isSubmitting ? (isEdit ? 'Atualizando...' : 'Criando...') : (isEdit ? 'Atualizar' : 'Criar')} Template
       </Button>
     </div>
   );

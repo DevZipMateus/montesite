@@ -27,6 +27,7 @@ const UrlFields: React.FC<UrlFieldsProps> = ({ form }) => {
                 {...field} 
                 onChange={(e) => {
                   field.onChange(e);
+                  form.trigger("form_url");
                   console.log("Form URL updated:", e.target.value);
                 }}
               />
@@ -48,6 +49,7 @@ const UrlFields: React.FC<UrlFieldsProps> = ({ form }) => {
                 {...field}
                 onChange={(e) => {
                   field.onChange(e);
+                  form.trigger("preview_url");
                   console.log("Preview URL updated:", e.target.value);
                 }}
               />
