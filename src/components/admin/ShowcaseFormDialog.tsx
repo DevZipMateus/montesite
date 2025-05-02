@@ -42,10 +42,19 @@ const ShowcaseFormDialog: React.FC<ShowcaseFormDialogProps> = ({ showcase, trigg
   });
 
   const handleSubmit = async (data: ShowcaseFormValues) => {
+    // Convert File object to string if needed before mutation
+    const processedData = {
+      ...data,
+      image_url: typeof data.image_url === 'string' ? data.image_url : URL.createObjectURL(data.image_url)
+    };
+    
     if (showcase) {
-      await updateMutation.mutateAsync({ id: showcase.id, data });
+      await updateMutation.mutateAsync({ 
+        id: showcase.id, 
+        data: processedData as unknown as Partial<Showcase> 
+      });
     } else {
-      await createMutation.mutateAsync(data as Omit<Showcase, 'id' | 'created_at' | 'updated_at'>);
+      await createMutation.mutateAsync(processedData as unknown as Omit<Showcase, 'id' | 'created_at' | 'updated_at'>);
     }
   };
 

@@ -1,3 +1,4 @@
+
 import { supabase } from "@/integrations/supabase/client";
 import { Category, Template } from "@/types/database";
 import { CategoryFormValues } from "@/schemas/showcaseSchema";
@@ -28,9 +29,18 @@ export async function fetchCategories(): Promise<Category[]> {
 
 export async function createCategory(category: CategoryFormValues): Promise<Category> {
   try {
+    // Ensure required fields are present before insertion
+    if (!category.name || !category.slug) {
+      throw new Error("Nome e slug são obrigatórios");
+    }
+    
     const { data, error } = await supabase
       .from('categories')
-      .insert([category])
+      .insert({
+        name: category.name,
+        slug: category.slug,
+        icon: category.icon
+      })
       .select()
       .single();
     
