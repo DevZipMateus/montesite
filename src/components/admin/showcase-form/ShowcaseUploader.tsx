@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
@@ -47,11 +48,10 @@ export async function uploadShowcaseImage(
             console.log(`Bucket ${bucketName} created successfully`);
             
             // Now create RLS policy to allow public access to the bucket
-            // Fix: Pass bucket_name as an object parameter instead of a string
-            // Converting the type to 'any' to bypass the type checking error
+            // Fix: Pass bucket_name as an object parameter with proper typing
             const { error: policyError } = await supabase.rpc('create_bucket_policy', {
               bucket_name: bucketName
-            } as any);
+            });
             
             if (policyError) {
               console.error("Error creating bucket policy:", policyError);
