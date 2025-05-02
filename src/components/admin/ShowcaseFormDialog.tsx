@@ -6,6 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogDescription,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
@@ -14,6 +15,7 @@ import { ShowcaseFormValues } from '@/schemas/showcaseSchema';
 import { Showcase } from '@/types/database';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createShowcase, updateShowcase } from '@/services/showcaseService';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ShowcaseFormDialogProps {
   showcase?: Showcase;
@@ -23,6 +25,7 @@ interface ShowcaseFormDialogProps {
 const ShowcaseFormDialog: React.FC<ShowcaseFormDialogProps> = ({ showcase, trigger }) => {
   const [open, setOpen] = React.useState(false);
   const queryClient = useQueryClient();
+  const isMobile = useIsMobile();
 
   const createMutation = useMutation({
     mutationFn: createShowcase,
@@ -70,15 +73,20 @@ const ShowcaseFormDialog: React.FC<ShowcaseFormDialogProps> = ({ showcase, trigg
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="max-w-3xl">
+      <DialogContent className={`${isMobile ? 'w-[95vw] p-4' : 'max-w-3xl'} overflow-y-auto max-h-[90vh]`}>
         <DialogHeader>
           <DialogTitle>{showcase ? 'Editar' : 'Adicionar'} Site na Vitrine</DialogTitle>
+          <DialogDescription>
+            Preencha os campos abaixo para {showcase ? 'editar' : 'adicionar'} um site na vitrine.
+          </DialogDescription>
         </DialogHeader>
-        <ShowcaseForm 
-          showcase={showcase}
-          onSubmit={handleSubmit}
-          isSubmitting={isSubmitting}
-        />
+        <div className="py-2">
+          <ShowcaseForm 
+            showcase={showcase}
+            onSubmit={handleSubmit}
+            isSubmitting={isSubmitting}
+          />
+        </div>
       </DialogContent>
     </Dialog>
   );

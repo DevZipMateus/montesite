@@ -4,14 +4,17 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/comp
 import { Input } from '@/components/ui/input';
 import { UseFormReturn } from 'react-hook-form';
 import { TemplateFormValues } from '@/schemas/templateSchema';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface UrlFieldsProps {
   form: UseFormReturn<TemplateFormValues>;
 }
 
 const UrlFields: React.FC<UrlFieldsProps> = ({ form }) => {
+  const isMobile = useIsMobile();
+  
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-2 gap-4'}`}>
       <FormField
         control={form.control}
         name="form_url"

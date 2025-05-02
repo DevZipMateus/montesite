@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useIsMobile } from '@/hooks/use-mobile';
 import Header from '@/components/Header';
 import SeedDataButton from '@/components/admin/SeedDataButton';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,6 +15,7 @@ import AdminShowcasesTable from '@/components/admin/AdminShowcasesTable';
 const AdminPage: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const isMobile = useIsMobile();
   
   const handleLogout = () => {
     // Remove login state from localStorage
@@ -32,9 +34,9 @@ const AdminPage: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <div className="container mx-auto py-10">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+      <div className="container mx-auto py-6 px-4 md:px-6 lg:py-10">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 md:mb-8">
+          <h1 className="text-2xl md:text-3xl font-bold">Admin Dashboard</h1>
           <Button variant="outline" onClick={handleLogout} className="flex items-center gap-2">
             <LogOut className="h-4 w-4" />
             Sair
@@ -42,10 +44,10 @@ const AdminPage: React.FC = () => {
         </div>
         
         <Tabs defaultValue="data-management" className="w-full">
-          <TabsList className="mb-6">
-            <TabsTrigger value="data-management">Gestão de Dados</TabsTrigger>
-            <TabsTrigger value="templates">Templates</TabsTrigger>
-            <TabsTrigger value="showcases">Vitrine de Sites</TabsTrigger>
+          <TabsList className="mb-6 w-full overflow-x-auto flex flex-wrap">
+            <TabsTrigger value="data-management" className="flex-grow md:flex-grow-0">Gestão de Dados</TabsTrigger>
+            <TabsTrigger value="templates" className="flex-grow md:flex-grow-0">Templates</TabsTrigger>
+            <TabsTrigger value="showcases" className="flex-grow md:flex-grow-0">Vitrine de Sites</TabsTrigger>
           </TabsList>
           
           <TabsContent value="data-management">

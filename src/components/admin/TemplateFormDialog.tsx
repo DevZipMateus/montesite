@@ -6,6 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogDescription,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
@@ -14,6 +15,7 @@ import { TemplateFormValues } from '@/schemas/templateSchema';
 import { Template } from '@/types/database';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createTemplate, updateTemplate } from '@/services/templateService';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface TemplateFormDialogProps {
   template?: Template;
@@ -23,6 +25,7 @@ interface TemplateFormDialogProps {
 const TemplateFormDialog: React.FC<TemplateFormDialogProps> = ({ template, trigger }) => {
   const [open, setOpen] = React.useState(false);
   const queryClient = useQueryClient();
+  const isMobile = useIsMobile();
 
   const createMutation = useMutation({
     mutationFn: createTemplate,
@@ -68,15 +71,20 @@ const TemplateFormDialog: React.FC<TemplateFormDialogProps> = ({ template, trigg
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="max-w-3xl">
+      <DialogContent className={`${isMobile ? 'w-[95vw] p-4' : 'max-w-3xl'} overflow-y-auto max-h-[90vh]`}>
         <DialogHeader>
           <DialogTitle>{template ? 'Editar' : 'Adicionar'} Template</DialogTitle>
+          <DialogDescription>
+            Preencha os campos abaixo para {template ? 'editar' : 'adicionar'} um template.
+          </DialogDescription>
         </DialogHeader>
-        <TemplateForm 
-          template={template}
-          onSubmit={handleSubmit}
-          isSubmitting={isSubmitting}
-        />
+        <div className="py-2">
+          <TemplateForm 
+            template={template}
+            onSubmit={handleSubmit}
+            isSubmitting={isSubmitting}
+          />
+        </div>
       </DialogContent>
     </Dialog>
   );
