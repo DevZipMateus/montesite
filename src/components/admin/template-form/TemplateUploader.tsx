@@ -30,40 +30,83 @@ export async function uploadTemplateImage(
       
       console.log(`Uploading template image to bucket: ${bucketName}, path: ${fileName}`);
       
-      // Check if the bucket exists
-      const { data: bucketData, error: bucketError } = await supabase.storage.getBucket(bucketName);
-      
-      if (bucketError) {
-        if (bucketError.message.includes("not found")) {
-          console.log(`Bucket ${bucketName} doesn't exist, creating it...`);
-          // Create the bucket if it doesn't exist
-          const { error: createBucketError } = await supabase.storage.createBucket(bucketName, {
-            public: true
-          });
-          
-          if (createBucketError) {
-            console.error("Error creating bucket:", createBucketError);
-            throw createBucketError;
+      try {
+        // Check if the bucket exists
+        const { data: bucketData, error: bucketError } = await supabase.storage.getBucket(bucketName);
+        
+        if (bucketError) {
+          if (bucketError.message.includes("not found")) {
+            console.log(`Bucket ${bucketName} doesn't exist, creating it...`);
+            // Create the bucket if it doesn't exist
+            const { error: createBucketError } = await supabase.storage.createBucket(bucketName, {
+              public: true
+            });
+            
+            if (createBucketError) {
+              console.error("Error creating bucket:", createBucketError);
+              throw createBucketError;
+            }
+            console.log(`Bucket ${bucketName} created successfully`);
+            
+            // Now create RLS policy to allow public access to the bucket
+            const { error: policyError } = await supabase.rpc('create_storage_policy', { 
+              bucket_name: bucketName 
+            }).single();
+            
+            if (policyError) {
+              console.error("Error creating bucket policy:", policyError);
+              // Continue anyway, as the upload might still work
+            }
+          } else {
+            console.error("Error checking bucket:", bucketError);
+            throw bucketError;
           }
-          console.log(`Bucket ${bucketName} created successfully`);
         } else {
-          console.error("Error checking bucket:", bucketError);
-          throw bucketError;
+          console.log(`Bucket ${bucketName} already exists`);
         }
-      } else {
-        console.log(`Bucket ${bucketName} already exists`);
+      } catch (error) {
+        console.error("Error with bucket operations:", error);
+        // Continue with upload attempt even if bucket check fails
       }
       
-      // Upload the file
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from(bucketName)
-        .upload(fileName, imageFile, {
-          cacheControl: '3600',
-          upsert: true
-        });
+      // Upload the file with multiple retries
+      let uploadAttempt = 0;
+      const maxAttempts = 3;
+      let uploadData;
+      let uploadError;
+      
+      while (uploadAttempt < maxAttempts) {
+        try {
+          uploadAttempt++;
+          console.log(`Upload attempt ${uploadAttempt} of ${maxAttempts}`);
+          
+          const result = await supabase.storage
+            .from(bucketName)
+            .upload(fileName, imageFile, {
+              cacheControl: '3600',
+              upsert: true
+            });
+            
+          uploadData = result.data;
+          uploadError = result.error;
+          
+          if (!uploadError) {
+            break; // Success! Exit the retry loop
+          } else {
+            console.error(`Upload attempt ${uploadAttempt} failed:`, uploadError);
+            if (uploadAttempt < maxAttempts) {
+              // Wait a bit before retrying (exponential backoff)
+              await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, uploadAttempt - 1)));
+            }
+          }
+        } catch (error) {
+          console.error(`Unexpected error in upload attempt ${uploadAttempt}:`, error);
+          uploadError = error;
+        }
+      }
       
       if (uploadError) {
-        console.error("Error uploading template image:", uploadError);
+        console.error("All upload attempts failed:", uploadError);
         throw uploadError;
       }
       
