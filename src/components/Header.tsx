@@ -22,6 +22,7 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const isHomePage = location.pathname === '/';
+  const isAdminPage = location.pathname === '/admin';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -92,16 +93,18 @@ const Header = () => {
               </a>
             )
           ))}
-          <Button 
-            size="default" 
-            variant="default" 
-            className="btn-hover-effect rounded-full font-medium px-6 ml-4"
-            asChild
-          >
-            <a href={isHomePage ? "/#templates" : "/#templates"} onClick={isHomePage ? (e) => scrollToSection(e, '/#templates', false) : undefined}>
-              Ver Templates
-            </a>
-          </Button>
+          {!isAdminPage && (
+            <Button 
+              size="default" 
+              variant="default" 
+              className="btn-hover-effect rounded-full font-medium px-6 ml-4"
+              asChild
+            >
+              <a href={isHomePage ? "/#templates" : "/#templates"} onClick={isHomePage ? (e) => scrollToSection(e, '/#templates', false) : undefined}>
+                Ver Templates
+              </a>
+            </Button>
+          )}
         </nav>
 
         {/* Mobile Menu Button */}
@@ -147,16 +150,18 @@ const Header = () => {
               </a>
             )
           ))}
-          <Button 
-            size="default" 
-            variant="default" 
-            className="btn-hover-effect rounded-full font-medium w-full mt-2"
-            asChild
-          >
-            <a href={isHomePage ? "/#templates" : "/#templates"} onClick={isHomePage ? (e) => scrollToSection(e, '/#templates', false) : undefined}>
-              Ver Templates
-            </a>
-          </Button>
+          {!isAdminPage && (
+            <Button 
+              size="default" 
+              variant="default" 
+              className="btn-hover-effect rounded-full font-medium w-full mt-2"
+              asChild
+            >
+              <a href={isHomePage ? "/#templates" : "/#templates"} onClick={isHomePage ? (e) => scrollToSection(e, '/#templates', false) : undefined}>
+                Ver Templates
+              </a>
+            </Button>
+          )}
         </nav>
       </div>
     </header>
