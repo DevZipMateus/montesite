@@ -49,14 +49,29 @@ const TemplateForm: React.FC<TemplateFormProps> = ({ template, onSubmit, isSubmi
   const handleSubmitForm = async (data: TemplateFormValues) => {
     try {
       console.log("Form data before image upload:", data);
-      const formData = await uploadTemplateImage(imageFile, data);
-      console.log("Form data after image processing:", formData);
-      await onSubmit(formData);
+      
+      // Process form data with image if needed
+      let processedData = data;
+      
+      if (imageFile || data.image_url === "pending-upload") {
+        processedData = await uploadTemplateImage(imageFile, data);
+      }
+      
+      console.log("Form data after image processing:", processedData);
+      
+      // Call the parent onSubmit function
+      await onSubmit(processedData);
+      
+      // Show success toast
+      toast({
+        title: template ? "Template updated" : "Template created",
+        description: template ? "Template has been successfully updated." : "Template has been successfully created.",
+      });
     } catch (error) {
       console.error("Error submitting form:", error);
       toast({
-        title: "Erro ao enviar formulário",
-        description: "Ocorreu um erro ao processar os dados. Tente novamente.",
+        title: "Error submitting form",
+        description: "An error occurred while processing the data. Please try again.",
         variant: "destructive",
       });
     }

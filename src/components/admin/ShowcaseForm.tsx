@@ -46,12 +46,29 @@ const ShowcaseForm: React.FC<ShowcaseFormProps> = ({ showcase, onSubmit, isSubmi
   
   const handleSubmit = async (data: ShowcaseFormValues) => {
     try {
-      const formData = await uploadShowcaseImage(imageFile, data);
-      await onSubmit(formData);
+      console.log("Form data before image upload:", data);
+      
+      // Process form data with image if needed
+      let processedData = data;
+      
+      if (imageFile) {
+        processedData = await uploadShowcaseImage(imageFile, data);
+      }
+      
+      console.log("Form data after image processing:", processedData);
+      
+      // Call the parent onSubmit function
+      await onSubmit(processedData);
+      
+      // Show success toast
+      toast({
+        title: showcase ? "Showcase updated" : "Showcase created",
+        description: showcase ? "Showcase site has been successfully updated." : "Showcase site has been successfully added.",
+      });
     } catch (error) {
       toast({
-        title: "Erro ao enviar formulário",
-        description: "Ocorreu um erro ao processar a imagem. Tente novamente.",
+        title: "Error submitting form",
+        description: "An error occurred while processing the image. Please try again.",
         variant: "destructive",
       });
       console.error("Error submitting form:", error);

@@ -15,16 +15,35 @@ export async function uploadShowcaseImage(
     if (imageFile) {
       const timestamp = new Date().getTime();
       const fileExt = imageFile.name.split('.').pop();
-      const fileName = `${timestamp}-${imageFile.name}`;
+      const fileName = `${timestamp}-${imageFile.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
       
       // Use the existing 'vitrine-imagens' bucket
       const bucketName = 'vitrine-imagens';
       
       console.log(`Uploading showcase image to bucket: ${bucketName}, path: ${fileName}`);
       
+      // Check if the bucket exists, create it if not
+      const { data: bucketExists } = await supabase.storage.getBucket(bucketName);
+      
+      if (!bucketExists) {
+        console.log(`Bucket ${bucketName} doesn't exist, creating it...`);
+        const { error: createBucketError } = await supabase.storage.createBucket(bucketName, {
+          public: true
+        });
+        
+        if (createBucketError) {
+          console.error("Error creating bucket:", createBucketError);
+          throw createBucketError;
+        }
+        console.log(`Bucket ${bucketName} created successfully`);
+      }
+      
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from(bucketName)
-        .upload(fileName, imageFile);
+        .upload(fileName, imageFile, {
+          cacheControl: '3600',
+          upsert: true
+        });
       
       if (uploadError) {
         console.error("Error uploading showcase image:", uploadError);
@@ -37,7 +56,7 @@ export async function uploadShowcaseImage(
         .getPublicUrl(fileName);
       
       if (!publicUrlData || !publicUrlData.publicUrl) {
-        throw new Error("Falha ao obter URL pública da imagem");
+        throw new Error("Failed to get public URL for image");
       }
       
       imageUrl = publicUrlData.publicUrl;
@@ -52,8 +71,8 @@ export async function uploadShowcaseImage(
   } catch (error) {
     console.error("Error uploading image:", error);
     toast({
-      title: "Erro ao enviar imagem",
-      description: error instanceof Error ? error.message : "Ocorreu um erro ao processar a imagem. Tente novamente.",
+      title: "Error uploading image",
+      description: error instanceof Error ? error.message : "An error occurred while processing the image. Please try again.",
       variant: "destructive",
     });
     throw error;
