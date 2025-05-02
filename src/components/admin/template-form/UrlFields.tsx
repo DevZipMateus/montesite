@@ -1,0 +1,46 @@
+
+import React from 'react';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { UseFormReturn } from 'react-hook-form';
+import { TemplateFormValues } from '@/schemas/templateSchema';
+
+interface UrlFieldsProps {
+  form: UseFormReturn<TemplateFormValues>;
+}
+
+const UrlFields: React.FC<UrlFieldsProps> = ({ form }) => {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <FormField
+        control={form.control}
+        name="form_url"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>URL do Formulário</FormLabel>
+            <FormControl>
+              <Input placeholder="https://forms.example.com/form" {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      
+      <FormField
+        control={form.control}
+        name="preview_url"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>URL de Visualização</FormLabel>
+            <FormControl>
+              <Input placeholder="https://preview.example.com" {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    </div>
+  );
+};
+
+export default UrlFields;
