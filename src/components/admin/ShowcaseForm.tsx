@@ -116,8 +116,8 @@ const ShowcaseForm: React.FC<ShowcaseFormProps> = ({ showcase, onSubmit, isSubmi
               <FormItem>
                 <FormLabel>Categoria</FormLabel>
                 <Select 
-                  onValueChange={(value) => field.onChange(value || null)} 
-                  defaultValue={field.value || undefined}
+                  onValueChange={(value) => field.onChange(value === "null" ? null : value)} 
+                  defaultValue={field.value || "null"}
                 >
                   <FormControl>
                     <SelectTrigger>
@@ -131,7 +131,7 @@ const ShowcaseForm: React.FC<ShowcaseFormProps> = ({ showcase, onSubmit, isSubmi
                       </div>
                     ) : (
                       <>
-                        <SelectItem value="">Sem categoria</SelectItem>
+                        <SelectItem value="null">Sem categoria</SelectItem>
                         {categories.map((category: Category) => (
                           <SelectItem key={category.id} value={category.id}>
                             {category.name}

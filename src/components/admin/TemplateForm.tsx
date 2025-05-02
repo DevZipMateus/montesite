@@ -129,8 +129,8 @@ const TemplateForm: React.FC<TemplateFormProps> = ({ template, onSubmit, isSubmi
               <FormItem>
                 <FormLabel>Categoria</FormLabel>
                 <Select
-                  value={field.value || ""}
-                  onValueChange={(value) => field.onChange(value || null)}
+                  value={field.value || "null"}
+                  onValueChange={(value) => field.onChange(value === "null" ? null : value)}
                 >
                   <FormControl>
                     <SelectTrigger>
@@ -144,7 +144,7 @@ const TemplateForm: React.FC<TemplateFormProps> = ({ template, onSubmit, isSubmi
                       </div>
                     ) : (
                       <>
-                        <SelectItem value="">Sem categoria</SelectItem>
+                        <SelectItem value="null">Sem categoria</SelectItem>
                         {categories.map((category) => (
                           <SelectItem key={category.id} value={category.id}>
                             {category.name}
