@@ -20,31 +20,17 @@ export async function uploadTemplateImage(
     if (imageFile) {
       console.log("Starting image upload process for file:", imageFile.name);
       
-      // Verificar se o bucket 'images' existe, caso contrário tentar criar
-      const { data: buckets } = await supabase.storage.listBuckets();
-      const imagesBucketExists = buckets?.some(bucket => bucket.name === 'images');
-      
-      if (!imagesBucketExists) {
-        console.log("Images bucket doesn't exist, attempting to create it");
-        const { data: newBucket, error: bucketError } = await supabase.storage.createBucket('images', {
-          public: true
-        });
-        
-        if (bucketError) {
-          console.error("Error creating images bucket:", bucketError);
-          throw new Error("Não foi possível criar o bucket para armazenar imagens.");
-        }
-        console.log("Images bucket created successfully");
-      }
+      // Usar o bucket existente 'template-images' em vez de tentar criar um novo
+      const bucketName = 'template-images';
       
       const timestamp = new Date().getTime();
       const fileName = `${timestamp}-${imageFile.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
-      const filePath = `templates/${fileName}`;
+      const filePath = `${fileName}`;
       
-      console.log("Uploading template image to path:", filePath);
+      console.log(`Uploading template image to bucket: ${bucketName}, path: ${filePath}`);
       
       const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('images')
+        .from(bucketName)
         .upload(filePath, imageFile);
       
       if (uploadError) {
@@ -56,7 +42,7 @@ export async function uploadTemplateImage(
       
       // Obter a URL pública para a imagem enviada
       const { data: publicUrlData } = supabase.storage
-        .from('images')
+        .from(bucketName)
         .getPublicUrl(filePath);
       
       if (!publicUrlData || !publicUrlData.publicUrl) {
