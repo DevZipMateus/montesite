@@ -19,7 +19,14 @@ const UrlFields: React.FC<UrlFieldsProps> = ({ form }) => {
           <FormItem>
             <FormLabel>URL do Formulário</FormLabel>
             <FormControl>
-              <Input placeholder="https://forms.example.com/form" {...field} />
+              <Input 
+                placeholder="https://forms.example.com/form" 
+                {...field} 
+                onChange={(e) => {
+                  console.log("Form URL changed to:", e.target.value);
+                  field.onChange(e);
+                }}
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -33,7 +40,14 @@ const UrlFields: React.FC<UrlFieldsProps> = ({ form }) => {
           <FormItem>
             <FormLabel>URL de Visualização</FormLabel>
             <FormControl>
-              <Input placeholder="https://preview.example.com" {...field} />
+              <Input 
+                placeholder="https://preview.example.com" 
+                {...field}
+                onChange={(e) => {
+                  console.log("Preview URL changed to:", e.target.value);
+                  field.onChange(e);
+                }}
+              />
             </FormControl>
             <FormMessage />
           </FormItem>

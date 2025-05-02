@@ -16,11 +16,14 @@ export async function uploadTemplateImage(
       const fileName = `${timestamp}-${imageFile.name}`;
       const filePath = `templates/${fileName}`;
       
+      console.log("Uploading template image to path:", filePath);
+      
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from('images')
         .upload(filePath, imageFile);
       
       if (uploadError) {
+        console.error("Error uploading template image:", uploadError);
         throw uploadError;
       }
       
@@ -29,10 +32,16 @@ export async function uploadTemplateImage(
         .from('images')
         .getPublicUrl(filePath);
       
+      console.log("New template image URL:", publicUrlData.publicUrl);
       imageUrl = publicUrlData.publicUrl;
     }
     
-    // Update the form data with the new image URL if an image was uploaded
+    // Return the form data with the updated image URL if an image was uploaded
+    console.log("Form data after image upload processing:", {
+      ...data, 
+      image_url: imageUrl
+    });
+    
     return {
       ...data,
       image_url: imageUrl as string,

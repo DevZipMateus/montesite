@@ -43,19 +43,16 @@ const TemplateFormDialog: React.FC<TemplateFormDialogProps> = ({ template, trigg
 
   const handleSubmit = async (data: TemplateFormValues) => {
     // Process the data (file uploads were already handled in TemplateForm)
-    const processedData = {
-      ...data,
-      image_url: typeof data.image_url === 'string' ? data.image_url : '' // This should be replaced by the actual URL from storage
-    };
+    console.log("TemplateFormDialog - Form data before submitting:", data);
     
     if (template) {
       await updateMutation.mutateAsync({ 
         id: template.id, 
-        data: processedData as unknown as Partial<Template> 
+        data: data as unknown as Partial<Template> 
       });
     } else {
       // Ensure all required fields are set for a new template
-      await createMutation.mutateAsync(processedData as unknown as Omit<Template, 'id' | 'created_at' | 'updated_at'>);
+      await createMutation.mutateAsync(data as unknown as Omit<Template, 'id' | 'created_at' | 'updated_at'>);
     }
   };
 
