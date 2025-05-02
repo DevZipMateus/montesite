@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -11,33 +10,31 @@ import { LogOut } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import AdminTemplatesTable from '@/components/admin/AdminTemplatesTable';
 import AdminShowcasesTable from '@/components/admin/AdminShowcasesTable';
-
 const AdminPage: React.FC = () => {
   const navigate = useNavigate();
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const isMobile = useIsMobile();
-  
   const handleLogout = () => {
     // Remove login state from localStorage
     localStorage.removeItem('admin_logged_in');
-    
+
     // Show success toast
     toast({
       title: 'Logout realizado',
-      description: 'Você foi desconectado com sucesso.',
+      description: 'Você foi desconectado com sucesso.'
     });
-    
+
     // Redirect to home page
     navigate('/');
   };
-
-  return (
-    <div className="min-h-screen flex flex-col">
+  return <div className="min-h-screen flex flex-col">
       <Header />
       <div className="container mx-auto py-6 px-4 md:px-6 lg:py-10">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 md:mb-8">
           <h1 className="text-2xl md:text-3xl font-bold">Admin Dashboard</h1>
-          <Button variant="outline" onClick={handleLogout} className="flex items-center gap-2">
+          <Button variant="outline" onClick={handleLogout} className="flex items-center gap-2 py-0 my-[25px]">
             <LogOut className="h-4 w-4" />
             Sair
           </Button>
@@ -102,8 +99,6 @@ const AdminPage: React.FC = () => {
           </TabsContent>
         </Tabs>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default AdminPage;
