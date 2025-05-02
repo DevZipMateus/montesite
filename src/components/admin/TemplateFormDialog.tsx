@@ -45,17 +45,48 @@ const TemplateFormDialog: React.FC<TemplateFormDialogProps> = ({ template, trigg
   });
 
   const handleSubmit = async (data: TemplateFormValues) => {
-    // Process the data (file uploads were already handled in TemplateForm)
     console.log("TemplateFormDialog - Form data before submitting:", data);
     
-    if (template) {
-      await updateMutation.mutateAsync({ 
-        id: template.id, 
-        data: data as unknown as Partial<Template> 
-      });
-    } else {
-      // Ensure all required fields are set for a new template
-      await createMutation.mutateAsync(data as unknown as Omit<Template, 'id' | 'created_at' | 'updated_at'>);
+    try {
+      if (template) {
+        // Para atualização, converte os dados do formulário para o formato de Template
+        const templateData: Partial<Template> = {
+          title: data.title,
+          description: data.description,
+          image_url: data.image_url as string,
+          form_url: data.form_url,
+          preview_url: data.preview_url,
+          category_id: data.category_id,
+          status: data.status,
+          order_index: data.order_index
+        };
+        
+        console.log("Updating template with ID:", template.id);
+        console.log("Update payload:", templateData);
+        
+        await updateMutation.mutateAsync({ 
+          id: template.id, 
+          data: templateData
+        });
+      } else {
+        // Para criação, converte os dados do formulário para o formato esperado
+        const newTemplateData = {
+          title: data.title,
+          description: data.description,
+          image_url: data.image_url as string,
+          form_url: data.form_url,
+          preview_url: data.preview_url,
+          category_id: data.category_id,
+          status: data.status,
+          order_index: data.order_index
+        };
+        
+        console.log("Creating new template with data:", newTemplateData);
+        
+        await createMutation.mutateAsync(newTemplateData as unknown as Omit<Template, 'id' | 'created_at' | 'updated_at'>);
+      }
+    } catch (error) {
+      console.error("Error in form submission:", error);
     }
   };
 

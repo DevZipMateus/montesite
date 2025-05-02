@@ -50,7 +50,10 @@ const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
     setImageFile(file);
     const imageUrl = URL.createObjectURL(file);
     setImagePreview(imageUrl);
-    form.setValue('image_url', file as any);
+    
+    // Importante: Não definimos o arquivo como valor do campo, apenas marcamos que há um arquivo a ser processado
+    // O processamento real será feito no uploadTemplateImage
+    console.log("Image file selected for upload");
   };
   
   return (

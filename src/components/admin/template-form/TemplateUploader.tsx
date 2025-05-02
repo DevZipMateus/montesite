@@ -10,7 +10,13 @@ export async function uploadTemplateImage(
   try {
     let imageUrl = data.image_url;
     
-    // If there's a new image file, upload it to Supabase Storage
+    // Se já temos uma URL de imagem e não há novo arquivo, mantemos a URL existente
+    if (!imageFile && typeof imageUrl === 'string') {
+      console.log("No new image file, keeping existing URL:", imageUrl);
+      return { ...data, image_url: imageUrl };
+    }
+    
+    // Se temos um novo arquivo de imagem, fazemos o upload para o Supabase Storage
     if (imageFile) {
       const timestamp = new Date().getTime();
       const fileName = `${timestamp}-${imageFile.name}`;
@@ -27,7 +33,7 @@ export async function uploadTemplateImage(
         throw uploadError;
       }
       
-      // Get the public URL for the uploaded image
+      // Obter a URL pública para a imagem enviada
       const { data: publicUrlData } = supabase.storage
         .from('images')
         .getPublicUrl(filePath);
@@ -36,16 +42,15 @@ export async function uploadTemplateImage(
       imageUrl = publicUrlData.publicUrl;
     }
     
-    // Return the form data with the updated image URL if an image was uploaded
-    console.log("Form data after image upload processing:", {
-      ...data, 
-      image_url: imageUrl
-    });
-    
-    return {
+    // Retornar os dados do formulário com a URL da imagem atualizada se uma imagem foi enviada
+    const processedData = {
       ...data,
       image_url: imageUrl as string,
     };
+    
+    console.log("Form data after image upload processing:", processedData);
+    
+    return processedData;
   } catch (error) {
     toast({
       title: "Erro ao enviar imagem",

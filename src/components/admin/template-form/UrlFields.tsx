@@ -25,10 +25,6 @@ const UrlFields: React.FC<UrlFieldsProps> = ({ form }) => {
               <Input 
                 placeholder="https://forms.example.com/form" 
                 {...field} 
-                onChange={(e) => {
-                  console.log("Form URL changed to:", e.target.value);
-                  field.onChange(e);
-                }}
               />
             </FormControl>
             <FormMessage />
@@ -46,10 +42,6 @@ const UrlFields: React.FC<UrlFieldsProps> = ({ form }) => {
               <Input 
                 placeholder="https://preview.example.com" 
                 {...field}
-                onChange={(e) => {
-                  console.log("Preview URL changed to:", e.target.value);
-                  field.onChange(e);
-                }}
               />
             </FormControl>
             <FormMessage />

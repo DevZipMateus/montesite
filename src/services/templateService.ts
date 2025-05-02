@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { Category, Template } from "@/types/database";
 import { CategoryFormValues } from "@/schemas/showcaseSchema";
@@ -98,17 +97,22 @@ export async function fetchTemplates(categorySlug?: string): Promise<Template[]>
   }
 }
 
-// New functions for template management
+// Função modificada para criar template
 export async function createTemplate(template: Omit<Template, 'id' | 'created_at' | 'updated_at' | 'categories'>) {
   try {
+    console.log("Creating template with data:", template);
+    
     const { data, error } = await supabase
       .from('templates')
       .insert([template])
       .select();
     
     if (error) {
+      console.error('Error response from Supabase:', error);
       throw error;
     }
+    
+    console.log("Template created successfully:", data);
     
     toast({
       title: "Template criado",
@@ -127,16 +131,30 @@ export async function createTemplate(template: Omit<Template, 'id' | 'created_at
   }
 }
 
-export async function updateTemplate(id: string, template: Partial<Omit<Template, 'id' | 'created_at' | 'updated_at' | 'categories'>>) {
+// Função modificada para atualizar template
+export async function updateTemplate(id: string, template: Partial<Template>) {
   try {
+    console.log("Updating template with ID:", id);
+    console.log("Update data:", template);
+    
+    // Remover campos que não podem ser enviados na atualização
+    const { categories, created_at, updated_at, ...updateData } = template as any;
+    
     const { data, error } = await supabase
       .from('templates')
-      .update(template)
+      .update(updateData)
       .eq('id', id)
       .select();
     
     if (error) {
+      console.error('Error response from Supabase:', error);
       throw error;
+    }
+    
+    console.log("Template updated successfully:", data);
+    
+    if (!data || data.length === 0) {
+      throw new Error("Nenhum dado retornado após a atualização");
     }
     
     toast({
