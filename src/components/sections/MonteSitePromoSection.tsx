@@ -1,13 +1,10 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import FadeIn from '@/components/animations/FadeIn';
 import { ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
 const MonteSitePromoSection: React.FC = () => {
-  return (
-    <FadeIn>
+  return <FadeIn>
       <section className="bg-gradient-to-r from-blue-500 to-purple-600 py-16 px-4 md:py-24">
         <div className="container mx-auto max-w-5xl">
           <div className="flex flex-col items-center text-center">
@@ -19,29 +16,16 @@ const MonteSitePromoSection: React.FC = () => {
               Veja exemplos reais de nossos trabalhos e inspire-se para seu próximo projeto digital.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button 
-                className="bg-white text-blue-600 hover:bg-gray-100"
-                size="lg"
-                asChild
-              >
+              <Button className="bg-white text-blue-600 hover:bg-gray-100" size="lg" asChild>
                 <Link to="/vitrine">Ver Vitrine Completa</Link>
               </Button>
-              <Button 
-                variant="outline" 
-                className="border-white text-white hover:bg-white/10"
-                size="lg"
-                asChild
-              >
-                <Link to="#showcase">
-                  Ver Destaques <ExternalLink className="ml-2 h-4 w-4" />
-                </Link>
+              <Button variant="outline" className="border-white text-white hover:bg-white/10" size="lg" asChild>
+                
               </Button>
             </div>
           </div>
         </div>
       </section>
-    </FadeIn>
-  );
+    </FadeIn>;
 };
-
 export default MonteSitePromoSection;
