@@ -18,6 +18,22 @@ export async function uploadTemplateImage(
     
     // Se temos um novo arquivo de imagem, fazemos o upload para o Supabase Storage
     if (imageFile) {
+      // Verificar se o bucket 'images' existe, caso contrário tentar criar
+      const { data: buckets } = await supabase.storage.listBuckets();
+      const imagesBucketExists = buckets?.some(bucket => bucket.name === 'images');
+      
+      if (!imagesBucketExists) {
+        console.log("Images bucket doesn't exist, attempting to create it");
+        const { data: newBucket, error: bucketError } = await supabase.storage.createBucket('images', {
+          public: true
+        });
+        
+        if (bucketError) {
+          console.error("Error creating images bucket:", bucketError);
+          throw new Error("Não foi possível criar o bucket para armazenar imagens.");
+        }
+      }
+      
       const timestamp = new Date().getTime();
       const fileName = `${timestamp}-${imageFile.name}`;
       const filePath = `templates/${fileName}`;
@@ -52,12 +68,12 @@ export async function uploadTemplateImage(
     
     return processedData;
   } catch (error) {
+    console.error("Error uploading image:", error);
     toast({
       title: "Erro ao enviar imagem",
       description: "Ocorreu um erro ao processar a imagem. Tente novamente.",
       variant: "destructive",
     });
-    console.error("Error uploading image:", error);
     throw error;
   }
 }

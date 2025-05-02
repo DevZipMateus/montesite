@@ -16,6 +16,7 @@ import { Template } from '@/types/database';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createTemplate, updateTemplate } from '@/services/templateService';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { toast } from '@/hooks/use-toast';
 
 interface TemplateFormDialogProps {
   template?: Template;
@@ -32,6 +33,18 @@ const TemplateFormDialog: React.FC<TemplateFormDialogProps> = ({ template, trigg
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-templates'] });
       setOpen(false);
+      toast({
+        title: "Sucesso!",
+        description: "Template criado com sucesso.",
+      });
+    },
+    onError: (error) => {
+      console.error("Error creating template:", error);
+      toast({
+        title: "Erro",
+        description: "Não foi possível criar o template. Tente novamente.",
+        variant: "destructive",
+      });
     }
   });
 
@@ -41,6 +54,18 @@ const TemplateFormDialog: React.FC<TemplateFormDialogProps> = ({ template, trigg
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-templates'] });
       setOpen(false);
+      toast({
+        title: "Sucesso!",
+        description: "Template atualizado com sucesso.",
+      });
+    },
+    onError: (error) => {
+      console.error("Error updating template:", error);
+      toast({
+        title: "Erro",
+        description: "Não foi possível atualizar o template. Tente novamente.",
+        variant: "destructive",
+      });
     }
   });
 
@@ -53,7 +78,7 @@ const TemplateFormDialog: React.FC<TemplateFormDialogProps> = ({ template, trigg
         const templateData: Partial<Template> = {
           title: data.title,
           description: data.description,
-          image_url: data.image_url as string,
+          image_url: data.image_url as string, // Ensure this is a string
           form_url: data.form_url,
           preview_url: data.preview_url,
           category_id: data.category_id,
@@ -73,7 +98,7 @@ const TemplateFormDialog: React.FC<TemplateFormDialogProps> = ({ template, trigg
         const newTemplateData = {
           title: data.title,
           description: data.description,
-          image_url: data.image_url as string,
+          image_url: data.image_url as string, // Ensure this is a string
           form_url: data.form_url,
           preview_url: data.preview_url,
           category_id: data.category_id,

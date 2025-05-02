@@ -51,16 +51,24 @@ const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
     const imageUrl = URL.createObjectURL(file);
     setImagePreview(imageUrl);
     
-    // Importante: Não definimos o arquivo como valor do campo, apenas marcamos que há um arquivo a ser processado
-    // O processamento real será feito no uploadTemplateImage
-    console.log("Image file selected for upload");
+    // Quando um arquivo é selecionado, atualizamos o valor do campo para "pending-upload"
+    // Isso sinaliza que há um upload pendente, mas o processo real acontece em uploadTemplateImage
+    form.setValue("image_url", "pending-upload");
+    console.log("Image file selected for upload:", file.name);
+  };
+
+  const handleUrlChange = (url: string) => {
+    form.setValue("image_url", url);
+    setImagePreview(url);
+    setImageFile(null);
+    console.log("Image URL manually set:", url);
   };
   
   return (
     <FormField
       control={form.control}
       name="image_url"
-      render={({ field: { onChange, value, ...fieldProps } }) => (
+      render={({ field }) => (
         <FormItem>
           <FormLabel>URL da Imagem</FormLabel>
           <div className="space-y-4">
@@ -85,28 +93,24 @@ const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
                     <Upload className="h-4 w-4" />
                     {imagePreview ? 'Trocar imagem' : 'Enviar imagem'}
                   </Button>
+                  
                   {!imageFile && (
                     <Input
                       placeholder="https://exemplo.com/image.jpg"
                       className="flex-1"
-                      value={typeof value === 'string' ? value : ''}
+                      value={typeof field.value === 'string' && field.value !== "pending-upload" ? field.value : ''}
                       onChange={(e) => {
-                        onChange(e.target.value);
-                        if (e.target.value) {
-                          setImagePreview(e.target.value);
-                        } else {
-                          setImagePreview(null);
-                        }
+                        handleUrlChange(e.target.value);
                       }}
                     />
                   )}
+                  
                   <Input
                     id="template-image-upload"
                     type="file"
                     accept="image/*"
                     className="hidden"
                     onChange={handleImageChange}
-                    {...fieldProps}
                   />
                 </div>
               </FormControl>

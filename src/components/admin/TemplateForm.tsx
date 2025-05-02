@@ -48,15 +48,17 @@ const TemplateForm: React.FC<TemplateFormProps> = ({ template, onSubmit, isSubmi
 
   const handleSubmitForm = async (data: TemplateFormValues) => {
     try {
+      console.log("Form data before image upload:", data);
       const formData = await uploadTemplateImage(imageFile, data);
+      console.log("Form data after image processing:", formData);
       await onSubmit(formData);
     } catch (error) {
+      console.error("Error submitting form:", error);
       toast({
         title: "Erro ao enviar formulário",
-        description: "Ocorreu um erro ao processar a imagem. Tente novamente.",
+        description: "Ocorreu um erro ao processar os dados. Tente novamente.",
         variant: "destructive",
       });
-      console.error("Error submitting form:", error);
     }
   };
 
