@@ -1,3 +1,4 @@
+
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { TemplateFormValues } from '@/schemas/templateSchema';
@@ -48,10 +49,9 @@ export async function uploadTemplateImage(
             console.log(`Bucket ${bucketName} created successfully`);
             
             // Now create RLS policy to allow public access to the bucket
-            // Fixed: Use proper type assertion for RPC parameters
             const { error: policyError } = await supabase.rpc(
               'create_bucket_policy', 
-              { bucket_name: bucketName } as unknown as Parameters<typeof supabase.rpc>[1]
+              { bucket_name: bucketName } as any
             );
             
             if (policyError) {
