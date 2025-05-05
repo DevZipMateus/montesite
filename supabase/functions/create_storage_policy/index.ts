@@ -7,6 +7,11 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// Define the expected request payload structure
+interface CreateBucketPolicyRequest {
+  bucket_name: string;
+}
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
@@ -22,8 +27,9 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
-    // Extract the bucket name from the request
-    const { bucket_name } = await req.json();
+    // Extract the bucket name from the request and ensure it's properly typed
+    const requestData = await req.json() as CreateBucketPolicyRequest;
+    const { bucket_name } = requestData;
 
     if (!bucket_name) {
       return new Response(

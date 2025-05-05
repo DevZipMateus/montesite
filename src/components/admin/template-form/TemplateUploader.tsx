@@ -39,9 +39,10 @@ export async function uploadTemplateImage(imageFile: File | null, formData: Temp
         console.log(`Bucket ${bucketName} created successfully`);
         
         // Now create RLS policy to allow public access to the bucket
+        // Use a properly typed parameter object for the RPC call
         const { error: policyError } = await supabase.rpc(
           'create_bucket_policy', 
-          { bucket_name: bucketName } as { bucket_name: string }
+          { bucket_name: bucketName }
         );
         
         if (policyError) {
