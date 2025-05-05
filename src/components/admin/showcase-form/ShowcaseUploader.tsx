@@ -51,7 +51,7 @@ export async function uploadShowcaseImage(
             // Fix: Pass bucket_name as an object parameter with proper typing
             const { error: policyError } = await supabase.rpc('create_bucket_policy', {
               bucket_name: bucketName
-            });
+            } as { bucket_name: string });
             
             if (policyError) {
               console.error("Error creating bucket policy:", policyError);
