@@ -1,3 +1,4 @@
+
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
@@ -25,4 +26,10 @@ export default defineConfig(({ mode }) => ({
   define: {
     global: 'globalThis', // Isso pode ajudar a evitar o erro de "global is not defined"
   },
+  build: {
+    rollupOptions: {
+      // Make sure uuid is properly bundled
+      external: []
+    }
+  }
 }));
