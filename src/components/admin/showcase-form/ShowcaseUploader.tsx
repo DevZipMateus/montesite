@@ -50,7 +50,7 @@ export async function uploadShowcaseImage(
             // Now create RLS policy to allow public access to the bucket
             const { error: policyError } = await supabase.rpc(
               'create_bucket_policy',
-              { bucket_name: bucketName } as any
+              { bucket_name: bucketName }
             );
             
             if (policyError) {
