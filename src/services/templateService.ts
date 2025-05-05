@@ -137,13 +137,13 @@ export async function createTemplate(template: Omit<Template, 'id' | 'created_at
   }
 }
 
-// Updated function for updating template
+// Completely revised update function with better error handling and data verification
 export async function updateTemplate(id: string, template: Partial<Template>) {
   try {
     console.log("Updating template with ID:", id);
     console.log("Update data:", template);
     
-    // Validate required fields if they're provided
+    // Validate data
     if (template.title === "" || template.description === "" || template.image_url === "" 
         || template.form_url === "" || template.preview_url === "") {
       throw new Error("Os campos fornecidos não podem estar vazios");
@@ -152,45 +152,59 @@ export async function updateTemplate(id: string, template: Partial<Template>) {
     // Remove fields that should not be sent in the update
     const { categories, created_at, updated_at, ...updateData } = template as any;
     
-    // Execute the update operation
-    const { error } = await supabase
+    // Add a timestamp to force update
+    updateData.updated_at = new Date().toISOString();
+    
+    console.log("Final update payload:", updateData);
+    
+    // Execute the update operation with proper returning
+    const { data, error, status } = await supabase
       .from('templates')
       .update(updateData)
-      .eq('id', id);
+      .eq('id', id)
+      .select()
+      .single();
     
     if (error) {
       console.error('Error response from Supabase:', error);
       throw error;
     }
     
-    console.log("Template updated successfully");
+    // Verify the update was successful
+    if (!data) {
+      console.error('Update may have failed: No data returned');
+      // Double check if the update actually happened
+      const { data: verifyData, error: verifyError } = await supabase
+        .from('templates')
+        .select('*')
+        .eq('id', id)
+        .single();
+        
+      if (verifyError || !verifyData) {
+        console.error('Failed to verify update status:', verifyError);
+        throw new Error('Não foi possível verificar se o template foi atualizado');
+      }
+      
+      // Check if form_url was updated correctly
+      if (template.form_url && verifyData.form_url !== template.form_url) {
+        console.error('Update validation failed: form_url not updated correctly');
+        throw new Error('A URL do formulário não foi atualizada corretamente');
+      }
+      
+      // If we get here, the update was probably successful
+      console.log("Template exists but no data returned from update. Verify data:", verifyData);
+    } else {
+      console.log("Template updated successfully. Returned data:", data);
+    }
     
-    // Don't check for returned data, just toast success
     toast({
       title: "Template atualizado",
       description: "O template foi atualizado com sucesso.",
     });
     
-    // Fetch the updated template
-    const { data: updatedTemplate, error: fetchError } = await supabase
-      .from('templates')
-      .select(`*, categories(*)`)
-      .eq('id', id)
-      .maybeSingle();
-      
-    if (fetchError) {
-      console.error('Error fetching updated template:', fetchError);
-      // Don't throw here, we already successfully updated
-    }
+    // Return the data we got or the verified data
+    return data;
     
-    console.log("Updated template:", updatedTemplate);
-    
-    // Return the updated template or a success object
-    return updatedTemplate || {
-      id,
-      ...updateData,
-      updated_at: new Date().toISOString()
-    };
   } catch (error) {
     console.error('Error updating template:', error);
     toast({

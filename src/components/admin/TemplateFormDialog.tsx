@@ -82,6 +82,16 @@ const TemplateFormDialog: React.FC<TemplateFormDialogProps> = ({ template, trigg
         console.log("Updating template with ID:", template.id);
         console.log("Update payload:", templateData);
         
+        // Ensure form_url is correctly passed for update
+        if (!templateData.form_url) {
+          toast({
+            title: "Erro",
+            description: "A URL do formulário não pode estar vazia.",
+            variant: "destructive",
+          });
+          return;
+        }
+        
         await updateMutation.mutateAsync({ 
           id: template.id, 
           data: templateData

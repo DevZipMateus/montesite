@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { UseFormReturn } from 'react-hook-form';
@@ -12,6 +12,13 @@ interface UrlFieldsProps {
 
 const UrlFields: React.FC<UrlFieldsProps> = ({ form }) => {
   const isMobile = useIsMobile();
+  
+  // Debug current form state for URLs
+  useEffect(() => {
+    const formUrlValue = form.watch('form_url');
+    const previewUrlValue = form.watch('preview_url');
+    console.log("Current form URLs:", { form: formUrlValue, preview: previewUrlValue });
+  }, [form.watch('form_url'), form.watch('preview_url')]);
   
   return (
     <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-2 gap-4'}`}>
@@ -26,10 +33,19 @@ const UrlFields: React.FC<UrlFieldsProps> = ({ form }) => {
                 placeholder="https://forms.example.com/form" 
                 {...field} 
                 onChange={(e) => {
-                  field.onChange(e);
+                  const value = e.target.value.trim();
+                  field.onChange(value);
                   form.trigger("form_url");
-                  console.log("Form URL updated:", e.target.value);
+                  console.log("Form URL updated:", value);
                 }}
+                onBlur={(e) => {
+                  // Ensure the value is trimmed and validate on blur
+                  const value = e.target.value.trim();
+                  field.onChange(value);
+                  form.trigger("form_url");
+                  console.log("Form URL finalized:", value);
+                }}
+                className="focus:border-primary"
               />
             </FormControl>
             <FormMessage />
@@ -48,10 +64,19 @@ const UrlFields: React.FC<UrlFieldsProps> = ({ form }) => {
                 placeholder="https://preview.example.com" 
                 {...field}
                 onChange={(e) => {
-                  field.onChange(e);
+                  const value = e.target.value.trim();
+                  field.onChange(value);
                   form.trigger("preview_url");
-                  console.log("Preview URL updated:", e.target.value);
+                  console.log("Preview URL updated:", value);
                 }}
+                onBlur={(e) => {
+                  // Ensure the value is trimmed and validate on blur
+                  const value = e.target.value.trim();
+                  field.onChange(value);
+                  form.trigger("preview_url");
+                  console.log("Preview URL finalized:", value);
+                }}
+                className="focus:border-primary"
               />
             </FormControl>
             <FormMessage />
