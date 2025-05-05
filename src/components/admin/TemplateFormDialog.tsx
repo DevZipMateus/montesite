@@ -54,18 +54,11 @@ const TemplateFormDialog: React.FC<TemplateFormDialogProps> = ({ template, trigg
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-templates'] });
       setOpen(false);
-      toast({
-        title: "Sucesso!",
-        description: "Template atualizado com sucesso.",
-      });
+      // Note: Success toast is now handled in the service function
     },
     onError: (error) => {
       console.error("Error updating template:", error);
-      toast({
-        title: "Erro",
-        description: "Não foi possível atualizar o template. Tente novamente.",
-        variant: "destructive",
-      });
+      // Note: Error toast is now handled in the service function
     }
   });
 

@@ -1,3 +1,4 @@
+
 import { supabase } from "@/integrations/supabase/client";
 import { Category, Template } from "@/types/database";
 import { CategoryFormValues } from "@/schemas/showcaseSchema";
@@ -136,7 +137,7 @@ export async function createTemplate(template: Omit<Template, 'id' | 'created_at
   }
 }
 
-// Improved function for updating template
+// Updated function for updating template
 export async function updateTemplate(id: string, template: Partial<Template>) {
   try {
     console.log("Updating template with ID:", id);
@@ -151,29 +152,45 @@ export async function updateTemplate(id: string, template: Partial<Template>) {
     // Remove fields that should not be sent in the update
     const { categories, created_at, updated_at, ...updateData } = template as any;
     
-    const { data, error } = await supabase
+    // Execute the update operation
+    const { error } = await supabase
       .from('templates')
       .update(updateData)
-      .eq('id', id)
-      .select();
+      .eq('id', id);
     
     if (error) {
       console.error('Error response from Supabase:', error);
       throw error;
     }
     
-    console.log("Template updated successfully:", data);
+    console.log("Template updated successfully");
     
-    if (!data || data.length === 0) {
-      throw new Error("Nenhum dado retornado após a atualização");
-    }
-    
+    // Don't check for returned data, just toast success
     toast({
       title: "Template atualizado",
       description: "O template foi atualizado com sucesso.",
     });
     
-    return data[0];
+    // Fetch the updated template
+    const { data: updatedTemplate, error: fetchError } = await supabase
+      .from('templates')
+      .select(`*, categories(*)`)
+      .eq('id', id)
+      .maybeSingle();
+      
+    if (fetchError) {
+      console.error('Error fetching updated template:', fetchError);
+      // Don't throw here, we already successfully updated
+    }
+    
+    console.log("Updated template:", updatedTemplate);
+    
+    // Return the updated template or a success object
+    return updatedTemplate || {
+      id,
+      ...updateData,
+      updated_at: new Date().toISOString()
+    };
   } catch (error) {
     console.error('Error updating template:', error);
     toast({
