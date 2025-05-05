@@ -1,6 +1,17 @@
 
 project_id = "vaabpicspdbolvutnscp"
 
-[functions.seed-data]
-verify_jwt = false
+[api]
+# No overrides for API configuration
 
+[db]
+# No overrides for DB configuration
+
+[auth]
+# No overrides for Auth configuration
+
+[storage]
+# No overrides for Storage configuration
+
+[functions.create_storage_policy]
+verify_jwt = true

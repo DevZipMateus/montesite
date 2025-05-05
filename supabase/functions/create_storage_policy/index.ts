@@ -38,20 +38,27 @@ serve(async (req) => {
       );
     }
 
-    // Create RLS policy for the bucket to allow public access
+    console.log(`Creating policy for bucket: ${bucket_name}`);
+
+    // Call the database function to create the bucket policy
     const { data, error } = await supabaseClient.rpc('create_bucket_policy', {
       bucket_name
     });
 
     if (error) {
+      console.error("Error creating bucket policy:", error);
       throw error;
     }
 
     return new Response(
-      JSON.stringify({ success: true, message: `Policy created for bucket: ${bucket_name}` }),
+      JSON.stringify({ 
+        success: true, 
+        message: `Policy created for bucket: ${bucket_name}` 
+      }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 }
     );
   } catch (error) {
+    console.error("Error in create_storage_policy function:", error);
     return new Response(
       JSON.stringify({ error: error.message }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 500 }
