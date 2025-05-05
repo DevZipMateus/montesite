@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { 
@@ -10,7 +9,7 @@ import {
   TableHeader,
   TableRow 
 } from '@/components/ui/table';
-import { fetchAdminTemplates } from '@/services/templateService';
+import { fetchAdminTemplates } from '@/services/templates';
 import { Loader2, Eye, Edit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';

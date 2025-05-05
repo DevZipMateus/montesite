@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import {
   Dialog,
@@ -15,7 +14,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { categoryFormSchema, CategoryFormValues } from '@/schemas/showcaseSchema';
-import { createCategory } from '@/services/templateService';
+import { createCategory } from '@/services/templates';
 
 interface CategoryFormDialogProps {
   onSuccess?: () => void;

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -6,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Form } from '@/components/ui/form';
 import { templateFormSchema, TemplateFormValues } from '@/schemas/templateSchema';
 import { Template } from '@/types/database';
-import { fetchCategories } from '@/services/templateService';
+import { fetchCategories } from '@/services/templates';
 import { toast } from '@/hooks/use-toast';
 
 // Import our refactored components

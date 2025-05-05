@@ -1,11 +1,10 @@
-
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import FadeIn from '@/components/animations/FadeIn';
 import { Button } from '@/components/ui/button';
 import TemplateCard from '@/components/TemplateCard';
 import TemplateCategories, { TemplateCategory } from '@/components/TemplateCategories';
 import { Template } from '@/types/database';
-import { fetchCategories, fetchTemplates } from '@/services/templateService';
+import { fetchCategories, fetchTemplates } from '@/services/templates';
 import { useQuery } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
 
