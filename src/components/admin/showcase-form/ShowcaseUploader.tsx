@@ -3,6 +3,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { v4 as uuidv4 } from "uuid";
 import { ShowcaseFormValues } from "@/schemas/showcaseSchema";
 
+// Define the type for the RPC function parameters
+type CreateBucketPolicyParams = {
+  bucket_name: string;
+};
+
 export async function uploadShowcaseImage(imageFile: File | null, formData: ShowcaseFormValues): Promise<ShowcaseFormValues> {
   if (!imageFile) {
     // No image to upload, return unchanged form data
@@ -36,9 +41,13 @@ export async function uploadShowcaseImage(imageFile: File | null, formData: Show
         
         // Now create RLS policy to allow public access to the bucket
         // Use a properly typed parameter object for the RPC call
-        const { error: policyError } = await supabase.rpc(
-          'create_bucket_policy',
-          { bucket_name: bucketName }
+        const createBucketParams: CreateBucketPolicyParams = { bucket_name: bucketName };
+        const { error: policyError } = await supabase.functions.invoke<{ success: boolean }>(
+          'create_storage_policy',
+          {
+            method: 'POST',
+            body: createBucketParams
+          }
         );
         
         if (policyError) {

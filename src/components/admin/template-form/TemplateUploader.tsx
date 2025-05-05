@@ -3,6 +3,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { v4 as uuidv4 } from "uuid";
 import { TemplateFormValues } from "@/schemas/templateSchema";
 
+// Define the type for the RPC function parameters
+type CreateBucketPolicyParams = {
+  bucket_name: string;
+};
+
 export async function uploadTemplateImage(imageFile: File | null, formData: TemplateFormValues): Promise<TemplateFormValues> {
   if (!imageFile && formData.image_url !== "pending-upload") {
     // No new image to upload, return unchanged form data
@@ -40,9 +45,13 @@ export async function uploadTemplateImage(imageFile: File | null, formData: Temp
         
         // Now create RLS policy to allow public access to the bucket
         // Use a properly typed parameter object for the RPC call
-        const { error: policyError } = await supabase.rpc(
-          'create_bucket_policy', 
-          { bucket_name: bucketName }
+        const createBucketParams: CreateBucketPolicyParams = { bucket_name: bucketName };
+        const { error: policyError } = await supabase.functions.invoke<{ success: boolean }>(
+          'create_storage_policy',
+          {
+            method: 'POST',
+            body: createBucketParams
+          }
         );
         
         if (policyError) {
