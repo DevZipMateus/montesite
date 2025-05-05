@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { Category, Template } from "@/types/database";
 import { CategoryFormValues } from "@/schemas/showcaseSchema";
@@ -152,12 +151,18 @@ export async function updateTemplate(id: string, template: Partial<Template>) {
     // Remove fields that should not be sent in the update
     const { categories, created_at, updated_at, ...updateData } = template as any;
     
+    // Force update of form_url with explicit check and debug info
+    if (template.form_url) {
+      console.log(`Setting form_url to: ${template.form_url}`);
+      updateData.form_url = template.form_url;
+    }
+    
     // Add a timestamp to force update
     updateData.updated_at = new Date().toISOString();
     
     console.log("Final update payload:", updateData);
     
-    // Execute the update operation with proper returning
+    // Execute the update operation with proper returning and debugging
     const { data, error, status } = await supabase
       .from('templates')
       .update(updateData)
@@ -165,14 +170,17 @@ export async function updateTemplate(id: string, template: Partial<Template>) {
       .select()
       .single();
     
+    console.log("Update response status:", status);
+    
     if (error) {
       console.error('Error response from Supabase:', error);
       throw error;
     }
     
-    // Verify the update was successful
+    // Enhanced verification if the update was successful
     if (!data) {
       console.error('Update may have failed: No data returned');
+      
       // Double check if the update actually happened
       const { data: verifyData, error: verifyError } = await supabase
         .from('templates')
@@ -180,29 +188,42 @@ export async function updateTemplate(id: string, template: Partial<Template>) {
         .eq('id', id)
         .single();
         
-      if (verifyError || !verifyData) {
+      if (verifyError) {
         console.error('Failed to verify update status:', verifyError);
         throw new Error('Não foi possível verificar se o template foi atualizado');
       }
       
-      // Check if form_url was updated correctly
+      if (!verifyData) {
+        console.error('Template not found after update attempt');
+        throw new Error('Template não encontrado após tentativa de atualização');
+      }
+      
+      // Check if form_url was updated correctly (important field that was failing)
       if (template.form_url && verifyData.form_url !== template.form_url) {
         console.error('Update validation failed: form_url not updated correctly');
+        console.error(`Expected: ${template.form_url}, Got: ${verifyData.form_url}`);
         throw new Error('A URL do formulário não foi atualizada corretamente');
       }
       
-      // If we get here, the update was probably successful
       console.log("Template exists but no data returned from update. Verify data:", verifyData);
-    } else {
-      console.log("Template updated successfully. Returned data:", data);
+      
+      // Return the verified data as our result
+      toast({
+        title: "Template atualizado",
+        description: "O template foi atualizado com sucesso (verificado).",
+      });
+      
+      return verifyData;
     }
+    
+    console.log("Template updated successfully. Returned data:", data);
     
     toast({
       title: "Template atualizado",
       description: "O template foi atualizado com sucesso.",
     });
     
-    // Return the data we got or the verified data
+    // Return the data we got from the update
     return data;
     
   } catch (error) {

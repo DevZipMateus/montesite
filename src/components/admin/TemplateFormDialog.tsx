@@ -54,11 +54,11 @@ const TemplateFormDialog: React.FC<TemplateFormDialogProps> = ({ template, trigg
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-templates'] });
       setOpen(false);
-      // Note: Success toast is now handled in the service function
+      // Success toast is now handled in the service function
     },
     onError: (error) => {
       console.error("Error updating template:", error);
-      // Note: Error toast is now handled in the service function
+      // Error toast is now handled in the service function
     }
   });
 
@@ -82,7 +82,7 @@ const TemplateFormDialog: React.FC<TemplateFormDialogProps> = ({ template, trigg
         console.log("Updating template with ID:", template.id);
         console.log("Update payload:", templateData);
         
-        // Ensure form_url is correctly passed for update
+        // Extra validation for form_url which was causing issues
         if (!templateData.form_url) {
           toast({
             title: "Erro",
@@ -98,6 +98,18 @@ const TemplateFormDialog: React.FC<TemplateFormDialogProps> = ({ template, trigg
         });
       } else {
         // For creation, ensure all required fields are present
+        const requiredFields = ['title', 'description', 'image_url', 'form_url', 'preview_url'];
+        for (const field of requiredFields) {
+          if (!data[field as keyof TemplateFormValues]) {
+            toast({
+              title: "Erro",
+              description: `O campo ${field} é obrigatório.`,
+              variant: "destructive",
+            });
+            return;
+          }
+        }
+        
         const newTemplateData = {
           title: data.title,
           description: data.description,

@@ -31,18 +31,18 @@ const UrlFields: React.FC<UrlFieldsProps> = ({ form }) => {
             <FormControl>
               <Input 
                 placeholder="https://forms.example.com/form" 
-                {...field} 
+                value={field.value}
                 onChange={(e) => {
                   const value = e.target.value.trim();
                   field.onChange(value);
-                  form.trigger("form_url");
+                  form.setValue('form_url', value, { shouldValidate: true });
                   console.log("Form URL updated:", value);
                 }}
                 onBlur={(e) => {
                   // Ensure the value is trimmed and validate on blur
                   const value = e.target.value.trim();
                   field.onChange(value);
-                  form.trigger("form_url");
+                  form.setValue('form_url', value, { shouldValidate: true, shouldDirty: true });
                   console.log("Form URL finalized:", value);
                 }}
                 className="focus:border-primary"
@@ -62,18 +62,18 @@ const UrlFields: React.FC<UrlFieldsProps> = ({ form }) => {
             <FormControl>
               <Input 
                 placeholder="https://preview.example.com" 
-                {...field}
+                value={field.value}
                 onChange={(e) => {
                   const value = e.target.value.trim();
                   field.onChange(value);
-                  form.trigger("preview_url");
+                  form.setValue('preview_url', value, { shouldValidate: true });
                   console.log("Preview URL updated:", value);
                 }}
                 onBlur={(e) => {
                   // Ensure the value is trimmed and validate on blur
                   const value = e.target.value.trim();
                   field.onChange(value);
-                  form.trigger("preview_url");
+                  form.setValue('preview_url', value, { shouldValidate: true, shouldDirty: true });
                   console.log("Preview URL finalized:", value);
                 }}
                 className="focus:border-primary"
