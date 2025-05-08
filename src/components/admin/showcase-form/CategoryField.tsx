@@ -33,8 +33,11 @@ const CategoryField: React.FC<CategoryFieldProps> = ({
         render={({ field }) => (
           <FormItem>
             <Select 
-              onValueChange={(value) => field.onChange(value === "null" ? null : value)} 
-              defaultValue={field.value || "null"}
+              onValueChange={(value) => {
+                console.log("Category selected:", value);
+                field.onChange(value);
+              }} 
+              value={field.value || "null"}
             >
               <FormControl>
                 <SelectTrigger>

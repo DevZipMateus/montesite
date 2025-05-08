@@ -12,6 +12,7 @@ export async function fetchCategories(): Promise<Category[]> {
       .order('name');
     
     if (error) {
+      console.error("Error fetching categories:", error);
       throw error;
     }
     
@@ -108,8 +109,11 @@ export async function updateCategory(id: string, category: CategoryFormValues): 
       .single();
     
     if (error) {
+      console.error("Error updating category:", error);
       throw error;
     }
+    
+    console.log("Category updated successfully:", data);
     
     toast({
       title: "Categoria atualizada",
@@ -140,14 +144,19 @@ export async function updateCategory(id: string, category: CategoryFormValues): 
 
 export async function deleteCategory(id: string): Promise<boolean> {
   try {
+    console.log(`Deleting category with ID: ${id}`);
+    
     const { error } = await supabase
       .from('categories')
       .delete()
       .eq('id', id);
     
     if (error) {
+      console.error("Error deleting category:", error);
       throw error;
     }
+    
+    console.log("Category deleted successfully");
     
     toast({
       title: "Categoria excluída",

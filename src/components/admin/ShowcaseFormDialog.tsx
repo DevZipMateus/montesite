@@ -34,15 +34,15 @@ const ShowcaseFormDialog: React.FC<ShowcaseFormDialogProps> = ({ showcase, trigg
       queryClient.invalidateQueries({ queryKey: ['admin-showcases'] });
       setOpen(false);
       toast({
-        title: "Success!",
-        description: "Showcase site has been created successfully.",
+        title: "Sucesso!",
+        description: "Site adicionado à vitrine com sucesso.",
       });
     },
     onError: (error) => {
       console.error("Error creating showcase:", error);
       toast({
-        title: "Error",
-        description: "Failed to create showcase site. Please try again.",
+        title: "Erro",
+        description: "Não foi possível adicionar o site à vitrine. Tente novamente mais tarde.",
         variant: "destructive",
       });
     }
@@ -55,15 +55,15 @@ const ShowcaseFormDialog: React.FC<ShowcaseFormDialogProps> = ({ showcase, trigg
       queryClient.invalidateQueries({ queryKey: ['admin-showcases'] });
       setOpen(false);
       toast({
-        title: "Success!",
-        description: "Showcase site has been updated successfully.",
+        title: "Sucesso!",
+        description: "Site atualizado com sucesso.",
       });
     },
     onError: (error) => {
       console.error("Error updating showcase:", error);
       toast({
-        title: "Error",
-        description: "Failed to update showcase site. Please try again.",
+        title: "Erro",
+        description: "Não foi possível atualizar o site. Tente novamente mais tarde.",
         variant: "destructive",
       });
     }
@@ -80,7 +80,7 @@ const ShowcaseFormDialog: React.FC<ShowcaseFormDialogProps> = ({ showcase, trigg
           description: data.description,
           image_url: data.image_url as string,
           site_url: data.site_url,
-          category_id: data.category_id,
+          category_id: data.category_id === "null" ? null : data.category_id,
           featured: data.featured
         };
         
@@ -98,7 +98,7 @@ const ShowcaseFormDialog: React.FC<ShowcaseFormDialogProps> = ({ showcase, trigg
           description: data.description,
           image_url: data.image_url as string,
           site_url: data.site_url,
-          category_id: data.category_id,
+          category_id: data.category_id === "null" ? null : data.category_id,
           featured: data.featured
         };
         
@@ -119,15 +119,15 @@ const ShowcaseFormDialog: React.FC<ShowcaseFormDialogProps> = ({ showcase, trigg
         {trigger || (
           <Button className="gap-2">
             <Plus className="h-4 w-4" />
-            New Showcase Site
+            Novo Site
           </Button>
         )}
       </DialogTrigger>
       <DialogContent className={`${isMobile ? 'w-[95vw] p-4' : 'max-w-3xl'} overflow-y-auto max-h-[90vh]`}>
         <DialogHeader>
-          <DialogTitle>{showcase ? 'Edit' : 'Add'} Showcase Site</DialogTitle>
+          <DialogTitle>{showcase ? 'Editar' : 'Adicionar'} Site</DialogTitle>
           <DialogDescription>
-            Fill in the fields below to {showcase ? 'edit' : 'add'} a showcase site.
+            Preencha os campos abaixo para {showcase ? 'editar' : 'adicionar'} um site à vitrine.
           </DialogDescription>
         </DialogHeader>
         <div className="py-2">

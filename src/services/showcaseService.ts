@@ -47,14 +47,19 @@ export async function fetchShowcases(categorySlug?: string, featuredOnly?: boole
 // Funções para gerenciamento de Vitrines
 export async function createShowcase(showcase: Omit<Showcase, 'id' | 'created_at' | 'updated_at'>) {
   try {
+    console.log("Creating showcase with data:", showcase);
+    
     const { data, error } = await supabase
       .from('showcases')
       .insert([showcase])
       .select();
     
     if (error) {
+      console.error("Error creating showcase:", error);
       throw error;
     }
+    
+    console.log("Showcase created successfully:", data);
     
     toast({
       title: "Site adicionado à vitrine",
@@ -75,6 +80,9 @@ export async function createShowcase(showcase: Omit<Showcase, 'id' | 'created_at
 
 export async function updateShowcase(id: string, showcase: Partial<Omit<Showcase, 'id' | 'created_at' | 'updated_at'>>) {
   try {
+    console.log("Updating showcase with ID:", id);
+    console.log("Update payload:", showcase);
+    
     const { data, error } = await supabase
       .from('showcases')
       .update(showcase)
@@ -82,8 +90,11 @@ export async function updateShowcase(id: string, showcase: Partial<Omit<Showcase
       .select();
     
     if (error) {
+      console.error("Error updating showcase:", error);
       throw error;
     }
+    
+    console.log("Showcase updated successfully:", data);
     
     toast({
       title: "Vitrine atualizada",
@@ -110,6 +121,7 @@ export async function deleteShowcase(id: string) {
       .eq('id', id);
     
     if (error) {
+      console.error("Error deleting showcase:", error);
       throw error;
     }
     
