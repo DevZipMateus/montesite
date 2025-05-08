@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { v4 as uuidv4 } from "uuid";
 import { ShowcaseFormValues } from "@/schemas/showcaseSchema";
@@ -14,48 +13,11 @@ export async function uploadShowcaseImage(imageFile: File | null, formData: Show
     return formData;
   }
 
-  // Define bucket for showcases
-  const bucketName = "showcase-images";
+  // Use the existing bucket for vitrine images
+  const bucketName = "vitrine-imagens";
 
   try {
     console.log("Starting showcase image upload process");
-
-    // Check if bucket exists
-    const { data: buckets } = await supabase.storage.listBuckets();
-    const bucketExists = buckets?.some(bucket => bucket.name === bucketName);
-
-    if (!bucketExists) {
-      console.log(`Bucket ${bucketName} doesn't exist, creating it...`);
-      
-      // Create the bucket if it doesn't exist
-      const { error: createError } = await supabase.storage.createBucket(bucketName, {
-        public: true,
-        fileSizeLimit: 5 * 1024 * 1024 // 5MB limit
-      });
-      
-      if (createError) {
-        console.error("Error creating bucket:", createError);
-        throw new Error(`Failed to create storage bucket: ${createError.message}`);
-      } else {
-        console.log(`Bucket ${bucketName} created successfully`);
-        
-        // Now create RLS policy to allow public access to the bucket
-        // Use a properly typed parameter object for the RPC call
-        const createBucketParams: CreateBucketPolicyParams = { bucket_name: bucketName };
-        const { error: policyError } = await supabase.functions.invoke<{ success: boolean }>(
-          'create_storage_policy',
-          {
-            method: 'POST',
-            body: createBucketParams
-          }
-        );
-        
-        if (policyError) {
-          console.error("Error creating bucket policy:", policyError);
-          throw new Error(`Failed to create bucket policy: ${policyError.message}`);
-        }
-      }
-    }
 
     // Generate unique filename
     const fileExt = imageFile.name.split('.').pop();
