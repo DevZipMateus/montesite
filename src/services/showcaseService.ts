@@ -49,9 +49,15 @@ export async function createShowcase(showcase: Omit<Showcase, 'id' | 'created_at
   try {
     console.log("Creating showcase with data:", showcase);
     
+    // Ensure category_id is null if it's "null" string
+    const processedShowcase = {
+      ...showcase,
+      category_id: showcase.category_id === "null" ? null : showcase.category_id
+    };
+    
     const { data, error } = await supabase
       .from('showcases')
-      .insert([showcase])
+      .insert([processedShowcase])
       .select();
     
     if (error) {
@@ -83,9 +89,15 @@ export async function updateShowcase(id: string, showcase: Partial<Omit<Showcase
     console.log("Updating showcase with ID:", id);
     console.log("Update payload:", showcase);
     
+    // Ensure category_id is null if it's "null" string
+    const processedShowcase = {
+      ...showcase,
+      category_id: showcase.category_id === "null" ? null : showcase.category_id
+    };
+    
     const { data, error } = await supabase
       .from('showcases')
-      .update(showcase)
+      .update(processedShowcase)
       .eq('id', id)
       .select();
     
