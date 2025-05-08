@@ -5,6 +5,8 @@
 import {
   fetchCategories,
   createCategory,
+  updateCategory,
+  deleteCategory,
   fetchTemplates,
   fetchAdminTemplates,
   createTemplate,
@@ -15,6 +17,8 @@ import {
 export {
   fetchCategories,
   createCategory,
+  updateCategory,
+  deleteCategory,
   fetchTemplates,
   fetchAdminTemplates,
   createTemplate,

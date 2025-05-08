@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import {
   Dialog,
@@ -40,11 +41,21 @@ const CategoryFormDialog: React.FC<CategoryFormDialogProps> = ({ onSuccess }) =>
       if (onSuccess) onSuccess();
       setOpen(false);
       form.reset();
+    },
+    onError: (error) => {
+      // Error is already handled in the service with toast
+      console.error('Error in mutation handler:', error);
     }
   });
   
   const handleSubmit = async (data: CategoryFormValues) => {
-    await createMutation.mutateAsync(data);
+    console.log('Submitting category form with data:', data);
+    try {
+      await createMutation.mutateAsync(data);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      // Error handled in mutation onError and service
+    }
   };
   
   const generateSlug = (name: string) => {
