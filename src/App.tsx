@@ -10,6 +10,7 @@ import AdminPage from "./pages/AdminPage";
 import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
 import ShowcasePage from "./pages/ShowcasePage";
+import HashIndicator from "./components/HashIndicator";
 import { supabase } from "./integrations/supabase/client";
 
 // Create a simple admin authentication check
@@ -50,6 +51,7 @@ function App() {
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
+            <HashIndicator />
           </BrowserRouter>
         </TooltipProvider>
       </QueryClientProvider>

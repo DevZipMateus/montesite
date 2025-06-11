@@ -6,6 +6,7 @@ import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/hover-card';
 import { Eye } from 'lucide-react';
 import { Template } from '@/types/database';
+import { useHash } from '@/hooks/useHash';
 
 type TemplateCardProps = Pick<Template, 'id' | 'title' | 'description' | 'image_url' | 'form_url' | 'preview_url'>;
 
@@ -18,6 +19,17 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
   preview_url
 }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const { hash } = useHash();
+  
+  // Function to add hash to URL if present
+  const addHashToUrl = (url: string) => {
+    if (!hash) return url;
+    
+    const separator = url.includes('?') ? '&' : '?';
+    return `${url}${separator}hash=${hash}`;
+  };
+
+  const finalFormUrl = addHashToUrl(form_url);
   
   return (
     <Card 
@@ -70,7 +82,7 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
             className="rounded-full text-xs h-9 px-4 btn-hover-effect bg-gradient-to-r from-primary to-indigo-500 hover:from-indigo-500 hover:to-primary"
             asChild
           >
-            <a href={form_url} target="_blank" rel="noopener noreferrer">
+            <a href={finalFormUrl} target="_blank" rel="noopener noreferrer">
               Personalizar Agora
             </a>
           </Button>

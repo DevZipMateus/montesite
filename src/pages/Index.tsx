@@ -7,8 +7,11 @@ import TemplatesSection from '@/components/sections/TemplatesSection';
 import FeaturesSection from '@/components/sections/FeaturesSection';
 import CTASection from '@/components/sections/CTASection';
 import Footer from '@/components/Footer';
+import { useHash } from '@/hooks/useHash';
 
 const Index = () => {
+  const { hash } = useHash();
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -24,10 +27,15 @@ const Index = () => {
     const elements = document.querySelectorAll('.animate-on-scroll');
     elements.forEach((el) => observer.observe(el));
 
+    // Log hash status for debugging
+    if (hash) {
+      console.log('Page loaded with partner hash:', hash);
+    }
+
     return () => {
       elements.forEach((el) => observer.unobserve(el));
     };
-  }, []);
+  }, [hash]);
 
   const scrollToTemplates = (e: React.MouseEvent) => {
     e.preventDefault();
