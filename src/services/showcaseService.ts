@@ -1,6 +1,5 @@
-
 import { supabase } from "@/integrations/supabase/client";
-import { Showcase } from "@/types/database";
+import { Showcase, Category } from "@/types/database";
 import { toast } from "@/hooks/use-toast";
 
 export async function fetchShowcases(categorySlug?: string, featuredOnly?: boolean, limit?: number): Promise<Showcase[]> {
@@ -44,7 +43,48 @@ export async function fetchShowcases(categorySlug?: string, featuredOnly?: boole
   }
 }
 
-// Funções para gerenciamento de Vitrines
+export async function fetchShowcaseCategories(): Promise<Category[]> {
+  try {
+    const { data, error } = await supabase
+      .from('showcases')
+      .select(`
+        categories!inner(
+          id,
+          name,
+          slug,
+          icon,
+          created_at,
+          updated_at
+        )
+      `)
+      .not('category_id', 'is', null);
+    
+    if (error) {
+      console.error("Error fetching showcase categories:", error);
+      throw error;
+    }
+    
+    // Extract unique categories from the data
+    const uniqueCategories = new Map();
+    data?.forEach(item => {
+      const category = item.categories;
+      if (category && !uniqueCategories.has(category.id)) {
+        uniqueCategories.set(category.id, category);
+      }
+    });
+    
+    return Array.from(uniqueCategories.values()).sort((a, b) => a.name.localeCompare(b.name));
+  } catch (error) {
+    console.error('Error fetching showcase categories:', error);
+    toast({
+      title: "Erro ao carregar categorias de vitrine",
+      description: "Não foi possível carregar as categorias. Tente novamente mais tarde.",
+      variant: "destructive",
+    });
+    return [];
+  }
+}
+
 export async function createShowcase(showcase: Omit<Showcase, 'id' | 'created_at' | 'updated_at'>) {
   try {
     console.log("Creating showcase with data:", showcase);

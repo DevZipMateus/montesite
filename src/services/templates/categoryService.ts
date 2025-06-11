@@ -28,6 +28,111 @@ export async function fetchCategories(): Promise<Category[]> {
   }
 }
 
+export async function fetchTemplateCategories(): Promise<Category[]> {
+  try {
+    const { data, error } = await supabase
+      .from('categories')
+      .select(`
+        id,
+        name,
+        slug,
+        icon,
+        created_at,
+        updated_at
+      `)
+      .eq('templates.status', 'active')
+      .not('templates', 'is', null)
+      .order('name');
+    
+    if (error) {
+      console.error("Error fetching template categories:", error);
+      // Fallback to a simpler query if the join fails
+      const { data: fallbackData, error: fallbackError } = await supabase
+        .from('templates')
+        .select(`
+          categories!inner(
+            id,
+            name,
+            slug,
+            icon,
+            created_at,
+            updated_at
+          )
+        `)
+        .eq('status', 'active')
+        .not('category_id', 'is', null);
+      
+      if (fallbackError) {
+        console.error("Fallback query also failed:", fallbackError);
+        throw fallbackError;
+      }
+      
+      // Extract unique categories from the fallback data
+      const uniqueCategories = new Map();
+      fallbackData?.forEach(item => {
+        const category = item.categories;
+        if (category && !uniqueCategories.has(category.id)) {
+          uniqueCategories.set(category.id, category);
+        }
+      });
+      
+      return Array.from(uniqueCategories.values()).sort((a, b) => a.name.localeCompare(b.name));
+    }
+    
+    return data || [];
+  } catch (error) {
+    console.error('Error fetching template categories:', error);
+    toast({
+      title: "Erro ao carregar categorias de templates",
+      description: "Não foi possível carregar as categorias. Tente novamente mais tarde.",
+      variant: "destructive",
+    });
+    return [];
+  }
+}
+
+export async function fetchShowcaseCategories(): Promise<Category[]> {
+  try {
+    const { data, error } = await supabase
+      .from('showcases')
+      .select(`
+        categories!inner(
+          id,
+          name,
+          slug,
+          icon,
+          created_at,
+          updated_at
+        )
+      `)
+      .not('category_id', 'is', null);
+    
+    if (error) {
+      console.error("Error fetching showcase categories:", error);
+      throw error;
+    }
+    
+    // Extract unique categories from the data
+    const uniqueCategories = new Map();
+    data?.forEach(item => {
+      const category = item.categories;
+      if (category && !uniqueCategories.has(category.id)) {
+        uniqueCategories.set(category.id, category);
+      }
+    });
+    
+    return Array.from(uniqueCategories.values()).sort((a, b) => a.name.localeCompare(b.name));
+  } catch (error) {
+    console.error('Error fetching showcase categories:', error);
+    toast({
+      title: "Erro ao carregar categorias de vitrine",
+      description: "Não foi possível carregar as categorias. Tente novamente mais tarde.",
+      variant: "destructive",
+    });
+    return [];
+  }
+}
+
 export async function createCategory(category: CategoryFormValues): Promise<Category | null> {
   try {
     // Ensure required fields are present before insertion

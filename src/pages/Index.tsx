@@ -4,6 +4,7 @@ import Header from '@/components/Header';
 import HeroSection from '@/components/sections/HeroSection';
 import MonteSitePromoSection from '@/components/sections/MonteSitePromoSection';
 import TemplatesSection from '@/components/sections/TemplatesSection';
+import ShowcaseSection from '@/components/sections/ShowcaseSection';
 import FeaturesSection from '@/components/sections/FeaturesSection';
 import CTASection from '@/components/sections/CTASection';
 import Footer from '@/components/Footer';
@@ -55,6 +56,7 @@ const Index = () => {
         <HeroSection scrollToTemplates={scrollToTemplates} />
         <MonteSitePromoSection />
         <TemplatesSection />
+        <ShowcaseSection />
         <FeaturesSection />
         <CTASection />
       </main>

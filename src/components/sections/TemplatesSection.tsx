@@ -1,10 +1,11 @@
+
 import React, { useState } from 'react';
 import FadeIn from '@/components/animations/FadeIn';
 import { Button } from '@/components/ui/button';
 import TemplateCard from '@/components/TemplateCard';
 import TemplateCategories, { TemplateCategory } from '@/components/TemplateCategories';
 import { Template } from '@/types/database';
-import { fetchCategories, fetchTemplates } from '@/services/templates';
+import { fetchTemplateCategories, fetchTemplates } from '@/services/templates';
 import { useQuery } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
 
@@ -17,8 +18,8 @@ const TemplatesSection: React.FC<TemplatesSectionProps> = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   
   const { data: categoriesData = [], isLoading: isLoadingCategories } = useQuery({
-    queryKey: ['categories'],
-    queryFn: fetchCategories,
+    queryKey: ['template-categories'],
+    queryFn: fetchTemplateCategories,
   });
   
   const { data: templatesData = [], isLoading: isLoadingTemplates } = useQuery({
