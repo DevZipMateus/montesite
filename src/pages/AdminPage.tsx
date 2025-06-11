@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -10,12 +11,13 @@ import { LogOut } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import AdminTemplatesTable from '@/components/admin/AdminTemplatesTable';
 import AdminShowcasesTable from '@/components/admin/AdminShowcasesTable';
+import HashLogsTable from '@/components/admin/HashLogsTable';
+
 const AdminPage: React.FC = () => {
   const navigate = useNavigate();
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
   const isMobile = useIsMobile();
+
   const handleLogout = () => {
     // Remove login state from localStorage
     localStorage.removeItem('admin_logged_in');
@@ -29,7 +31,9 @@ const AdminPage: React.FC = () => {
     // Redirect to home page
     navigate('/');
   };
-  return <div className="min-h-screen flex flex-col">
+
+  return (
+    <div className="min-h-screen flex flex-col">
       <Header />
       <div className="container mx-auto py-6 px-4 md:px-6 lg:py-10">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 md:mb-8">
@@ -45,6 +49,7 @@ const AdminPage: React.FC = () => {
             <TabsTrigger value="data-management" className="flex-grow md:flex-grow-0">Gestão de Dados</TabsTrigger>
             <TabsTrigger value="templates" className="flex-grow md:flex-grow-0">Templates</TabsTrigger>
             <TabsTrigger value="showcases" className="flex-grow md:flex-grow-0">Vitrine de Sites</TabsTrigger>
+            <TabsTrigger value="hash-logs" className="flex-grow md:flex-grow-0">Logs de Hash</TabsTrigger>
           </TabsList>
           
           <TabsContent value="data-management">
@@ -97,8 +102,25 @@ const AdminPage: React.FC = () => {
               </CardContent>
             </Card>
           </TabsContent>
+          
+          <TabsContent value="hash-logs">
+            <Card>
+              <CardHeader>
+                <CardTitle>Logs de Hash</CardTitle>
+                <CardDescription>
+                  Monitore todas as hash recebidas e o status dos projetos associados.
+                  Use esta seção para acompanhar o tráfego de parceiros e identificar problemas de integração.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <HashLogsTable />
+              </CardContent>
+            </Card>
+          </TabsContent>
         </Tabs>
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default AdminPage;
