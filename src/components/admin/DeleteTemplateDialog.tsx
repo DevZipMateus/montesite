@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteTemplate } from '@/services/templateService';
+import { toast } from '@/hooks/use-toast';
 
 interface DeleteTemplateDialogProps {
   templateId: string;
@@ -33,11 +34,28 @@ const DeleteTemplateDialog: React.FC<DeleteTemplateDialogProps> = ({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-templates'] });
       setOpen(false);
+      toast({
+        title: "Template removido",
+        description: "O template foi removido com sucesso.",
+      });
+    },
+    onError: (error) => {
+      console.error('Error deleting template:', error);
+      toast({
+        title: "Erro ao remover template",
+        description: "Não foi possível remover o template. Tente novamente mais tarde.",
+        variant: "destructive",
+      });
     }
   });
 
   const handleDelete = async () => {
-    await deleteMutation.mutateAsync(templateId);
+    console.log('Deleting template with ID:', templateId);
+    try {
+      await deleteMutation.mutateAsync(templateId);
+    } catch (error) {
+      console.error('Failed to delete template:', error);
+    }
   };
 
   return (
