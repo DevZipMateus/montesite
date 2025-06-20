@@ -6,8 +6,12 @@ import { useHash } from '@/hooks/useHash';
 
 const HashIndicator: React.FC = () => {
   const { hash, hasHash } = useHash();
+  
+  // Verificar se o usuário está logado como admin
+  const isAdminLoggedIn = localStorage.getItem('admin_logged_in') === 'true';
 
-  if (!hasHash) return null;
+  // Só mostrar a hash se tiver hash E se for admin logado
+  if (!hasHash || !isAdminLoggedIn) return null;
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
