@@ -1,33 +1,41 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Loader2 } from 'lucide-react';
 import FadeIn from '@/components/animations/FadeIn';
+import { useHeroImages } from '@/hooks/useHeroImages';
 
 interface HeroSectionProps {
   scrollToTemplates: (e: React.MouseEvent) => void;
 }
 
-const TEMPLATE_IMAGES = [
-  "/imagens/contabilidade-harmonica.png", 
-  "/imagens/contabilidade-template.png", 
-  "/imagens/easy-financial-solutions.png", 
-  "/imagens/conta-connection-hub.png", 
-  "/imagens/contador-simplicity.png", 
-  "/imagens/contabilify-modern-site.png"
-];
-
 const HeroSection: React.FC<HeroSectionProps> = ({
   scrollToTemplates
 }) => {
+  const { heroImages, isLoading, isEmpty } = useHeroImages();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  // Update interval based on number of images (minimum 4 seconds, maximum 6 seconds)
+  const intervalDuration = heroImages.length > 0 
+    ? Math.max(4000, Math.min(6000, heroImages.length * 800))
+    : 5000;
+
   useEffect(() => {
+    if (heroImages.length === 0) return;
+    
     const interval = setInterval(() => {
-      setCurrentImageIndex(prevIndex => (prevIndex + 1) % TEMPLATE_IMAGES.length);
-    }, 5000);
+      setCurrentImageIndex(prevIndex => (prevIndex + 1) % heroImages.length);
+    }, intervalDuration);
+    
     return () => clearInterval(interval);
-  }, []);
+  }, [heroImages.length, intervalDuration]);
+
+  // Reset index if it's out of bounds after data loads
+  useEffect(() => {
+    if (currentImageIndex >= heroImages.length && heroImages.length > 0) {
+      setCurrentImageIndex(0);
+    }
+  }, [heroImages.length, currentImageIndex]);
 
   return (
     <section 
@@ -68,38 +76,68 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               <div className="relative">
                 <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 via-indigo-300/20 to-primary/10 rounded-xl blur-xl"></div>
                 
-                <div className="relative overflow-hidden rounded-xl border border-white shadow-2xl bg-white">
-                  {TEMPLATE_IMAGES.map((src, index) => (
-                    <img 
-                      key={index} 
-                      src={src} 
-                      alt={`Template Preview ${index + 1}`} 
-                      className={`w-full mx-auto z-10 transition-opacity duration-1000 absolute inset-0 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`} 
-                      style={{
-                        objectFit: 'contain'
-                      }} 
-                    />
-                  ))}
-                  
-                  <img 
-                    src={TEMPLATE_IMAGES[currentImageIndex]} 
-                    alt="Template Preview" 
-                    className="invisible w-full mx-auto" 
-                    style={{
-                      objectFit: 'contain'
-                    }} 
-                  />
-                  
-                  <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-2">
-                    {TEMPLATE_IMAGES.map((_, index) => (
-                      <button 
-                        key={index} 
-                        onClick={() => setCurrentImageIndex(index)} 
-                        className={`w-2 h-2 rounded-full transition-all ${index === currentImageIndex ? 'bg-primary w-4' : 'bg-gray-300 hover:bg-gray-400'}`}
-                        aria-label={`Go to slide ${index + 1}`}
-                      />
-                    ))}
-                  </div>
+                <div className="relative overflow-hidden rounded-xl border border-white shadow-2xl bg-white min-h-[300px] flex items-center justify-center">
+                  {isLoading ? (
+                    <div className="flex flex-col items-center gap-3 py-12">
+                      <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                      <span className="text-sm text-muted-foreground">Carregando templates...</span>
+                    </div>
+                  ) : isEmpty ? (
+                    <div className="flex flex-col items-center gap-3 py-12 text-center px-4">
+                      <p className="text-sm text-muted-foreground">
+                        Nenhuma imagem disponível no momento
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      {heroImages.map((image, index) => (
+                        <div key={image.id} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`}>
+                          <img 
+                            src={image.url} 
+                            alt={`${image.title} - ${image.type === 'template' ? 'Template' : 'Site em destaque'}`}
+                            className="w-full h-full object-contain"
+                            loading={index === 0 ? 'eager' : 'lazy'}
+                          />
+                          
+                          {/* Tooltip with image info */}
+                          <div className="absolute top-4 left-4 bg-black/70 text-white px-3 py-1 rounded-lg text-xs backdrop-blur-sm">
+                            <span className="font-medium">{image.title}</span>
+                            <span className="ml-2 opacity-75">
+                              {image.type === 'template' ? '📄 Template' : '⭐ Em destaque'}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                      
+                      {/* Image placeholder for sizing */}
+                      {heroImages.length > 0 && (
+                        <img 
+                          src={heroImages[currentImageIndex]?.url} 
+                          alt="Sizing placeholder" 
+                          className="invisible w-full object-contain max-h-[400px]" 
+                        />
+                      )}
+                      
+                      {/* Navigation dots */}
+                      {heroImages.length > 1 && (
+                        <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-2">
+                          {heroImages.map((_, index) => (
+                            <button 
+                              key={index} 
+                              onClick={() => setCurrentImageIndex(index)} 
+                              className={`transition-all duration-200 rounded-full ${
+                                index === currentImageIndex 
+                                  ? 'bg-primary w-4 h-2' 
+                                  : 'bg-gray-300 hover:bg-gray-400 w-2 h-2'
+                              }`}
+                              aria-label={`Ver ${heroImages[index]?.title}`}
+                              title={`${heroImages[index]?.title} - ${heroImages[index]?.type === 'template' ? 'Template' : 'Site em destaque'}`}
+                            />
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  )}
                 </div>
               </div>
             </FadeIn>
