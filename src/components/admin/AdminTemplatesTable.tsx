@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { 
@@ -15,6 +16,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import TemplateFormDialog from './TemplateFormDialog';
 import DeleteTemplateDialog from './DeleteTemplateDialog';
+import CategoryFormDialog from './CategoryFormDialog';
 
 const AdminTemplatesTable: React.FC = () => {
   const { data: templates = [], isLoading, isError } = useQuery({
@@ -40,7 +42,8 @@ const AdminTemplatesTable: React.FC = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-end">
+      <div className="flex justify-end gap-2">
+        <CategoryFormDialog />
         <TemplateFormDialog />
       </div>
       
