@@ -44,7 +44,7 @@ const TemplatesSection: React.FC<TemplatesSectionProps> = () => {
             Escolha o Template Ideal
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-            Explore nossa galeria de templates premium para diversos segmentos de mercado.
+            Estes são modelos que utilizamos como base de estruturas para desenvolver um site totalmente personalizado para o seu negócio.
           </p>
         </FadeIn>
         
