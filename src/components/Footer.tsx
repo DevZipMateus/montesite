@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Facebook, Instagram, Youtube, Linkedin, Music, Mail, Phone, MapPin } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
@@ -117,7 +118,17 @@ const Footer = () => {
         <Separator className="my-8" />
         
         <div className="flex flex-col md:flex-row justify-between items-center text-muted-foreground text-sm">
-          <p>© 2025 MonteSite. Todos os direitos reservados.</p>
+          <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4">
+            <p>© 2025 MonteSite. Todos os direitos reservados.</p>
+            <div className="flex items-center">
+              <span className="text-xs mr-2">Desenvolvido por:</span>
+              <img 
+                src="/lovable-uploads/29b8e99e-d6f4-4ff5-8322-11bdd8375f4a.png" 
+                alt="Zipline" 
+                className="h-4 opacity-70"
+              />
+            </div>
+          </div>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a 
               href="https://montesite.com.br/termos/Termos%20de%20Uso%20do%20Servi%C3%A7o%20de%20Cria%C3%A7%C3%A3o%20e%20Hospedagem%20de%20Sites.pdf" 
@@ -136,16 +147,6 @@ const Footer = () => {
               Política de Privacidade
             </a>
           </div>
-        </div>
-
-        {/* Desenvolvido por Zipline */}
-        <div className="flex justify-center items-center mt-6 pt-4 border-t border-gray-200">
-          <span className="text-xs text-muted-foreground mr-2">Desenvolvido por:</span>
-          <img 
-            src="/lovable-uploads/29b8e99e-d6f4-4ff5-8322-11bdd8375f4a.png" 
-            alt="Zipline" 
-            className="h-4 opacity-70"
-          />
         </div>
       </div>
     </footer>
