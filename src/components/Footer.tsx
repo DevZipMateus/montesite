@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Facebook, Instagram, Youtube, Linkedin, Music, Mail, Phone, MapPin } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
@@ -137,6 +136,16 @@ const Footer = () => {
               Política de Privacidade
             </a>
           </div>
+        </div>
+
+        {/* Desenvolvido por Zipline */}
+        <div className="flex justify-center items-center mt-6 pt-4 border-t border-gray-200">
+          <span className="text-xs text-muted-foreground mr-2">Desenvolvido por:</span>
+          <img 
+            src="/lovable-uploads/29b8e99e-d6f4-4ff5-8322-11bdd8375f4a.png" 
+            alt="Zipline" 
+            className="h-4 opacity-70"
+          />
         </div>
       </div>
     </footer>
