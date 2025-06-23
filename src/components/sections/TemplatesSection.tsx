@@ -35,15 +35,22 @@ const TemplatesSection: React.FC<TemplatesSectionProps> = () => {
       icon: category.icon
     }))
   ];
+
+  // Filter templates based on active category
+  const filteredTemplates = activeCategory === 'all' 
+    ? templatesData 
+    : templatesData.filter(template => 
+        template.categories && template.categories.slug === activeCategory
+      );
   
   return (
-    <section id="templates" className="px-8 md:px-14 py-[47px]">
+    <section id="templates" className="px-4 sm:px-8 md:px-14 py-[47px]">
       <div className="max-w-7xl mx-auto">
         <FadeIn className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-5">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-5">
             Escolha o Template Ideal
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+          <p className="text-muted-foreground max-w-2xl mx-auto text-base sm:text-lg px-4">
             Estes são modelos que utilizamos como base de estruturas para desenvolver um site totalmente personalizado para o seu negócio.
           </p>
         </FadeIn>
@@ -59,22 +66,22 @@ const TemplatesSection: React.FC<TemplatesSectionProps> = () => {
         {(isLoadingCategories || isLoadingTemplates) && (
           <div className="flex justify-center items-center py-20">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            <span className="ml-2 text-lg text-muted-foreground">Carregando templates...</span>
+            <span className="ml-2 text-base sm:text-lg text-muted-foreground">Carregando templates...</span>
           </div>
         )}
         
-        {!isLoadingTemplates && templatesData.length === 0 && (
-          <div className="text-center py-20">
-            <p className="text-lg text-muted-foreground mb-4">
+        {!isLoadingTemplates && filteredTemplates.length === 0 && (
+          <div className="text-center py-20 px-4">
+            <p className="text-base sm:text-lg text-muted-foreground mb-4">
               Nenhum template encontrado para esta categoria.
             </p>
             <Button onClick={() => setActiveCategory('all')}>Ver todos os templates</Button>
           </div>
         )}
         
-        {!isLoadingTemplates && templatesData.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
-            {templatesData.map((template, index) => (
+        {!isLoadingTemplates && filteredTemplates.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mt-10">
+            {filteredTemplates.map((template, index) => (
               <FadeIn key={template.id} delay={index * 100}>
                 <TemplateCard {...template} />
               </FadeIn>
