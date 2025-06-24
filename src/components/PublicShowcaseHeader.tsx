@@ -46,14 +46,14 @@ const PublicShowcaseHeader: React.FC<PublicShowcaseHeaderProps> = ({
     <header className="fixed top-0 left-0 right-0 z-50 glass shadow-md">
       <div className="max-w-7xl mx-auto">
         {/* Top bar with logo and mobile menu button */}
-        <div className="flex items-center justify-between py-4 px-8 md:px-14">
-          <div className="text-2xl font-bold text-primary tracking-tight">
+        <div className="flex items-center justify-between py-3 sm:py-4 px-4 sm:px-8 md:px-14">
+          <div className="text-xl sm:text-2xl font-bold text-primary tracking-tight">
             Monte<span className="text-foreground">Site</span>
           </div>
           
           {/* Mobile menu button */}
           <button 
-            className="md:hidden focus:outline-none"
+            className="md:hidden focus:outline-none p-2 -m-2"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label={isMobileMenuOpen ? "Fechar menu" : "Abrir menu"}
           >
@@ -80,10 +80,10 @@ const PublicShowcaseHeader: React.FC<PublicShowcaseHeaderProps> = ({
         <div 
           className={cn(
             "md:hidden overflow-hidden transition-all duration-300 ease-in-out border-t border-gray-200/50",
-            isMobileMenuOpen ? "max-h-[200px] pb-4" : "max-h-0"
+            isMobileMenuOpen ? "max-h-[280px] pb-3" : "max-h-0"
           )}
         >
-          <div className="px-8 pt-4">
+          <div className="px-4 sm:px-8 pt-3">
             {!isLoadingCategories && (
               <TemplateCategories 
                 categories={categories} 
