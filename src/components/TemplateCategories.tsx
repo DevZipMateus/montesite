@@ -52,17 +52,17 @@ const TemplateCategories: React.FC<TemplateCategoriesProps> = ({
         onValueChange={onChange}
         className="w-full"
       >
-        <TabsList className="w-full max-w-full mx-auto bg-muted/50 p-1.5 rounded-lg md:rounded-full flex flex-wrap md:flex-nowrap gap-1 md:gap-0 h-auto md:h-auto">
+        <TabsList className="w-full bg-muted/50 p-1 rounded-lg grid grid-cols-2 sm:grid-cols-3 md:flex md:justify-center gap-1">
           {categories.map((category) => (
             <TabsTrigger 
               key={category.id} 
               value={category.id}
-              className="flex items-center gap-2 px-3 py-2 md:px-5 md:py-2.5 rounded-md md:rounded-full text-xs md:text-sm data-[state=active]:bg-white data-[state=active]:shadow-sm flex-1 md:flex-initial min-w-0"
+              className="flex items-center justify-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm hover:bg-white/50"
             >
-              <span className="hidden sm:inline-block">
+              <span className="hidden sm:inline-block flex-shrink-0">
                 {renderIcon(category.icon)}
               </span>
-              <span className="truncate">{category.name}</span>
+              <span className="truncate text-center">{category.name}</span>
             </TabsTrigger>
           ))}
         </TabsList>
