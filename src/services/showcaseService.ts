@@ -11,8 +11,23 @@ export async function fetchShowcases(categorySlug?: string, featuredOnly?: boole
         categories(id, name, slug, icon, created_at, updated_at)
       `);
     
+    // If filtering by category, first get the category ID
     if (categorySlug && categorySlug !== 'all') {
-      query = query.eq('categories.slug', categorySlug);
+      const { data: categoryData, error: categoryError } = await supabase
+        .from('categories')
+        .select('id')
+        .eq('slug', categorySlug)
+        .single();
+      
+      if (categoryError) {
+        console.error('Error fetching category:', categoryError);
+        // If category not found, return empty array
+        return [];
+      }
+      
+      if (categoryData) {
+        query = query.eq('category_id', categoryData.id);
+      }
     }
     
     if (featuredOnly) {

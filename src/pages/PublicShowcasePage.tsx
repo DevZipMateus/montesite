@@ -31,7 +31,7 @@ const PublicShowcasePage: React.FC = () => {
   const categories: TemplateCategory[] = [
     {
       id: 'all',
-      name: 'Todos'
+      name: 'Todas'
     },
     ...categoriesData.map(category => ({
       id: category.slug,
