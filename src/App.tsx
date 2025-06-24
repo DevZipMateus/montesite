@@ -10,6 +10,7 @@ import AdminPage from "./pages/AdminPage";
 import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
 import ShowcasePage from "./pages/ShowcasePage";
+import PublicShowcasePage from "./pages/PublicShowcasePage";
 import HashRouter from "./components/HashRouter";
 import HashIndicator from "./components/HashIndicator";
 import { supabase } from "./integrations/supabase/client";
@@ -40,6 +41,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/vitrine" element={<ShowcasePage />} />
+              <Route path="/vitrine-publica" element={<PublicShowcasePage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route 
                 path="/admin" 

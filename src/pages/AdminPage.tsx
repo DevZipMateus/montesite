@@ -12,6 +12,7 @@ import { useToast } from '@/components/ui/use-toast';
 import AdminTemplatesTable from '@/components/admin/AdminTemplatesTable';
 import AdminShowcasesTable from '@/components/admin/AdminShowcasesTable';
 import HashLogsTable from '@/components/admin/HashLogsTable';
+import PublicUrlGenerator from '@/components/admin/PublicUrlGenerator';
 
 const AdminPage: React.FC = () => {
   const navigate = useNavigate();
@@ -49,6 +50,7 @@ const AdminPage: React.FC = () => {
             <TabsTrigger value="data-management" className="flex-grow md:flex-grow-0">Gestão de Dados</TabsTrigger>
             <TabsTrigger value="templates" className="flex-grow md:flex-grow-0">Templates</TabsTrigger>
             <TabsTrigger value="showcases" className="flex-grow md:flex-grow-0">Vitrine de Sites</TabsTrigger>
+            <TabsTrigger value="public-url" className="flex-grow md:flex-grow-0">URL Pública</TabsTrigger>
             <TabsTrigger value="hash-logs" className="flex-grow md:flex-grow-0">Logs de Hash</TabsTrigger>
           </TabsList>
           
@@ -101,6 +103,10 @@ const AdminPage: React.FC = () => {
                 <AdminShowcasesTable />
               </CardContent>
             </Card>
+          </TabsContent>
+          
+          <TabsContent value="public-url">
+            <PublicUrlGenerator />
           </TabsContent>
           
           <TabsContent value="hash-logs">
