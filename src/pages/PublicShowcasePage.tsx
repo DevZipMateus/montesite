@@ -5,20 +5,11 @@ import FadeIn from '@/components/animations/FadeIn';
 import { Loader2 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { Showcase } from '@/types/database';
-import { fetchShowcases, fetchShowcaseCategories } from '@/services/showcaseService';
-import TemplateCategories, { TemplateCategory } from '@/components/TemplateCategories';
+import { fetchShowcases } from '@/services/showcaseService';
 import ShowcaseCard from '@/components/ShowcaseCard';
 
 const PublicShowcasePage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('all');
-
-  const {
-    data: categoriesData = [],
-    isLoading: isLoadingCategories
-  } = useQuery({
-    queryKey: ['showcase-categories'],
-    queryFn: fetchShowcaseCategories
-  });
 
   const {
     data: showcasesData = [],
@@ -28,22 +19,13 @@ const PublicShowcasePage: React.FC = () => {
     queryFn: () => fetchShowcases(activeCategory !== 'all' ? activeCategory : undefined)
   });
 
-  const categories: TemplateCategory[] = [
-    {
-      id: 'all',
-      name: 'Todas'
-    },
-    ...categoriesData.map(category => ({
-      id: category.slug,
-      name: category.name,
-      icon: category.icon
-    }))
-  ];
-
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      <PublicShowcaseHeader />
-      <main className="flex-grow pt-24">
+      <PublicShowcaseHeader 
+        activeCategory={activeCategory}
+        onCategoryChange={setActiveCategory}
+      />
+      <main className="flex-grow pt-32 md:pt-40">
         <section className="px-8 md:px-14 py-14">
           <div className="max-w-7xl mx-auto">
             <FadeIn className="text-center mb-14">
@@ -56,15 +38,7 @@ const PublicShowcasePage: React.FC = () => {
               </p>
             </FadeIn>
             
-            <FadeIn delay={100}>
-              <TemplateCategories 
-                categories={categories} 
-                activeCategory={activeCategory} 
-                onChange={setActiveCategory} 
-              />
-            </FadeIn>
-            
-            {(isLoadingCategories || isLoadingShowcases) && (
+            {isLoadingShowcases && (
               <div className="flex justify-center items-center py-20">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
                 <span className="ml-2 text-lg text-muted-foreground">Carregando sites...</span>
