@@ -1,7 +1,10 @@
 
-import React from 'react';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { LayoutTemplate } from 'lucide-react';
+import React, { useState } from 'react';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { LayoutTemplate, ChevronDown } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export type TemplateCategory = {
   id: string;
@@ -44,29 +47,88 @@ const TemplateCategories: React.FC<TemplateCategoriesProps> = ({
     return icon;
   };
 
+  // For desktop: show first 5 categories directly, rest in dropdown
+  const maxVisibleCategories = 5;
+  const visibleCategories = categories.slice(0, maxVisibleCategories);
+  const overflowCategories = categories.slice(maxVisibleCategories);
+
+  const CategoryButton: React.FC<{ category: TemplateCategory; isActive: boolean }> = ({ category, isActive }) => (
+    <button
+      onClick={() => onChange(category.id)}
+      className={cn(
+        "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap",
+        isActive
+          ? "bg-white text-foreground shadow-sm"
+          : "text-muted-foreground hover:bg-white/50 hover:text-foreground"
+      )}
+    >
+      <span className="hidden sm:inline-block flex-shrink-0">
+        {renderIcon(category.icon)}
+      </span>
+      <span className="truncate">{category.name}</span>
+    </button>
+  );
+
   return (
     <div className="mb-12">
-      <Tabs 
-        defaultValue={activeCategory} 
-        value={activeCategory}
-        onValueChange={onChange}
-        className="w-full"
-      >
-        <TabsList className="w-full bg-muted/50 p-1 rounded-lg grid grid-cols-2 sm:grid-cols-3 md:flex md:justify-center gap-1">
-          {categories.map((category) => (
-            <TabsTrigger 
-              key={category.id} 
-              value={category.id}
-              className="flex items-center justify-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-sm hover:bg-white/50"
-            >
-              <span className="hidden sm:inline-block flex-shrink-0">
-                {renderIcon(category.icon)}
-              </span>
-              <span className="truncate text-center">{category.name}</span>
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
+      {/* Desktop version with scrollable area and dropdown */}
+      <div className="hidden md:flex items-center gap-2 bg-muted/50 p-2 rounded-lg">
+        <ScrollArea className="flex-1">
+          <div className="flex items-center gap-2 px-2">
+            {visibleCategories.map((category) => (
+              <CategoryButton
+                key={category.id}
+                category={category}
+                isActive={activeCategory === category.id}
+              />
+            ))}
+          </div>
+        </ScrollArea>
+        
+        {/* Dropdown for overflow categories */}
+        {overflowCategories.length > 0 && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="flex items-center gap-2">
+                Mais
+                <ChevronDown className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              {overflowCategories.map((category) => (
+                <DropdownMenuItem
+                  key={category.id}
+                  onClick={() => onChange(category.id)}
+                  className={cn(
+                    "flex items-center gap-2 cursor-pointer",
+                    activeCategory === category.id && "bg-accent"
+                  )}
+                >
+                  <span className="flex-shrink-0">
+                    {renderIcon(category.icon)}
+                  </span>
+                  <span>{category.name}</span>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
+      </div>
+
+      {/* Mobile version with scrollable area */}
+      <div className="md:hidden bg-muted/50 p-2 rounded-lg">
+        <ScrollArea className="h-20">
+          <div className="flex items-center gap-2 px-2">
+            {categories.map((category) => (
+              <CategoryButton
+                key={category.id}
+                category={category}
+                isActive={activeCategory === category.id}
+              />
+            ))}
+          </div>
+        </ScrollArea>
+      </div>
     </div>
   );
 };
