@@ -1,15 +1,10 @@
-
 import React from 'react';
 import FadeIn from '@/components/animations/FadeIn';
-
 const FeaturesSection: React.FC = () => {
-  return (
-    <section className="py-28 px-8 md:px-14 bg-secondary/30">
+  return <section className="py-28 px-8 md:px-14 bg-secondary/30">
       <div className="max-w-7xl mx-auto">
         <FadeIn className="text-center mb-20">
-          <h2 className="text-3xl md:text-4xl font-bold mb-5">
-            Por que escolher nossos templates?
-          </h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-5">Por que escolher nossos sites?</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
             Oferecemos soluções completas para sua presença online. Confira os diferenciais dos nossos templates.
           </p>
@@ -65,8 +60,6 @@ const FeaturesSection: React.FC = () => {
           </FadeIn>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default FeaturesSection;
