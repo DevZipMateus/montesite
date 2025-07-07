@@ -13,7 +13,7 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { label: 'Home', href: '/#home' },
-  { label: 'Templates', href: '/#templates' },
+  { label: 'Estilos', href: '/#templates' },
   { label: 'Vitrine', href: '/vitrine', isExternalRoute: true }
 ];
 
@@ -101,7 +101,7 @@ const Header = () => {
               asChild
             >
               <a href={isHomePage ? "/#templates" : "/#templates"} onClick={isHomePage ? (e) => scrollToSection(e, '/#templates', false) : undefined}>
-                Ver Templates
+                Ver Estilos
               </a>
             </Button>
           )}
@@ -158,7 +158,7 @@ const Header = () => {
               asChild
             >
               <a href={isHomePage ? "/#templates" : "/#templates"} onClick={isHomePage ? (e) => scrollToSection(e, '/#templates', false) : undefined}>
-                Ver Templates
+                Ver Estilos
               </a>
             </Button>
           )}

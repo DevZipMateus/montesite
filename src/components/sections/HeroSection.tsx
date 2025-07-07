@@ -45,11 +45,11 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           <div className="flex-1">
             <FadeIn direction="left">
               <span className="inline-block px-4 py-1 rounded-full bg-primary/10 text-primary font-medium text-sm mb-6">
-                Lançamento de Templates Profissionais
+                Lançamento de Estilos Profissionais
               </span>
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-6">Escolha o Estilo que mais lhe agrada para seiSite Institucional</h1>
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-6">Escolha o Estilo que mais lhe agrada para seu Site Institucional</h1>
               <p className="text-lg text-muted-foreground mb-8 max-w-xl">
-                Templates profissionais, personalizáveis e com design moderno para elevar o seu negócio. Implantação rápida e suporte especializado.
+                Estilos profissionais, personalizáveis e com design moderno para elevar o seu negócio. Implantação rápida e suporte especializado.
               </p>
               <div className="flex flex-wrap gap-6">
                 <Button size="lg" className="rounded-full btn-hover-effect text-lg bg-gradient-to-r from-primary to-indigo-500 hover:from-indigo-500 hover:to-primary transition-all duration-300 px-8 py-6" asChild>
@@ -67,7 +67,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 <div className="relative overflow-hidden rounded-xl border border-white shadow-2xl bg-white min-h-[300px] flex items-center justify-center">
                   {isLoading ? <div className="flex flex-col items-center gap-3 py-12">
                       <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                      <span className="text-sm text-muted-foreground">Carregando templates...</span>
+                      <span className="text-sm text-muted-foreground">Carregando estilos...</span>
                     </div> : isEmpty ? <div className="flex flex-col items-center gap-3 py-12 text-center px-4">
                       <p className="text-sm text-muted-foreground">
                         Nenhuma imagem disponível no momento
@@ -101,7 +101,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         
         <div className="flex justify-center mt-10">
           <a href="#templates" onClick={scrollToTemplates} className="animate-float flex flex-col items-center text-sm text-muted-foreground hover:text-primary transition-colors">
-            <span className="mb-2">Role para ver os templates</span>
+            <span className="mb-2">Role para ver os estilos</span>
             <ChevronDown className="animate-bounce" />
           </a>
         </div>

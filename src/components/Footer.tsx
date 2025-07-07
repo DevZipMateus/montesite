@@ -80,7 +80,7 @@ const Footer = () => {
                   onClick={(e) => handleAnchorClick(e, "/#templates")}
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
-                  Templates
+                  Estilos
                 </a>
               </li>
               <li>

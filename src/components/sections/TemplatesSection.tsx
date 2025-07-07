@@ -28,7 +28,7 @@ const TemplatesSection: React.FC<TemplatesSectionProps> = () => {
   });
   
   const categories: TemplateCategory[] = [
-    { id: 'all', name: 'Todos' },
+    { id: 'all', name: 'Todos os Estilos' },
     ...categoriesData.map((category) => ({
       id: category.slug,
       name: category.name,
@@ -48,10 +48,10 @@ const TemplatesSection: React.FC<TemplatesSectionProps> = () => {
       <div className="max-w-7xl mx-auto">
         <FadeIn className="text-center mb-12">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-5">
-            Escolha o Template Ideal
+            Escolha o Estilo Ideal
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-base sm:text-lg px-4">
-            Estes são modelos que utilizamos como base de estruturas para desenvolver um site totalmente personalizado para o seu negócio.
+            Estes são estilos que utilizamos como base de estruturas para desenvolver um site totalmente personalizado para o seu negócio.
           </p>
         </FadeIn>
         
@@ -66,16 +66,16 @@ const TemplatesSection: React.FC<TemplatesSectionProps> = () => {
         {(isLoadingCategories || isLoadingTemplates) && (
           <div className="flex justify-center items-center py-20">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            <span className="ml-2 text-base sm:text-lg text-muted-foreground">Carregando templates...</span>
+            <span className="ml-2 text-base sm:text-lg text-muted-foreground">Carregando estilos...</span>
           </div>
         )}
         
         {!isLoadingTemplates && filteredTemplates.length === 0 && (
           <div className="text-center py-20 px-4">
             <p className="text-base sm:text-lg text-muted-foreground mb-4">
-              Nenhum template encontrado para esta categoria.
+              Nenhum estilo encontrado para esta categoria.
             </p>
-            <Button onClick={() => setActiveCategory('all')}>Ver todos os templates</Button>
+            <Button onClick={() => setActiveCategory('all')}>Ver todos os estilos</Button>
           </div>
         )}
         
