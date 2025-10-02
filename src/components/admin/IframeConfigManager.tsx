@@ -85,11 +85,6 @@ const IframeConfigManager: React.FC = () => {
     },
   });
 
-  const handleConfigureTemplate = (template: Template) => {
-    setSelectedTemplate(template);
-    setDialogOpen(true);
-  };
-
   const handleSave = async (
     templateId: string, 
     iframeCode: string, 
@@ -113,68 +108,77 @@ const IframeConfigManager: React.FC = () => {
     return <div className="p-4">Carregando...</div>;
   }
 
+  const handleAddNew = () => {
+    setSelectedTemplate(null);
+    setDialogOpen(true);
+  };
+
+  const getTemplateForConfig = (config: IframeConfig): Template | undefined => {
+    return templates.find(t => t.id === config.template_id);
+  };
+
   return (
     <div className="space-y-4">
+      <div className="flex justify-end mb-4">
+        <Button onClick={handleAddNew}>
+          <Plus className="h-4 w-4 mr-2" />
+          Adicionar iframe
+        </Button>
+      </div>
+
       <div className="rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Template</TableHead>
-              <TableHead>Status do iframe</TableHead>
+              <TableHead>Status</TableHead>
               <TableHead className="text-right">Ações</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {templates.map((template) => {
-              const config = getConfigForTemplate(template.id);
-              return (
-                <TableRow key={template.id}>
-                  <TableCell className="font-medium">{template.title}</TableCell>
-                  <TableCell>
-                    {config ? (
+            {iframeConfigs.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={3} className="text-center text-muted-foreground py-8">
+                  Nenhum iframe configurado. Clique em "Adicionar iframe" para começar.
+                </TableCell>
+              </TableRow>
+            ) : (
+              iframeConfigs.map((config) => {
+                const template = getTemplateForConfig(config);
+                return (
+                  <TableRow key={config.id}>
+                    <TableCell className="font-medium">
+                      {template?.title || 'Template não encontrado'}
+                    </TableCell>
+                    <TableCell>
                       <Badge variant={config.is_active ? 'default' : 'secondary'}>
                         {config.is_active ? 'Ativo' : 'Inativo'}
                       </Badge>
-                    ) : (
-                      <Badge variant="outline">Sem iframe</Badge>
-                    )}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
-                      {!config ? (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleConfigureTemplate(template)}
-                        >
-                          <Plus className="h-4 w-4 mr-1" />
-                          Adicionar iframe
-                        </Button>
-                      ) : (
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          onClick={() => handleDelete(config.id)}
-                        >
-                          <Trash2 className="h-4 w-4 mr-1" />
-                          Excluir
-                        </Button>
-                      )}
-                    </div>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => handleDelete(config.id)}
+                      >
+                        <Trash2 className="h-4 w-4 mr-1" />
+                        Excluir
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            )}
           </TableBody>
         </Table>
       </div>
 
-      {selectedTemplate && (
+      {dialogOpen && (
         <IframeConfigDialog
           open={dialogOpen}
           onOpenChange={setDialogOpen}
           template={selectedTemplate}
-          existingConfig={getConfigForTemplate(selectedTemplate.id)}
+          existingConfig={selectedTemplate ? getConfigForTemplate(selectedTemplate.id) : null}
           onSave={handleSave}
         />
       )}
