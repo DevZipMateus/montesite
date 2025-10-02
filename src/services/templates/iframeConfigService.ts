@@ -32,11 +32,11 @@ export const fetchAllIframeConfigs = async (): Promise<IframeConfig[]> => {
 };
 
 export const createIframeConfig = async (
-  iframeData: Omit<IframeConfig, 'id' | 'created_at' | 'updated_at'>
+  iframeData: Omit<IframeConfig, 'id' | 'created_at' | 'updated_at' | 'template_id'> & { template_id?: string }
 ): Promise<IframeConfig> => {
   const { data, error } = await supabase
     .from('template_iframe_configs')
-    .insert(iframeData)
+    .insert({ ...iframeData, template_id: null })
     .select()
     .single();
 

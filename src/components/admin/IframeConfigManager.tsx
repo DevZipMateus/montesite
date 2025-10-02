@@ -3,9 +3,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2, Edit } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { fetchAdminTemplates } from '@/services/templates/templateFetchService';
 import { 
   fetchAllIframeConfigs, 
   createIframeConfig, 
@@ -13,18 +12,13 @@ import {
   deleteIframeConfig 
 } from '@/services/templates/iframeConfigService';
 import IframeConfigDialog from './IframeConfigDialog';
-import { Template, IframeConfig } from '@/types/database';
+import { IframeConfig } from '@/types/database';
 
 const IframeConfigManager: React.FC = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(null);
+  const [selectedConfig, setSelectedConfig] = useState<IframeConfig | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
-
-  const { data: templates = [], isLoading: templatesLoading } = useQuery({
-    queryKey: ['admin-templates'],
-    queryFn: fetchAdminTemplates,
-  });
 
   const { data: iframeConfigs = [], isLoading: configsLoading } = useQuery({
     queryKey: ['iframe-configs'],
@@ -33,20 +27,20 @@ const IframeConfigManager: React.FC = () => {
 
   const saveMutation = useMutation({
     mutationFn: async ({ 
-      templateId, 
+      name,
       iframeCode, 
       isActive, 
       configId 
     }: { 
-      templateId: string; 
+      name: string;
       iframeCode: string; 
       isActive: boolean; 
       configId?: string; 
     }) => {
       if (configId) {
-        return updateIframeConfig(configId, { iframe_code: iframeCode, is_active: isActive });
+        return updateIframeConfig(configId, { name, iframe_code: iframeCode, is_active: isActive });
       } else {
-        return createIframeConfig({ template_id: templateId, iframe_code: iframeCode, is_active: isActive });
+        return createIframeConfig({ name, iframe_code: iframeCode, is_active: isActive });
       }
     },
     onSuccess: () => {
@@ -86,12 +80,12 @@ const IframeConfigManager: React.FC = () => {
   });
 
   const handleSave = async (
-    templateId: string, 
+    name: string,
     iframeCode: string, 
     isActive: boolean, 
     configId?: string
   ) => {
-    await saveMutation.mutateAsync({ templateId, iframeCode, isActive, configId });
+    await saveMutation.mutateAsync({ name, iframeCode, isActive, configId });
   };
 
   const handleDelete = async (configId: string) => {
@@ -100,21 +94,18 @@ const IframeConfigManager: React.FC = () => {
     }
   };
 
-  const getConfigForTemplate = (templateId: string): IframeConfig | undefined => {
-    return iframeConfigs.find(config => config.template_id === templateId);
-  };
-
-  if (templatesLoading || configsLoading) {
+  if (configsLoading) {
     return <div className="p-4">Carregando...</div>;
   }
 
   const handleAddNew = () => {
-    setSelectedTemplate(null);
+    setSelectedConfig(null);
     setDialogOpen(true);
   };
 
-  const getTemplateForConfig = (config: IframeConfig): Template | undefined => {
-    return templates.find(t => t.id === config.template_id);
+  const handleEdit = (config: IframeConfig) => {
+    setSelectedConfig(config);
+    setDialogOpen(true);
   };
 
   return (
@@ -130,7 +121,7 @@ const IframeConfigManager: React.FC = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Template</TableHead>
+              <TableHead>Nome</TableHead>
               <TableHead>Status</TableHead>
               <TableHead className="text-right">Ações</TableHead>
             </TableRow>
@@ -177,8 +168,7 @@ const IframeConfigManager: React.FC = () => {
         <IframeConfigDialog
           open={dialogOpen}
           onOpenChange={setDialogOpen}
-          template={selectedTemplate}
-          existingConfig={selectedTemplate ? getConfigForTemplate(selectedTemplate.id) : null}
+          existingConfig={selectedConfig}
           onSave={handleSave}
         />
       )}
