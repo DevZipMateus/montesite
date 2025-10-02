@@ -22,6 +22,7 @@ export default defineConfig(({ mode }) => ({
       buffer: "buffer",  // Alias para o buffer
       stream: "stream-browserify",  // Alias para o stream
     },
+    dedupe: ["react", "react-dom"],
   },
   define: {
     global: 'globalThis', // Isso pode ajudar a evitar o erro de "global is not defined"
