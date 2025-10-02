@@ -15,3 +15,6 @@ project_id = "vaabpicspdbolvutnscp"
 
 [functions.create_storage_policy]
 verify_jwt = true
+
+[functions.get-footer-iframe]
+verify_jwt = false

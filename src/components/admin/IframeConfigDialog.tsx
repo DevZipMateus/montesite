@@ -13,7 +13,7 @@ interface IframeConfigDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   existingConfig?: IframeConfig | null;
-  onSave: (name: string, iframeCode: string, isActive: boolean, configId?: string) => Promise<void>;
+  onSave: (name: string, iframeCode: string, isActive: boolean, isGlobalActive: boolean, configId?: string) => Promise<void>;
 }
 
 const IframeConfigDialog: React.FC<IframeConfigDialogProps> = ({
@@ -26,6 +26,7 @@ const IframeConfigDialog: React.FC<IframeConfigDialogProps> = ({
   const [name, setName] = useState(existingConfig?.name || '');
   const [iframeCode, setIframeCode] = useState(existingConfig?.iframe_code || '');
   const [isActive, setIsActive] = useState(existingConfig?.is_active ?? true);
+  const [isGlobalActive, setIsGlobalActive] = useState(existingConfig?.is_global_active ?? false);
   const [isSaving, setIsSaving] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -34,10 +35,12 @@ const IframeConfigDialog: React.FC<IframeConfigDialogProps> = ({
       setName(existingConfig.name || '');
       setIframeCode(existingConfig.iframe_code);
       setIsActive(existingConfig.is_active);
+      setIsGlobalActive(existingConfig.is_global_active);
     } else {
       setName('');
       setIframeCode('');
       setIsActive(true);
+      setIsGlobalActive(false);
     }
   }, [existingConfig, open]);
 
@@ -80,7 +83,7 @@ const IframeConfigDialog: React.FC<IframeConfigDialogProps> = ({
 
     setIsSaving(true);
     try {
-      await onSave(name, iframeCode, isActive, existingConfig?.id);
+      await onSave(name, iframeCode, isActive, isGlobalActive, existingConfig?.id);
       onOpenChange(false);
     } catch (error) {
       console.error('Error saving iframe config:', error);
@@ -156,6 +159,37 @@ const IframeConfigDialog: React.FC<IframeConfigDialogProps> = ({
               />
               <Label htmlFor="is-active">Ativo</Label>
             </div>
+
+            <div className="flex items-center space-x-2">
+              <Switch
+                id="is-global-active"
+                checked={isGlobalActive}
+                onCheckedChange={setIsGlobalActive}
+              />
+              <Label htmlFor="is-global-active" className="font-semibold">
+                Usar como rodapé global (atualizações automáticas)
+              </Label>
+            </div>
+
+            {isGlobalActive && (
+              <div className="rounded-lg bg-blue-50 dark:bg-blue-950 p-4 space-y-2">
+                <p className="text-sm font-medium text-blue-900 dark:text-blue-100">
+                  📌 Rodapé Global Ativado
+                </p>
+                <p className="text-sm text-blue-700 dark:text-blue-300">
+                  Este iframe será usado como rodapé em todos os sites que incluírem o código de integração.
+                  Apenas um iframe pode estar ativo globalmente por vez.
+                </p>
+                <div className="mt-3 p-3 bg-white dark:bg-gray-900 rounded border border-blue-200 dark:border-blue-800">
+                  <p className="text-xs font-mono text-gray-600 dark:text-gray-400 mb-2">
+                    Adicione este código no rodapé dos seus sites:
+                  </p>
+                  <code className="block text-xs bg-gray-100 dark:bg-gray-800 p-2 rounded overflow-x-auto">
+                    {`<div id="montesite-footer-badge"></div>\n<script src="https://vaabpicspdbolvutnscp.supabase.co/functions/v1/get-footer-iframe"></script>`}
+                  </code>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="space-y-2">

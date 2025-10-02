@@ -22,6 +22,7 @@ export const fetchIframeConfig = async (templateId: string): Promise<IframeConfi
     template_id: (data as any).template_id ?? null,
     iframe_code: (data as any).iframe_code,
     is_active: (data as any).is_active,
+    is_global_active: (data as any).is_global_active ?? false,
     created_at: (data as any).created_at,
     updated_at: (data as any).updated_at,
   };
@@ -45,6 +46,7 @@ export const fetchAllIframeConfigs = async (): Promise<IframeConfig[]> => {
     template_id: row.template_id ?? null,
     iframe_code: row.iframe_code,
     is_active: row.is_active,
+    is_global_active: row.is_global_active ?? false,
     created_at: row.created_at,
     updated_at: row.updated_at,
   })) || [];
@@ -70,6 +72,7 @@ export const createIframeConfig = async (
     template_id: (data as any).template_id ?? null,
     iframe_code: (data as any).iframe_code,
     is_active: (data as any).is_active,
+    is_global_active: (data as any).is_global_active ?? false,
     created_at: (data as any).created_at,
     updated_at: (data as any).updated_at,
   };
@@ -98,6 +101,7 @@ export const updateIframeConfig = async (
     template_id: (data as any).template_id ?? null,
     iframe_code: (data as any).iframe_code,
     is_active: (data as any).is_active,
+    is_global_active: (data as any).is_global_active ?? false,
     created_at: (data as any).created_at,
     updated_at: (data as any).updated_at,
   };

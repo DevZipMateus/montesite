@@ -29,18 +29,20 @@ const IframeConfigManager: React.FC = () => {
     mutationFn: async ({ 
       name,
       iframeCode, 
-      isActive, 
+      isActive,
+      isGlobalActive,
       configId 
     }: { 
       name: string;
       iframeCode: string; 
-      isActive: boolean; 
+      isActive: boolean;
+      isGlobalActive: boolean;
       configId?: string; 
     }) => {
       if (configId) {
-        return updateIframeConfig(configId, { name, iframe_code: iframeCode, is_active: isActive });
+        return updateIframeConfig(configId, { name, iframe_code: iframeCode, is_active: isActive, is_global_active: isGlobalActive });
       } else {
-        return createIframeConfig({ name, iframe_code: iframeCode, is_active: isActive });
+        return createIframeConfig({ name, iframe_code: iframeCode, is_active: isActive, is_global_active: isGlobalActive });
       }
     },
     onSuccess: () => {
@@ -82,10 +84,11 @@ const IframeConfigManager: React.FC = () => {
   const handleSave = async (
     name: string,
     iframeCode: string, 
-    isActive: boolean, 
+    isActive: boolean,
+    isGlobalActive: boolean,
     configId?: string
   ) => {
-    await saveMutation.mutateAsync({ name, iframeCode, isActive, configId });
+    await saveMutation.mutateAsync({ name, iframeCode, isActive, isGlobalActive, configId });
   };
 
   const handleDelete = async (configId: string) => {
@@ -123,13 +126,14 @@ const IframeConfigManager: React.FC = () => {
             <TableRow>
               <TableHead>Nome</TableHead>
               <TableHead>Status</TableHead>
+              <TableHead>Rodapé Global</TableHead>
               <TableHead className="text-right">Ações</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {iframeConfigs.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={3} className="text-center text-muted-foreground py-8">
+                <TableCell colSpan={4} className="text-center text-muted-foreground py-8">
                   Nenhum iframe configurado. Clique em "Adicionar iframe" para começar.
                 </TableCell>
               </TableRow>
@@ -144,7 +148,24 @@ const IframeConfigManager: React.FC = () => {
                         {config.is_active ? 'Ativo' : 'Inativo'}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-right">
+                    <TableCell>
+                      {config.is_global_active ? (
+                        <Badge variant="default" className="bg-green-600">
+                          Ativo Globalmente
+                        </Badge>
+                      ) : (
+                        <span className="text-muted-foreground">-</span>
+                      )}
+                    </TableCell>
+                    <TableCell className="text-right space-x-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleEdit(config)}
+                      >
+                        <Edit className="h-4 w-4 mr-1" />
+                        Editar
+                      </Button>
                       <Button
                         variant="destructive"
                         size="sm"

@@ -736,6 +736,7 @@ export type Database = {
           id: string
           iframe_code: string
           is_active: boolean
+          is_global_active: boolean
           name: string
           template_id: string | null
           updated_at: string
@@ -745,6 +746,7 @@ export type Database = {
           id?: string
           iframe_code: string
           is_active?: boolean
+          is_global_active?: boolean
           name?: string
           template_id?: string | null
           updated_at?: string
@@ -754,6 +756,7 @@ export type Database = {
           id?: string
           iframe_code?: string
           is_active?: boolean
+          is_global_active?: boolean
           name?: string
           template_id?: string | null
           updated_at?: string
