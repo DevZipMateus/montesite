@@ -1,16 +1,16 @@
 
 import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/hover-card';
 import { Eye } from 'lucide-react';
-import { Template } from '@/types/database';
+import { Template, IframeConfig } from '@/types/database';
 import { useHash } from '@/hooks/useHash';
-import { fetchIframeConfig } from '@/services/templates/iframeConfigService';
 
-type TemplateCardProps = Pick<Template, 'id' | 'title' | 'description' | 'image_url' | 'form_url' | 'preview_url'>;
+type TemplateCardProps = Pick<Template, 'id' | 'title' | 'description' | 'image_url' | 'form_url' | 'preview_url'> & {
+  iframeConfig?: IframeConfig | null;
+};
 
 const TemplateCard: React.FC<TemplateCardProps> = ({
   id,
@@ -18,15 +18,11 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
   description,
   image_url,
   form_url,
-  preview_url
+  preview_url,
+  iframeConfig
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const { hash } = useHash();
-  
-  const { data: iframeConfig } = useQuery({
-    queryKey: ['iframe-config', id],
-    queryFn: () => fetchIframeConfig(id),
-  });
   
   // Function to add hash to URL if present
   const addHashToUrl = (url: string) => {
@@ -46,7 +42,7 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
     >
       <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50">
         <AspectRatio ratio={16/8}>
-          {iframeConfig && iframeConfig.is_active ? (
+          {iframeConfig ? (
             <div 
               className="w-full h-full"
               dangerouslySetInnerHTML={{ __html: iframeConfig.iframe_code }}

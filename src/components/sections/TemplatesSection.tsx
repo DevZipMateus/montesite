@@ -6,6 +6,7 @@ import TemplateCard from '@/components/TemplateCard';
 import TemplateCategories, { TemplateCategory } from '@/components/TemplateCategories';
 import { Template } from '@/types/database';
 import { fetchTemplateCategories, fetchTemplates } from '@/services/templates';
+import { fetchAllIframeConfigs } from '@/services/templates/iframeConfigService';
 import { useQuery } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
 
@@ -25,6 +26,11 @@ const TemplatesSection: React.FC<TemplatesSectionProps> = () => {
   const { data: templatesData = [], isLoading: isLoadingTemplates } = useQuery({
     queryKey: ['templates', activeCategory],
     queryFn: () => fetchTemplates(activeCategory !== 'all' ? activeCategory : undefined),
+  });
+  
+  const { data: iframeConfigs = [] } = useQuery({
+    queryKey: ['all-iframe-configs'],
+    queryFn: fetchAllIframeConfigs,
   });
   
   const categories: TemplateCategory[] = [
@@ -81,11 +87,16 @@ const TemplatesSection: React.FC<TemplatesSectionProps> = () => {
         
         {!isLoadingTemplates && filteredTemplates.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mt-10">
-            {filteredTemplates.map((template, index) => (
-              <FadeIn key={template.id} delay={index * 100}>
-                <TemplateCard {...template} />
-              </FadeIn>
-            ))}
+            {filteredTemplates.map((template, index) => {
+              const iframeConfig = iframeConfigs.find(config => 
+                config.template_id === template.id && config.is_active
+              );
+              return (
+                <FadeIn key={template.id} delay={index * 100}>
+                  <TemplateCard {...template} iframeConfig={iframeConfig} />
+                </FadeIn>
+              );
+            })}
           </div>
         )}
       </div>
