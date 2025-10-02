@@ -5,6 +5,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Template, IframeConfig } from '@/types/database';
+import { Copy, Check } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 interface IframeConfigDialogProps {
   open: boolean;
@@ -21,9 +23,29 @@ const IframeConfigDialog: React.FC<IframeConfigDialogProps> = ({
   existingConfig,
   onSave,
 }) => {
+  const { toast } = useToast();
   const [iframeCode, setIframeCode] = useState(existingConfig?.iframe_code || '');
   const [isActive, setIsActive] = useState(existingConfig?.is_active ?? true);
   const [isSaving, setIsSaving] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyCode = async () => {
+    try {
+      await navigator.clipboard.writeText(iframeCode);
+      setCopied(true);
+      toast({
+        title: 'Código copiado!',
+        description: 'O código do iframe foi copiado para a área de transferência.',
+      });
+      setTimeout(() => setCopied(false), 2000);
+    } catch (error) {
+      toast({
+        title: 'Erro ao copiar',
+        description: 'Não foi possível copiar o código.',
+        variant: 'destructive',
+      });
+    }
+  };
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -47,7 +69,29 @@ const IframeConfigDialog: React.FC<IframeConfigDialogProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 py-4">
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="iframe-code">Código do iframe</Label>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="iframe-code">Código do iframe</Label>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleCopyCode}
+                  disabled={!iframeCode.trim()}
+                  className="h-8 px-2"
+                >
+                  {copied ? (
+                    <>
+                      <Check className="h-4 w-4 mr-1" />
+                      Copiado
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="h-4 w-4 mr-1" />
+                      Copiar
+                    </>
+                  )}
+                </Button>
+              </div>
               <Textarea
                 id="iframe-code"
                 placeholder='<iframe src="..." width="100%" height="400"></iframe>'
@@ -55,6 +99,9 @@ const IframeConfigDialog: React.FC<IframeConfigDialogProps> = ({
                 onChange={(e) => setIframeCode(e.target.value)}
                 className="font-mono text-sm min-h-[300px]"
               />
+              <p className="text-xs text-muted-foreground">
+                Cole o código HTML do iframe que deseja incorporar. Você pode obter este código de plataformas como YouTube, Vimeo, Google Maps, etc.
+              </p>
             </div>
 
             <div className="flex items-center space-x-2">

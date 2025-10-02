@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Settings, Trash2 } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { fetchAdminTemplates } from '@/services/templates/templateFetchService';
 import { 
@@ -141,21 +141,23 @@ const IframeConfigManager: React.FC = () => {
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleConfigureTemplate(template)}
-                      >
-                        <Settings className="h-4 w-4 mr-1" />
-                        {config ? 'Editar' : 'Configurar'}
-                      </Button>
-                      {config && (
+                      {!config ? (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleConfigureTemplate(template)}
+                        >
+                          <Plus className="h-4 w-4 mr-1" />
+                          Adicionar iframe
+                        </Button>
+                      ) : (
                         <Button
                           variant="destructive"
                           size="sm"
                           onClick={() => handleDelete(config.id)}
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Trash2 className="h-4 w-4 mr-1" />
+                          Excluir
                         </Button>
                       )}
                     </div>
