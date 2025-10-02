@@ -134,12 +134,10 @@ const IframeConfigManager: React.FC = () => {
                 </TableCell>
               </TableRow>
             ) : (
-              iframeConfigs.map((config) => {
-                const template = getTemplateForConfig(config);
-                return (
+              iframeConfigs.map((config) => (
                   <TableRow key={config.id}>
                     <TableCell className="font-medium">
-                      {template?.title || 'Template não encontrado'}
+                      {config.name}
                     </TableCell>
                     <TableCell>
                       <Badge variant={config.is_active ? 'default' : 'secondary'}>
@@ -157,8 +155,7 @@ const IframeConfigManager: React.FC = () => {
                       </Button>
                     </TableCell>
                   </TableRow>
-                );
-              })
+              ))
             )}
           </TableBody>
         </Table>

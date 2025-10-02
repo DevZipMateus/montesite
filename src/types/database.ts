@@ -31,7 +31,8 @@ export interface Template {
 
 export interface IframeConfig {
   id: string;
-  template_id: string;
+  name: string;
+  template_id: string | null;
   iframe_code: string;
   is_active: boolean;
   created_at: string;

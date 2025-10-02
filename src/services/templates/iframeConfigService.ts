@@ -4,7 +4,7 @@ import { IframeConfig } from '@/types/database';
 export const fetchIframeConfig = async (templateId: string): Promise<IframeConfig | null> => {
   const { data, error } = await supabase
     .from('template_iframe_configs')
-    .select('*')
+    .select('id, name, template_id, iframe_code, is_active, created_at, updated_at')
     .eq('template_id', templateId)
     .eq('is_active', true)
     .maybeSingle();
@@ -20,7 +20,7 @@ export const fetchIframeConfig = async (templateId: string): Promise<IframeConfi
 export const fetchAllIframeConfigs = async (): Promise<IframeConfig[]> => {
   const { data, error } = await supabase
     .from('template_iframe_configs')
-    .select('*')
+    .select('id, name, template_id, iframe_code, is_active, created_at, updated_at')
     .order('created_at', { ascending: false });
 
   if (error) {
@@ -37,7 +37,7 @@ export const createIframeConfig = async (
   const { data, error } = await supabase
     .from('template_iframe_configs')
     .insert({ ...iframeData, template_id: null })
-    .select()
+    .select('id, name, template_id, iframe_code, is_active, created_at, updated_at')
     .single();
 
   if (error) {
@@ -56,7 +56,7 @@ export const updateIframeConfig = async (
     .from('template_iframe_configs')
     .update(updates)
     .eq('id', id)
-    .select()
+    .select('id, name, template_id, iframe_code, is_active, created_at, updated_at')
     .single();
 
   if (error) {
