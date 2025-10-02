@@ -4,7 +4,7 @@ import { IframeConfig } from '@/types/database';
 export const fetchIframeConfig = async (templateId: string): Promise<IframeConfig | null> => {
   const { data, error } = await supabase
     .from('template_iframe_configs')
-    .select('id, name, template_id, iframe_code, is_active, created_at, updated_at')
+    .select('*')
     .eq('template_id', templateId)
     .eq('is_active', true)
     .maybeSingle();
@@ -14,13 +14,24 @@ export const fetchIframeConfig = async (templateId: string): Promise<IframeConfi
     throw error;
   }
 
-  return data;
+  if (!data) return null;
+
+  const mapped: IframeConfig = {
+    id: (data as any).id,
+    name: (data as any).name ?? 'Iframe Config',
+    template_id: (data as any).template_id ?? null,
+    iframe_code: (data as any).iframe_code,
+    is_active: (data as any).is_active,
+    created_at: (data as any).created_at,
+    updated_at: (data as any).updated_at,
+  };
+  return mapped;
 };
 
 export const fetchAllIframeConfigs = async (): Promise<IframeConfig[]> => {
   const { data, error } = await supabase
     .from('template_iframe_configs')
-    .select('id, name, template_id, iframe_code, is_active, created_at, updated_at')
+    .select('*')
     .order('created_at', { ascending: false });
 
   if (error) {
@@ -28,7 +39,15 @@ export const fetchAllIframeConfigs = async (): Promise<IframeConfig[]> => {
     throw error;
   }
 
-  return data || [];
+  return (data as any[] | null)?.map((row: any) => ({
+    id: row.id,
+    name: row.name ?? 'Iframe Config',
+    template_id: row.template_id ?? null,
+    iframe_code: row.iframe_code,
+    is_active: row.is_active,
+    created_at: row.created_at,
+    updated_at: row.updated_at,
+  })) || [];
 };
 
 export const createIframeConfig = async (
@@ -37,7 +56,7 @@ export const createIframeConfig = async (
   const { data, error } = await supabase
     .from('template_iframe_configs')
     .insert({ ...iframeData, template_id: null })
-    .select('id, name, template_id, iframe_code, is_active, created_at, updated_at')
+    .select('*')
     .single();
 
   if (error) {
@@ -45,7 +64,16 @@ export const createIframeConfig = async (
     throw error;
   }
 
-  return data;
+  const mapped: IframeConfig = {
+    id: (data as any).id,
+    name: (data as any).name ?? 'Iframe Config',
+    template_id: (data as any).template_id ?? null,
+    iframe_code: (data as any).iframe_code,
+    is_active: (data as any).is_active,
+    created_at: (data as any).created_at,
+    updated_at: (data as any).updated_at,
+  };
+  return mapped;
 };
 
 export const updateIframeConfig = async (
@@ -56,7 +84,7 @@ export const updateIframeConfig = async (
     .from('template_iframe_configs')
     .update(updates)
     .eq('id', id)
-    .select('id, name, template_id, iframe_code, is_active, created_at, updated_at')
+    .select('*')
     .single();
 
   if (error) {
@@ -64,7 +92,16 @@ export const updateIframeConfig = async (
     throw error;
   }
 
-  return data;
+  const mapped: IframeConfig = {
+    id: (data as any).id,
+    name: (data as any).name ?? 'Iframe Config',
+    template_id: (data as any).template_id ?? null,
+    iframe_code: (data as any).iframe_code,
+    is_active: (data as any).is_active,
+    created_at: (data as any).created_at,
+    updated_at: (data as any).updated_at,
+  };
+  return mapped;
 };
 
 export const deleteIframeConfig = async (id: string): Promise<void> => {

@@ -736,7 +736,8 @@ export type Database = {
           id: string
           iframe_code: string
           is_active: boolean
-          template_id: string
+          name: string
+          template_id: string | null
           updated_at: string
         }
         Insert: {
@@ -744,7 +745,8 @@ export type Database = {
           id?: string
           iframe_code: string
           is_active?: boolean
-          template_id: string
+          name?: string
+          template_id?: string | null
           updated_at?: string
         }
         Update: {
@@ -752,7 +754,8 @@ export type Database = {
           id?: string
           iframe_code?: string
           is_active?: boolean
-          template_id?: string
+          name?: string
+          template_id?: string | null
           updated_at?: string
         }
         Relationships: [
