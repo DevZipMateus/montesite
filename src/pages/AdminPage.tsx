@@ -13,6 +13,7 @@ import AdminTemplatesTable from '@/components/admin/AdminTemplatesTable';
 import AdminShowcasesTable from '@/components/admin/AdminShowcasesTable';
 import HashLogsTable from '@/components/admin/HashLogsTable';
 import PublicUrlGenerator from '@/components/admin/PublicUrlGenerator';
+import IframeConfigManager from '@/components/admin/IframeConfigManager';
 
 const AdminPage: React.FC = () => {
   const navigate = useNavigate();
@@ -49,6 +50,7 @@ const AdminPage: React.FC = () => {
           <TabsList className="mb-6 w-full overflow-x-auto flex flex-wrap">
             <TabsTrigger value="data-management" className="flex-grow md:flex-grow-0">Gestão de Dados</TabsTrigger>
             <TabsTrigger value="templates" className="flex-grow md:flex-grow-0">Templates</TabsTrigger>
+            <TabsTrigger value="iframe-config" className="flex-grow md:flex-grow-0">Configuração de iframes</TabsTrigger>
             <TabsTrigger value="showcases" className="flex-grow md:flex-grow-0">Vitrine de Sites</TabsTrigger>
             <TabsTrigger value="public-url" className="flex-grow md:flex-grow-0">URL Pública</TabsTrigger>
             <TabsTrigger value="hash-logs" className="flex-grow md:flex-grow-0">Logs de Hash</TabsTrigger>
@@ -87,6 +89,20 @@ const AdminPage: React.FC = () => {
               </CardHeader>
               <CardContent>
                 <AdminTemplatesTable />
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="iframe-config">
+            <Card>
+              <CardHeader>
+                <CardTitle>Configuração de iframes</CardTitle>
+                <CardDescription>
+                  Configure códigos de iframe para cada template. Quando configurado, o iframe será exibido no lugar da imagem estática do template.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <IframeConfigManager />
               </CardContent>
             </Card>
           </TabsContent>

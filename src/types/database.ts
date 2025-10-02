@@ -29,6 +29,15 @@ export interface Template {
   }; // Changed to match the shape of data returned from Supabase join query
 }
 
+export interface IframeConfig {
+  id: string;
+  template_id: string;
+  iframe_code: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Showcase {
   id: string;
   client_name: string;

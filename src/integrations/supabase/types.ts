@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)"
@@ -81,6 +81,203 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      client_media_submissions: {
+        Row: {
+          client_email: string | null
+          client_name: string
+          created_at: string
+          id: string
+          media_urls: Json
+          message: string | null
+          project_id: string
+          status: string
+          submission_date: string
+          updated_at: string
+        }
+        Insert: {
+          client_email?: string | null
+          client_name: string
+          created_at?: string
+          id?: string
+          media_urls?: Json
+          message?: string | null
+          project_id: string
+          status?: string
+          submission_date?: string
+          updated_at?: string
+        }
+        Update: {
+          client_email?: string | null
+          client_name?: string
+          created_at?: string
+          id?: string
+          media_urls?: Json
+          message?: string | null
+          project_id?: string
+          status?: string
+          submission_date?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_media_submissions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lead_agendamentos: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          created_by: string | null
+          data_agendamento: string
+          descricao: string | null
+          id: string
+          lead_id: string
+          notification_sent: boolean | null
+          original_time: string | null
+          postponed_count: number | null
+          status: string
+          titulo: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          data_agendamento: string
+          descricao?: string | null
+          id?: string
+          lead_id: string
+          notification_sent?: boolean | null
+          original_time?: string | null
+          postponed_count?: number | null
+          status?: string
+          titulo: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          data_agendamento?: string
+          descricao?: string | null
+          id?: string
+          lead_id?: string
+          notification_sent?: boolean | null
+          original_time?: string | null
+          postponed_count?: number | null
+          status?: string
+          titulo?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lead_agendamentos_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lead_notes: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          lead_id: string
+          nota: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          lead_id: string
+          nota: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          lead_id?: string
+          nota?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lead_notes_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      leads: {
+        Row: {
+          cnpj: string | null
+          created_at: string
+          data_ultimo_contato: string
+          email: string | null
+          empresa: string
+          id: string
+          link_blaster: string | null
+          link_chat: string | null
+          link_confidence_score: number | null
+          link_method: string | null
+          nome_cliente: string
+          observacoes: string | null
+          project_id: string | null
+          situacao: string
+          updated_at: string
+          vendedor: string | null
+        }
+        Insert: {
+          cnpj?: string | null
+          created_at?: string
+          data_ultimo_contato?: string
+          email?: string | null
+          empresa: string
+          id?: string
+          link_blaster?: string | null
+          link_chat?: string | null
+          link_confidence_score?: number | null
+          link_method?: string | null
+          nome_cliente: string
+          observacoes?: string | null
+          project_id?: string | null
+          situacao?: string
+          updated_at?: string
+          vendedor?: string | null
+        }
+        Update: {
+          cnpj?: string | null
+          created_at?: string
+          data_ultimo_contato?: string
+          email?: string | null
+          empresa?: string
+          id?: string
+          link_blaster?: string | null
+          link_chat?: string | null
+          link_confidence_score?: number | null
+          link_method?: string | null
+          nome_cliente?: string
+          observacoes?: string | null
+          project_id?: string | null
+          situacao?: string
+          updated_at?: string
+          vendedor?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "leads_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       model_templates: {
         Row: {
@@ -203,8 +400,10 @@ export type Database = {
       }
       projects: {
         Row: {
+          assigned_programmer: string | null
           blaster_link: string | null
           client_name: string
+          client_submission_hash: string | null
           client_type: string | null
           cnpj: string | null
           created_at: string | null
@@ -213,15 +412,21 @@ export type Database = {
           domain: string | null
           email_complementar: string | null
           formulario_preenchido: boolean | null
+          hostinger_link: string | null
           id: string
+          is_inadimplente: boolean | null
+          lead_id: string | null
+          manually_archived: boolean | null
           modelo_escolhido: string | null
           observacoes_cliente: string | null
           partner_hash: string | null
           partner_link: string | null
           partner_webhook_url: string | null
+          payment_date: string | null
           personalization_id: string | null
           project_source: string | null
           provider_credentials: string | null
+          remove_from_hostinger: boolean
           requires_paid_customization: boolean | null
           responsible_name: string | null
           site_ready_date: string | null
@@ -231,8 +436,10 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
+          assigned_programmer?: string | null
           blaster_link?: string | null
           client_name: string
+          client_submission_hash?: string | null
           client_type?: string | null
           cnpj?: string | null
           created_at?: string | null
@@ -241,15 +448,21 @@ export type Database = {
           domain?: string | null
           email_complementar?: string | null
           formulario_preenchido?: boolean | null
+          hostinger_link?: string | null
           id?: string
+          is_inadimplente?: boolean | null
+          lead_id?: string | null
+          manually_archived?: boolean | null
           modelo_escolhido?: string | null
           observacoes_cliente?: string | null
           partner_hash?: string | null
           partner_link?: string | null
           partner_webhook_url?: string | null
+          payment_date?: string | null
           personalization_id?: string | null
           project_source?: string | null
           provider_credentials?: string | null
+          remove_from_hostinger?: boolean
           requires_paid_customization?: boolean | null
           responsible_name?: string | null
           site_ready_date?: string | null
@@ -259,8 +472,10 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
+          assigned_programmer?: string | null
           blaster_link?: string | null
           client_name?: string
+          client_submission_hash?: string | null
           client_type?: string | null
           cnpj?: string | null
           created_at?: string | null
@@ -269,15 +484,21 @@ export type Database = {
           domain?: string | null
           email_complementar?: string | null
           formulario_preenchido?: boolean | null
+          hostinger_link?: string | null
           id?: string
+          is_inadimplente?: boolean | null
+          lead_id?: string | null
+          manually_archived?: boolean | null
           modelo_escolhido?: string | null
           observacoes_cliente?: string | null
           partner_hash?: string | null
           partner_link?: string | null
           partner_webhook_url?: string | null
+          payment_date?: string | null
           personalization_id?: string | null
           project_source?: string | null
           provider_credentials?: string | null
+          remove_from_hostinger?: boolean
           requires_paid_customization?: boolean | null
           responsible_name?: string | null
           site_ready_date?: string | null
@@ -288,6 +509,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "projects_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "projects_personalization_id_fkey"
             columns: ["personalization_id"]
             isOneToOne: false
@@ -295,6 +523,78 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      sales_landing_pages: {
+        Row: {
+          area_atuacao: string
+          cargo: string | null
+          cidade_regiao: string | null
+          comando_gerado: boolean | null
+          cores_preferidas: string | null
+          created_at: string
+          diferenciais: string | null
+          email_profissional: string
+          estilo_visual: string | null
+          formacao_certificacoes: string | null
+          foto_profissional_url: string | null
+          id: string
+          media_urls: string | null
+          mini_bio: string
+          nome_completo: string
+          principais_servicos: string
+          redes_sociais: string | null
+          slogan: string | null
+          status: string
+          telefone_whatsapp: string
+          updated_at: string
+        }
+        Insert: {
+          area_atuacao: string
+          cargo?: string | null
+          cidade_regiao?: string | null
+          comando_gerado?: boolean | null
+          cores_preferidas?: string | null
+          created_at?: string
+          diferenciais?: string | null
+          email_profissional: string
+          estilo_visual?: string | null
+          formacao_certificacoes?: string | null
+          foto_profissional_url?: string | null
+          id?: string
+          media_urls?: string | null
+          mini_bio: string
+          nome_completo: string
+          principais_servicos: string
+          redes_sociais?: string | null
+          slogan?: string | null
+          status?: string
+          telefone_whatsapp: string
+          updated_at?: string
+        }
+        Update: {
+          area_atuacao?: string
+          cargo?: string | null
+          cidade_regiao?: string | null
+          comando_gerado?: boolean | null
+          cores_preferidas?: string | null
+          created_at?: string
+          diferenciais?: string | null
+          email_profissional?: string
+          estilo_visual?: string | null
+          formacao_certificacoes?: string | null
+          foto_profissional_url?: string | null
+          id?: string
+          media_urls?: string | null
+          mini_bio?: string
+          nome_completo?: string
+          principais_servicos?: string
+          redes_sociais?: string | null
+          slogan?: string | null
+          status?: string
+          telefone_whatsapp?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       showcases: {
         Row: {
@@ -349,7 +649,9 @@ export type Database = {
           descricao: string
           email: string
           endereco: string
+          estilo_visual: string | null
           fonte: string | null
+          horario_funcionamento: string | null
           id: string
           linkmapa: string | null
           logo_url: string | null
@@ -376,7 +678,9 @@ export type Database = {
           descricao: string
           email: string
           endereco: string
+          estilo_visual?: string | null
           fonte?: string | null
+          horario_funcionamento?: string | null
           id?: string
           linkmapa?: string | null
           logo_url?: string | null
@@ -403,7 +707,9 @@ export type Database = {
           descricao?: string
           email?: string
           endereco?: string
+          estilo_visual?: string | null
           fonte?: string | null
+          horario_funcionamento?: string | null
           id?: string
           linkmapa?: string | null
           logo_url?: string | null
@@ -423,6 +729,41 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      template_iframe_configs: {
+        Row: {
+          created_at: string
+          id: string
+          iframe_code: string
+          is_active: boolean
+          template_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          iframe_code: string
+          is_active?: boolean
+          template_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          iframe_code?: string
+          is_active?: boolean
+          template_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "template_iframe_configs_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "templates"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       templates: {
         Row: {
@@ -524,19 +865,79 @@ export type Database = {
     }
     Functions: {
       add_business_days: {
-        Args: { start_date: string; days_to_add: number }
+        Args: { days_to_add: number; start_date: string }
         Returns: string
+      }
+      auto_link_leads_projects: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          confidence_score: number
+          lead_id: string
+          link_method: string
+          project_id: string
+        }[]
+      }
+      calcular_dias_sem_resposta: {
+        Args: { data_contato: string }
+        Returns: number
       }
       create_bucket_policy: {
         Args: { bucket_name: string }
         Returns: boolean
       }
+      extract_blaster_id: {
+        Args: { blaster_url: string }
+        Returns: string
+      }
+      get_project_by_submission_hash: {
+        Args: { p_hash: string }
+        Returns: {
+          assigned_programmer: string | null
+          blaster_link: string | null
+          client_name: string
+          client_submission_hash: string | null
+          client_type: string | null
+          cnpj: string | null
+          created_at: string | null
+          customization_deadline: string | null
+          data_formulario: string | null
+          domain: string | null
+          email_complementar: string | null
+          formulario_preenchido: boolean | null
+          hostinger_link: string | null
+          id: string
+          is_inadimplente: boolean | null
+          lead_id: string | null
+          manually_archived: boolean | null
+          modelo_escolhido: string | null
+          observacoes_cliente: string | null
+          partner_hash: string | null
+          partner_link: string | null
+          partner_webhook_url: string | null
+          payment_date: string | null
+          personalization_id: string | null
+          project_source: string | null
+          provider_credentials: string | null
+          remove_from_hostinger: boolean
+          requires_paid_customization: boolean | null
+          responsible_name: string | null
+          site_ready_date: string | null
+          status: string | null
+          telefone: string | null
+          template: string | null
+          updated_at: string | null
+        }
+      }
+      string_similarity: {
+        Args: { str1: string; str2: string }
+        Returns: number
+      }
       validate_auth_token: {
         Args: { token_input: string }
         Returns: {
+          is_valid: boolean
           partner_id: string
           partner_name: string
-          is_valid: boolean
         }[]
       }
     }

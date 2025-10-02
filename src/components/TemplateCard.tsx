@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
@@ -7,6 +8,7 @@ import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/h
 import { Eye } from 'lucide-react';
 import { Template } from '@/types/database';
 import { useHash } from '@/hooks/useHash';
+import { fetchIframeConfig } from '@/services/templates/iframeConfigService';
 
 type TemplateCardProps = Pick<Template, 'id' | 'title' | 'description' | 'image_url' | 'form_url' | 'preview_url'>;
 
@@ -20,6 +22,11 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const { hash } = useHash();
+  
+  const { data: iframeConfig } = useQuery({
+    queryKey: ['iframe-config', id],
+    queryFn: () => fetchIframeConfig(id),
+  });
   
   // Function to add hash to URL if present
   const addHashToUrl = (url: string) => {
@@ -39,15 +46,22 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
     >
       <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50">
         <AspectRatio ratio={16/8}>
-          <div className="relative">
-            <div className={`absolute -inset-4 bg-gradient-to-r from-primary/20 via-indigo-200/30 to-primary/10 rounded-xl blur-xl transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-50'}`}></div>
-            <img 
-              id={`template-image-${id}`}
-              src={image_url}
-              alt={`Preview of ${title} template`}
-              className={`relative w-full h-full object-contain z-10 p-3 transition-transform duration-500 ${isHovered ? 'scale-105' : 'scale-100'}`}
+          {iframeConfig && iframeConfig.is_active ? (
+            <div 
+              className="w-full h-full"
+              dangerouslySetInnerHTML={{ __html: iframeConfig.iframe_code }}
             />
-          </div>
+          ) : (
+            <div className="relative">
+              <div className={`absolute -inset-4 bg-gradient-to-r from-primary/20 via-indigo-200/30 to-primary/10 rounded-xl blur-xl transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-50'}`}></div>
+              <img 
+                id={`template-image-${id}`}
+                src={image_url}
+                alt={`Preview of ${title} template`}
+                className={`relative w-full h-full object-contain z-10 p-3 transition-transform duration-500 ${isHovered ? 'scale-105' : 'scale-100'}`}
+              />
+            </div>
+          )}
         </AspectRatio>
         
         <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
