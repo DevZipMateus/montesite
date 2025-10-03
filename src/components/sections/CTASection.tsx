@@ -12,17 +12,20 @@ const CTASection: React.FC = () => {
           <div className="max-w-3xl mx-auto text-center">
             <FadeIn>
               <h2 className="text-3xl md:text-4xl font-bold mb-8">
-                Pronto para transformar sua presença online?
+                Pronto para ter um site profissional como estes?
               </h2>
               <p className="text-muted-foreground mb-10 text-lg">
-                Escolha um de nossos templates profissionais e tenha seu site no ar em poucos minutos. Sem complicações, sem programação.
+                Entre em contato conosco e vamos criar o site perfeito para o seu negócio. 
+                Desenvolvimento profissional, design moderno e suporte completo.
               </p>
               <Button 
                 size="lg" 
                 className="rounded-full btn-hover-effect text-lg px-10 py-6"
                 asChild
               >
-                <a href="#templates">Começar agora</a>
+                <a href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer">
+                  Solicitar Orçamento
+                </a>
               </Button>
             </FadeIn>
           </div>

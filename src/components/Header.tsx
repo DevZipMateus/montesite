@@ -13,7 +13,6 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { label: 'Home', href: '/#home' },
-  { label: 'Estilos', href: '/#templates' },
   { label: 'Vitrine', href: '/vitrine', isExternalRoute: true }
 ];
 
@@ -93,18 +92,6 @@ const Header = () => {
               </a>
             )
           ))}
-          {!isAdminPage && (
-            <Button 
-              size="default" 
-              variant="default" 
-              className="btn-hover-effect rounded-full font-medium px-6 ml-4"
-              asChild
-            >
-              <a href={isHomePage ? "/#templates" : "/#templates"} onClick={isHomePage ? (e) => scrollToSection(e, '/#templates', false) : undefined}>
-                Ver Estilos
-              </a>
-            </Button>
-          )}
         </nav>
 
         {/* Mobile Menu Button */}
@@ -150,18 +137,6 @@ const Header = () => {
               </a>
             )
           ))}
-          {!isAdminPage && (
-            <Button 
-              size="default" 
-              variant="default" 
-              className="btn-hover-effect rounded-full font-medium w-full mt-2"
-              asChild
-            >
-              <a href={isHomePage ? "/#templates" : "/#templates"} onClick={isHomePage ? (e) => scrollToSection(e, '/#templates', false) : undefined}>
-                Ver Estilos
-              </a>
-            </Button>
-          )}
         </nav>
       </div>
     </header>

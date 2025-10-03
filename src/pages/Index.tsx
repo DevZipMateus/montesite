@@ -2,8 +2,7 @@
 import React, { useEffect } from 'react';
 import Header from '@/components/Header';
 import HeroSection from '@/components/sections/HeroSection';
-import MonteSitePromoSection from '@/components/sections/MonteSitePromoSection';
-import TemplatesSection from '@/components/sections/TemplatesSection';
+import ShowcaseSection from '@/components/sections/ShowcaseSection';
 import FeaturesSection from '@/components/sections/FeaturesSection';
 import CTASection from '@/components/sections/CTASection';
 import Footer from '@/components/Footer';
@@ -37,9 +36,9 @@ const Index = () => {
     };
   }, [hash]);
 
-  const scrollToTemplates = (e: React.MouseEvent) => {
+  const scrollToShowcase = (e: React.MouseEvent) => {
     e.preventDefault();
-    const section = document.querySelector('#templates');
+    const section = document.querySelector('#showcase');
     if (section) {
       window.scrollTo({
         top: section.getBoundingClientRect().top + window.scrollY - 60,
@@ -52,9 +51,10 @@ const Index = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main>
-        <HeroSection scrollToTemplates={scrollToTemplates} />
-        <MonteSitePromoSection />
-        <TemplatesSection />
+        <HeroSection scrollToShowcase={scrollToShowcase} />
+        <div id="showcase">
+          <ShowcaseSection />
+        </div>
         <FeaturesSection />
         <CTASection />
       </main>
