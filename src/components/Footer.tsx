@@ -3,6 +3,7 @@ import React from 'react';
 import { Facebook, Instagram, Youtube, Linkedin, Music, Mail, Phone, MapPin } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { Link, useLocation } from 'react-router-dom';
+import { MonteSiteBadge } from '@/components/MonteSiteBadge';
 
 const Footer = () => {
   const location = useLocation();
@@ -148,6 +149,9 @@ const Footer = () => {
             </a>
           </div>
         </div>
+        
+        {/* Badge MonteSite Dinâmico */}
+        <MonteSiteBadge />
       </div>
     </footer>
   );
