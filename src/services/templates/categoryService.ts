@@ -251,6 +251,29 @@ export async function deleteCategory(id: string): Promise<boolean> {
   try {
     console.log(`Deleting category with ID: ${id}`);
     
+    // Passo 1: Atualizar todos os templates que usam essa categoria
+    const { error: templatesError } = await supabase
+      .from('templates')
+      .update({ category_id: null })
+      .eq('category_id', id);
+    
+    if (templatesError) {
+      console.error("Error updating templates:", templatesError);
+      throw templatesError;
+    }
+    
+    // Passo 2: Atualizar todos os showcases que usam essa categoria
+    const { error: showcasesError } = await supabase
+      .from('showcases')
+      .update({ category_id: null })
+      .eq('category_id', id);
+    
+    if (showcasesError) {
+      console.error("Error updating showcases:", showcasesError);
+      throw showcasesError;
+    }
+    
+    // Passo 3: Agora deletar a categoria
     const { error } = await supabase
       .from('categories')
       .delete()
@@ -261,11 +284,11 @@ export async function deleteCategory(id: string): Promise<boolean> {
       throw error;
     }
     
-    console.log("Category deleted successfully");
+    console.log("Category deleted successfully and all references updated");
     
     toast({
       title: "Categoria excluída",
-      description: "A categoria foi excluída com sucesso.",
+      description: "A categoria foi excluída e os items ficaram sem categoria.",
     });
     
     return true;

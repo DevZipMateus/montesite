@@ -68,26 +68,16 @@ const CategoriesManagementTable: React.FC = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['categories'] });
       queryClient.invalidateQueries({ queryKey: ['category-usage'] });
+      queryClient.invalidateQueries({ queryKey: ['showcases'] });
+      queryClient.invalidateQueries({ queryKey: ['templates'] });
+      queryClient.invalidateQueries({ queryKey: ['adminShowcases'] });
+      queryClient.invalidateQueries({ queryKey: ['adminTemplates'] });
       setCategoryToDelete(null);
     },
   });
 
   const handleDelete = async () => {
     if (!categoryToDelete) return;
-    
-    const usage = usageData[categoryToDelete.id];
-    const totalUsage = (usage?.templates || 0) + (usage?.showcases || 0);
-    
-    if (totalUsage > 0) {
-      toast({
-        title: "Não é possível excluir",
-        description: `Esta categoria está sendo usada por ${totalUsage} item(ns). Remova as referências primeiro.`,
-        variant: "destructive",
-      });
-      setCategoryToDelete(null);
-      return;
-    }
-    
     deleteMutation.mutate(categoryToDelete.id);
   };
 
@@ -179,10 +169,9 @@ const CategoriesManagementTable: React.FC = () => {
                             variant="ghost" 
                             size="sm"
                             onClick={() => setCategoryToDelete({ id: category.id, name: category.name })}
-                            disabled={totalUsage > 0}
-                            title={totalUsage > 0 ? "Esta categoria está em uso" : "Excluir categoria"}
+                            title="Excluir categoria"
                           >
-                            <Trash2 className={`h-4 w-4 ${totalUsage > 0 ? 'text-muted-foreground' : 'text-destructive'}`} />
+                            <Trash2 className="h-4 w-4 text-destructive" />
                           </Button>
                         </div>
                       </TableCell>
@@ -205,6 +194,17 @@ const CategoriesManagementTable: React.FC = () => {
             </AlertDialogTitle>
             <AlertDialogDescription>
               Tem certeza que deseja excluir a categoria <strong>{categoryToDelete?.name}</strong>?
+              {categoryToDelete && usageData[categoryToDelete.id] && (
+                <>
+                  <br /><br />
+                  <span className="text-amber-600 dark:text-amber-500">
+                    ⚠️ Esta categoria está sendo usada por{' '}
+                    {(usageData[categoryToDelete.id].templates || 0) + (usageData[categoryToDelete.id].showcases || 0)} item(ns).
+                    Eles ficarão sem categoria após a exclusão.
+                  </span>
+                </>
+              )}
+              <br /><br />
               Esta ação não pode ser desfeita.
             </AlertDialogDescription>
           </AlertDialogHeader>
