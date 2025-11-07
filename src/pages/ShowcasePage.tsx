@@ -1,17 +1,20 @@
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Header from '@/components/Header';
 import FadeIn from '@/components/animations/FadeIn';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Search, X } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { Showcase } from '@/types/database';
 import { fetchShowcases, fetchShowcaseCategories } from '@/services/showcaseService';
 import TemplateCategories, { TemplateCategory } from '@/components/TemplateCategories';
 import ShowcaseCard from '@/components/ShowcaseCard';
 import Footer from '@/components/Footer';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 const ShowcasePage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const {
     data: categoriesData = [],
@@ -41,6 +44,19 @@ const ShowcasePage: React.FC = () => {
     }))
   ];
 
+  // Filtrar showcases pela busca
+  const filteredShowcases = useMemo(() => {
+    if (!searchQuery.trim()) return showcasesData;
+    
+    const query = searchQuery.toLowerCase().trim();
+    return showcasesData.filter((showcase: Showcase) => {
+      const clientName = showcase.client_name?.toLowerCase() || '';
+      const description = showcase.description?.toLowerCase() || '';
+      
+      return clientName.includes(query) || description.includes(query);
+    });
+  }, [showcasesData, searchQuery]);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -56,6 +72,32 @@ const ShowcasePage: React.FC = () => {
             </FadeIn>
             
             <FadeIn delay={100}>
+              <div className="mb-8">
+                <div className="relative max-w-md mx-auto">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                  <Input
+                    type="text"
+                    placeholder="Buscar por nome do cliente ou descrição..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-10 pr-10 h-12 text-base"
+                  />
+                  {searchQuery && (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => setSearchQuery('')}
+                      className="absolute right-1 top-1/2 -translate-y-1/2 h-10 w-10"
+                      title="Limpar busca"
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </FadeIn>
+            
+            <FadeIn delay={200}>
               <TemplateCategories categories={categories} activeCategory={activeCategory} onChange={setActiveCategory} />
             </FadeIn>
             
@@ -66,22 +108,35 @@ const ShowcasePage: React.FC = () => {
               </div>
             )}
             
-            {!isLoadingShowcases && showcasesData.length === 0 && (
+            {!isLoadingShowcases && filteredShowcases.length === 0 && (
               <div className="text-center py-20">
                 <p className="text-lg text-muted-foreground">
-                  Nenhum site encontrado para esta categoria.
+                  {searchQuery ? (
+                    <>Nenhum site encontrado para "{searchQuery}".</>
+                  ) : (
+                    <>Nenhum site encontrado para esta categoria.</>
+                  )}
                 </p>
               </div>
             )}
             
-            {!isLoadingShowcases && showcasesData.length > 0 && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
-                {showcasesData.map((showcase: Showcase, index: number) => (
-                  <FadeIn key={showcase.id} delay={index * 100}>
-                    <ShowcaseCard {...showcase} />
-                  </FadeIn>
-                ))}
-              </div>
+            {!isLoadingShowcases && filteredShowcases.length > 0 && (
+              <>
+                {searchQuery && (
+                  <div className="text-center mb-6">
+                    <p className="text-sm text-muted-foreground">
+                      Encontrados {filteredShowcases.length} resultado{filteredShowcases.length !== 1 ? 's' : ''} para "{searchQuery}"
+                    </p>
+                  </div>
+                )}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
+                  {filteredShowcases.map((showcase: Showcase, index: number) => (
+                    <FadeIn key={showcase.id} delay={index * 100}>
+                      <ShowcaseCard {...showcase} />
+                    </FadeIn>
+                  ))}
+                </div>
+              </>
             )}
           </div>
         </section>
