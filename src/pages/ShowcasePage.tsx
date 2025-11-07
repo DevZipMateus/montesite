@@ -58,8 +58,9 @@ const ShowcasePage: React.FC = () => {
       result = showcasesData.filter((showcase: Showcase) => {
         const clientName = showcase.client_name?.toLowerCase() || '';
         const description = showcase.description?.toLowerCase() || '';
+        const siteUrl = showcase.site_url?.toLowerCase() || '';
         
-        return clientName.includes(query) || description.includes(query);
+        return clientName.includes(query) || description.includes(query) || siteUrl.includes(query);
       });
     }
     
@@ -104,7 +105,7 @@ const ShowcasePage: React.FC = () => {
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                   <Input
                     type="text"
-                    placeholder="Buscar por nome do cliente ou descrição..."
+                    placeholder="Buscar por nome, descrição ou link do site..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="pl-10 pr-10 h-12 text-base"
