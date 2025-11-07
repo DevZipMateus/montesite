@@ -18,6 +18,7 @@ import { categoryFormSchema, CategoryFormValues } from '@/schemas/showcaseSchema
 import { createCategory, updateCategory } from '@/services/templates';
 import { Category } from '@/types/database';
 import { Loader2 } from 'lucide-react';
+import { IconPicker } from './category-form/IconPicker';
 
 interface CategoryFormDialogProps {
   onSuccess?: () => void;
@@ -90,7 +91,7 @@ const CategoryFormDialog: React.FC<CategoryFormDialogProps> = ({ onSuccess, cate
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>
             {isEditMode ? 'Editar Categoria' : 'Adicionar Nova Categoria'}
@@ -140,7 +141,11 @@ const CategoryFormDialog: React.FC<CategoryFormDialogProps> = ({ onSuccess, cate
                 <FormItem>
                   <FormLabel>Ícone (opcional)</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nome do ícone (ex: calculator)" {...field} />
+                    <IconPicker
+                      value={field.value}
+                      onChange={field.onChange}
+                      onClear={() => form.setValue('icon', '')}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
