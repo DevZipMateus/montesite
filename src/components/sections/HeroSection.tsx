@@ -41,13 +41,23 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToShowcase }) => {
           </FadeIn>
 
           <FadeIn delay={200}>
-            <div className="flex flex-wrap justify-center gap-6 mb-12">
+            <div className="flex flex-wrap justify-center gap-4 mb-12">
               <Button 
                 size="lg" 
                 className="rounded-full btn-hover-effect text-lg bg-gradient-to-r from-primary to-indigo-500 hover:from-indigo-500 hover:to-primary transition-all duration-300 px-10 py-7"
                 onClick={scrollToShowcase}
               >
                 Conheça Nossa Vitrine
+              </Button>
+              <Button 
+                size="lg"
+                variant="outline"
+                className="rounded-full text-lg border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 px-10 py-7"
+                asChild
+              >
+                <a href="https://lp.montesite.com.br/" target="_blank" rel="noopener noreferrer">
+                  Entre em Contato
+                </a>
               </Button>
             </div>
           </FadeIn>
