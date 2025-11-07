@@ -23,7 +23,7 @@ const FeaturedCheckbox: React.FC<FeaturedCheckboxProps> = ({ form }) => {
             />
           </FormControl>
           <div className="space-y-1 leading-none">
-            <FormLabel>Destacado</FormLabel>
+            <FormLabel>Vitrine online</FormLabel>
           </div>
           <FormMessage />
         </FormItem>
