@@ -2,7 +2,7 @@
 import React, { useState, useMemo } from 'react';
 import Header from '@/components/Header';
 import FadeIn from '@/components/animations/FadeIn';
-import { Loader2, Search, X, ArrowUpDown } from 'lucide-react';
+import { Loader2, Search, X, ArrowUpDown, Star } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { Showcase } from '@/types/database';
 import { fetchShowcases, fetchShowcaseCategories } from '@/services/showcaseService';
@@ -19,6 +19,7 @@ const ShowcasePage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<SortOption>('newest');
+  const [showOnlyFeatured, setShowOnlyFeatured] = useState(false);
 
   const {
     data: categoriesData = [],
@@ -53,9 +54,14 @@ const ShowcasePage: React.FC = () => {
     // Primeiro aplica o filtro de busca
     let result = showcasesData;
     
+    // Filtro de vitrine online (featured)
+    if (showOnlyFeatured) {
+      result = result.filter((showcase: Showcase) => showcase.featured === true);
+    }
+    
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase().trim();
-      result = showcasesData.filter((showcase: Showcase) => {
+      result = result.filter((showcase: Showcase) => {
         const clientName = showcase.client_name?.toLowerCase() || '';
         const description = showcase.description?.toLowerCase() || '';
         const siteUrl = showcase.site_url?.toLowerCase() || '';
@@ -83,7 +89,7 @@ const ShowcasePage: React.FC = () => {
     }
     
     return sorted;
-  }, [showcasesData, searchQuery, sortBy]);
+  }, [showcasesData, searchQuery, sortBy, showOnlyFeatured]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -140,6 +146,18 @@ const ShowcasePage: React.FC = () => {
                       </SelectContent>
                     </Select>
                   </div>
+                  
+                  <div className="w-px h-8 bg-border hidden sm:block" />
+                  
+                  <Button
+                    variant={showOnlyFeatured ? "default" : "outline"}
+                    size="default"
+                    onClick={() => setShowOnlyFeatured(!showOnlyFeatured)}
+                    className="flex items-center gap-2"
+                  >
+                    <Star className={`h-4 w-4 ${showOnlyFeatured ? 'fill-current' : ''}`} />
+                    Vitrine online
+                  </Button>
                   
                   <div className="w-px h-8 bg-border hidden sm:block" />
                   

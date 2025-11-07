@@ -138,8 +138,8 @@ const AdminShowcasesTable: React.FC = () => {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Todos os sites</SelectItem>
-              <SelectItem value="featured">Apenas destaques</SelectItem>
-              <SelectItem value="not-featured">Sem destaque</SelectItem>
+              <SelectItem value="featured">Vitrine online</SelectItem>
+              <SelectItem value="not-featured">Fora da vitrine</SelectItem>
             </SelectContent>
           </Select>
 
@@ -178,7 +178,7 @@ const AdminShowcasesTable: React.FC = () => {
               <TableHead>Cliente</TableHead>
               <TableHead>Categoria</TableHead>
               <TableHead>URL do Site</TableHead>
-              <TableHead>Destaque</TableHead>
+              <TableHead>Vitrine online</TableHead>
               <TableHead className="text-right">Ações</TableHead>
             </TableRow>
           </TableHeader>
@@ -205,7 +205,7 @@ const AdminShowcasesTable: React.FC = () => {
                     {showcase.featured && (
                       <Badge variant="outline" className="flex items-center gap-1 border-amber-500 text-amber-500">
                         <Star className="h-3 w-3 fill-amber-500" />
-                        Destaque
+                        Vitrine online
                       </Badge>
                     )}
                   </TableCell>
