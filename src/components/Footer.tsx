@@ -8,6 +8,7 @@ import { MonteSiteBadge } from '@/components/MonteSiteBadge';
 const Footer = () => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
+  const isShowcasePage = location.pathname === '/vitrine';
 
   const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     // Only handle anchor navigation on home page
@@ -151,7 +152,7 @@ const Footer = () => {
         </div>
         
         {/* Badge MonteSite Dinâmico */}
-        <MonteSiteBadge />
+        {!isShowcasePage && <MonteSiteBadge />}
       </div>
     </footer>
   );
