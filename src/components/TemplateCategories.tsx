@@ -102,22 +102,26 @@ const TemplateCategories: React.FC<TemplateCategoriesProps> = ({
                 <ChevronDown className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48 bg-white shadow-lg border z-50">
-              {overflowCategories.map((category) => (
-                <DropdownMenuItem
-                  key={category.id}
-                  onClick={() => onChange(category.id)}
-                  className={cn(
-                    "flex items-center gap-2 cursor-pointer hover:bg-gray-100",
-                    activeCategory === category.id && "bg-accent"
-                  )}
-                >
-                  <span className="flex-shrink-0">
-                    {renderIcon(category.icon)}
-                  </span>
-                  <span>{category.name}</span>
-                </DropdownMenuItem>
-              ))}
+            <DropdownMenuContent align="end" className="w-56 bg-white shadow-lg border z-50 p-0">
+              <ScrollArea className="max-h-[400px]">
+                <div className="p-1">
+                  {overflowCategories.map((category) => (
+                    <DropdownMenuItem
+                      key={category.id}
+                      onClick={() => onChange(category.id)}
+                      className={cn(
+                        "flex items-center gap-2 cursor-pointer hover:bg-gray-100",
+                        activeCategory === category.id && "bg-accent"
+                      )}
+                    >
+                      <span className="flex-shrink-0">
+                        {renderIcon(category.icon)}
+                      </span>
+                      <span>{category.name}</span>
+                    </DropdownMenuItem>
+                  ))}
+                </div>
+              </ScrollArea>
             </DropdownMenuContent>
           </DropdownMenu>
         )}
