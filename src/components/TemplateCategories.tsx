@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { LayoutTemplate, ChevronDown, ChevronLeft, ChevronRight, Search, X } from 'lucide-react';
+import { LayoutTemplate, ChevronDown, Search, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export type TemplateCategory = {
@@ -24,7 +24,6 @@ const TemplateCategories: React.FC<TemplateCategoriesProps> = ({
   activeCategory,
   onChange
 }) => {
-  const [showScrollHint, setShowScrollHint] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
 
   // Parse icon string or use provided ReactNode
@@ -51,183 +50,106 @@ const TemplateCategories: React.FC<TemplateCategoriesProps> = ({
     return icon;
   };
 
-  // For desktop: show first 5 categories directly, rest in dropdown
-  const maxVisibleCategories = 5;
-  const visibleCategories = categories.slice(0, maxVisibleCategories);
-  const overflowCategories = categories.slice(maxVisibleCategories);
+  // Encontrar a categoria ativa
+  const activecat = categories.find(cat => cat.id === activeCategory);
   
-  // Filter overflow categories based on search query
-  const filteredOverflowCategories = overflowCategories.filter(category =>
+  // Filtrar categorias baseado na busca
+  const filteredCategories = categories.filter(category =>
     category.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const CategoryButton: React.FC<{ category: TemplateCategory; isActive: boolean }> = ({ category, isActive }) => (
-    <button
-      onClick={() => onChange(category.id)}
-      className={cn(
-        "flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap flex-shrink-0",
-        isActive
-          ? "bg-white text-foreground shadow-sm"
-          : "text-muted-foreground hover:bg-white/50 hover:text-foreground"
-      )}
-    >
-      <span className="hidden sm:inline-block flex-shrink-0">
-        {renderIcon(category.icon)}
-      </span>
-      <span className="truncate">{category.name}</span>
-    </button>
-  );
-
-  const handleScroll = () => {
-    if (showScrollHint) {
-      setShowScrollHint(false);
-    }
-  };
-
   return (
     <div className="mb-8 sm:mb-12">
-      {/* Desktop version with scrollable area and dropdown */}
-      <div className="hidden md:flex items-center gap-2 bg-muted/50 p-2 rounded-lg">
-        <div className="flex-1 overflow-x-auto">
-          <div className="flex items-center gap-2 px-2">
-            {visibleCategories.map((category) => (
-              <CategoryButton
-                key={category.id}
-                category={category}
-                isActive={activeCategory === category.id}
-              />
-            ))}
-          </div>
-        </div>
-        
-        {/* Dropdown for overflow categories */}
-        {overflowCategories.length > 0 && (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="flex items-center gap-2 bg-white hover:bg-gray-50">
-                Mais ({overflowCategories.length})
-                <ChevronDown className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent 
-              align="end" 
-              className="w-72 bg-background shadow-lg border z-[100] p-0"
-              onCloseAutoFocus={() => setSearchQuery('')}
-              sideOffset={5}
-              collisionPadding={10}
+      <div className="flex justify-center">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="flex items-center gap-3 bg-background hover:bg-accent min-w-[250px] justify-between shadow-sm"
             >
-              {/* Campo de busca fixo */}
-              <div className="sticky top-0 bg-background border-b p-3 z-10">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    type="text"
-                    placeholder="Buscar categoria..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-9 pr-9 h-9 text-sm"
-                  />
-                  {searchQuery && (
-                    <button
-                      onClick={() => setSearchQuery('')}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
-                  )}
-                </div>
+              <div className="flex items-center gap-2">
+                {activecat && renderIcon(activecat.icon)}
+                <span className="font-medium">{activecat?.name || 'Selecione uma categoria'}</span>
               </div>
-
-              {/* Lista com scroll nativo CSS */}
-              <div 
-                className="max-h-[60vh] overflow-y-auto overflow-x-hidden"
-                style={{
-                  scrollbarWidth: 'thin',
-                  scrollbarColor: 'hsl(var(--muted-foreground) / 0.3) transparent'
-                }}
-              >
-                <div className="p-1">
-                  {filteredOverflowCategories.length > 0 ? (
-                    filteredOverflowCategories.map((category) => (
-                      <DropdownMenuItem
-                        key={category.id}
-                        onClick={() => {
-                          onChange(category.id);
-                          setSearchQuery('');
-                        }}
-                        className={cn(
-                          "flex items-center gap-2 cursor-pointer hover:bg-accent/50 py-2.5 transition-colors",
-                          activeCategory === category.id && "bg-accent"
-                        )}
-                      >
-                        <span className="flex-shrink-0">
-                          {renderIcon(category.icon)}
-                        </span>
-                        <span className="truncate">{category.name}</span>
-                      </DropdownMenuItem>
-                    ))
-                  ) : (
-                    <div className="p-8 text-center text-sm text-muted-foreground">
-                      <Search className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                      <p>Nenhuma categoria encontrada</p>
-                      <p className="text-xs mt-1">Tente buscar por outro termo</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Contador de resultados no footer */}
-              {searchQuery && (
-                <div className="sticky bottom-0 bg-background/95 backdrop-blur-sm border-t px-3 py-2 text-xs text-muted-foreground text-center">
-                  {filteredOverflowCategories.length} de {overflowCategories.length} categorias
-                </div>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )}
-      </div>
-
-      {/* Mobile version with improved scrollable area */}
-      <div className="md:hidden">
-        <div className="bg-muted/50 p-3 rounded-lg">
-          {/* Scroll hint */}
-          {showScrollHint && categories.length > 3 && (
-            <div className="flex items-center justify-center gap-2 mb-2 text-xs text-muted-foreground">
-              <ChevronLeft className="h-3 w-3" />
-              <span>Deslize para ver mais categorias</span>
-              <ChevronRight className="h-3 w-3" />
-            </div>
-          )}
-          
-          <div className="h-32 overflow-y-auto" onScroll={handleScroll}>
-            <div className="flex items-start gap-2 px-2 pb-2">
-              <div className="grid grid-cols-2 gap-2 w-full">
-                {categories.map((category) => (
-                  <CategoryButton
-                    key={category.id}
-                    category={category}
-                    isActive={activeCategory === category.id}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-          
-          {/* Visual scroll indicator */}
-          <div className="flex justify-center mt-2">
-            <div className="flex gap-1">
-              {Array.from({ length: Math.ceil(categories.length / 6) }).map((_, index) => (
-                <div
-                  key={index}
-                  className={cn(
-                    "h-1 w-6 rounded-full transition-colors",
-                    index === 0 ? "bg-primary" : "bg-muted-foreground/30"
-                  )}
+              <ChevronDown className="h-5 w-5 text-muted-foreground" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent 
+            align="center" 
+            className="w-[400px] bg-background shadow-lg border z-[100] p-0"
+            onCloseAutoFocus={() => setSearchQuery('')}
+            sideOffset={8}
+            collisionPadding={10}
+          >
+            {/* Campo de busca fixo */}
+            <div className="sticky top-0 bg-background border-b p-3 z-10">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder="Buscar categoria..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-9 pr-9 h-10 text-sm bg-background"
                 />
-              ))}
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
-        </div>
+
+            {/* Lista com scroll */}
+            <div 
+              className="max-h-[400px] overflow-y-auto overflow-x-hidden"
+              style={{
+                scrollbarWidth: 'thin',
+                scrollbarColor: 'hsl(var(--muted-foreground) / 0.3) transparent'
+              }}
+            >
+              <div className="p-1">
+                {filteredCategories.length > 0 ? (
+                  filteredCategories.map((category) => (
+                    <DropdownMenuItem
+                      key={category.id}
+                      onClick={() => {
+                        onChange(category.id);
+                        setSearchQuery('');
+                      }}
+                      className={cn(
+                        "flex items-center gap-3 cursor-pointer hover:bg-accent py-3 px-3 transition-colors rounded-md",
+                        activeCategory === category.id && "bg-accent font-medium"
+                      )}
+                    >
+                      <span className="flex-shrink-0">
+                        {renderIcon(category.icon)}
+                      </span>
+                      <span className="truncate">{category.name}</span>
+                    </DropdownMenuItem>
+                  ))
+                ) : (
+                  <div className="p-8 text-center text-sm text-muted-foreground">
+                    <Search className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                    <p>Nenhuma categoria encontrada</p>
+                    <p className="text-xs mt-1">Tente buscar por outro termo</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Contador de resultados no footer */}
+            {searchQuery && (
+              <div className="sticky bottom-0 bg-background/95 backdrop-blur-sm border-t px-3 py-2 text-xs text-muted-foreground text-center">
+                {filteredCategories.length} de {categories.length} categorias
+              </div>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );
