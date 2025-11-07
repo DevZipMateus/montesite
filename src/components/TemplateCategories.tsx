@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -88,7 +88,7 @@ const TemplateCategories: React.FC<TemplateCategoriesProps> = ({
     <div className="mb-8 sm:mb-12">
       {/* Desktop version with scrollable area and dropdown */}
       <div className="hidden md:flex items-center gap-2 bg-muted/50 p-2 rounded-lg">
-        <ScrollArea className="flex-1">
+        <div className="flex-1 overflow-x-auto">
           <div className="flex items-center gap-2 px-2">
             {visibleCategories.map((category) => (
               <CategoryButton
@@ -98,8 +98,7 @@ const TemplateCategories: React.FC<TemplateCategoriesProps> = ({
               />
             ))}
           </div>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
+        </div>
         
         {/* Dropdown for overflow categories */}
         {overflowCategories.length > 0 && (
@@ -112,11 +111,13 @@ const TemplateCategories: React.FC<TemplateCategoriesProps> = ({
             </DropdownMenuTrigger>
             <DropdownMenuContent 
               align="end" 
-              className="w-72 bg-white shadow-lg border z-50 p-0"
+              className="w-72 bg-background shadow-lg border z-[100] p-0"
               onCloseAutoFocus={() => setSearchQuery('')}
+              sideOffset={5}
+              collisionPadding={10}
             >
               {/* Campo de busca fixo */}
-              <div className="sticky top-0 bg-white border-b p-3 z-10">
+              <div className="sticky top-0 bg-background border-b p-3 z-10">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
@@ -137,8 +138,14 @@ const TemplateCategories: React.FC<TemplateCategoriesProps> = ({
                 </div>
               </div>
 
-              {/* Lista com scroll */}
-              <ScrollArea className="max-h-[350px]">
+              {/* Lista com scroll nativo CSS */}
+              <div 
+                className="max-h-[60vh] overflow-y-auto overflow-x-hidden"
+                style={{
+                  scrollbarWidth: 'thin',
+                  scrollbarColor: 'hsl(var(--muted-foreground) / 0.3) transparent'
+                }}
+              >
                 <div className="p-1">
                   {filteredOverflowCategories.length > 0 ? (
                     filteredOverflowCategories.map((category) => (
@@ -149,7 +156,7 @@ const TemplateCategories: React.FC<TemplateCategoriesProps> = ({
                           setSearchQuery('');
                         }}
                         className={cn(
-                          "flex items-center gap-2 cursor-pointer hover:bg-gray-100 py-2.5",
+                          "flex items-center gap-2 cursor-pointer hover:bg-accent/50 py-2.5 transition-colors",
                           activeCategory === category.id && "bg-accent"
                         )}
                       >
@@ -167,12 +174,11 @@ const TemplateCategories: React.FC<TemplateCategoriesProps> = ({
                     </div>
                   )}
                 </div>
-                <ScrollBar orientation="vertical" />
-              </ScrollArea>
+              </div>
 
               {/* Contador de resultados no footer */}
               {searchQuery && (
-                <div className="sticky bottom-0 bg-muted/50 border-t px-3 py-2 text-xs text-muted-foreground text-center">
+                <div className="sticky bottom-0 bg-background/95 backdrop-blur-sm border-t px-3 py-2 text-xs text-muted-foreground text-center">
                   {filteredOverflowCategories.length} de {overflowCategories.length} categorias
                 </div>
               )}
@@ -193,7 +199,7 @@ const TemplateCategories: React.FC<TemplateCategoriesProps> = ({
             </div>
           )}
           
-          <ScrollArea className="h-32" onScroll={handleScroll}>
+          <div className="h-32 overflow-y-auto" onScroll={handleScroll}>
             <div className="flex items-start gap-2 px-2 pb-2">
               <div className="grid grid-cols-2 gap-2 w-full">
                 {categories.map((category) => (
@@ -205,7 +211,7 @@ const TemplateCategories: React.FC<TemplateCategoriesProps> = ({
                 ))}
               </div>
             </div>
-          </ScrollArea>
+          </div>
           
           {/* Visual scroll indicator */}
           <div className="flex justify-center mt-2">
