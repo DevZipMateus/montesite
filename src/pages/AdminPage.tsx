@@ -11,6 +11,7 @@ import { LogOut } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import AdminTemplatesTable from '@/components/admin/AdminTemplatesTable';
 import AdminShowcasesTable from '@/components/admin/AdminShowcasesTable';
+import CategoriesManagementTable from '@/components/admin/CategoriesManagementTable';
 import HashLogsTable from '@/components/admin/HashLogsTable';
 import PublicUrlGenerator from '@/components/admin/PublicUrlGenerator';
 import IframeConfigManager from '@/components/admin/IframeConfigManager';
@@ -52,6 +53,7 @@ const AdminPage: React.FC = () => {
             <TabsTrigger value="templates" className="flex-grow md:flex-grow-0">Templates</TabsTrigger>
             <TabsTrigger value="iframe-config" className="flex-grow md:flex-grow-0">Configuração de iframes</TabsTrigger>
             <TabsTrigger value="showcases" className="flex-grow md:flex-grow-0">Vitrine de Sites</TabsTrigger>
+            <TabsTrigger value="categories" className="flex-grow md:flex-grow-0">Categorias</TabsTrigger>
             <TabsTrigger value="public-url" className="flex-grow md:flex-grow-0">URL Pública</TabsTrigger>
             <TabsTrigger value="hash-logs" className="flex-grow md:flex-grow-0">Logs de Hash</TabsTrigger>
           </TabsList>
@@ -117,6 +119,20 @@ const AdminPage: React.FC = () => {
               </CardHeader>
               <CardContent>
                 <AdminShowcasesTable />
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="categories">
+            <Card>
+              <CardHeader>
+                <CardTitle>Gerenciamento de Categorias</CardTitle>
+                <CardDescription>
+                  Edite ou exclua categorias existentes. Categorias em uso não podem ser excluídas.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <CategoriesManagementTable />
               </CardContent>
             </Card>
           </TabsContent>

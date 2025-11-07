@@ -15,35 +15,49 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { categoryFormSchema, CategoryFormValues } from '@/schemas/showcaseSchema';
-import { createCategory } from '@/services/templates';
+import { createCategory, updateCategory } from '@/services/templates';
+import { Category } from '@/types/database';
+import { Loader2 } from 'lucide-react';
 
 interface CategoryFormDialogProps {
   onSuccess?: () => void;
+  category?: Category;
+  trigger?: React.ReactNode;
 }
 
-const CategoryFormDialog: React.FC<CategoryFormDialogProps> = ({ onSuccess }) => {
+const CategoryFormDialog: React.FC<CategoryFormDialogProps> = ({ onSuccess, category, trigger }) => {
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
+  const isEditMode = !!category;
   
   const form = useForm<CategoryFormValues>({
     resolver: zodResolver(categoryFormSchema),
-    defaultValues: {
+    defaultValues: category ? {
+      name: category.name,
+      slug: category.slug,
+      icon: category.icon || ''
+    } : {
       name: '',
       slug: '',
       icon: ''
     }
   });
   
-  const createMutation = useMutation({
-    mutationFn: createCategory,
+  const saveMutation = useMutation({
+    mutationFn: async (data: CategoryFormValues) => {
+      if (isEditMode && category) {
+        return updateCategory(category.id, data);
+      }
+      return createCategory(data);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['categories'] });
+      queryClient.invalidateQueries({ queryKey: ['category-usage'] });
       if (onSuccess) onSuccess();
       setOpen(false);
       form.reset();
     },
     onError: (error) => {
-      // Error is already handled in the service with toast
       console.error('Error in mutation handler:', error);
     }
   });
@@ -51,10 +65,9 @@ const CategoryFormDialog: React.FC<CategoryFormDialogProps> = ({ onSuccess }) =>
   const handleSubmit = async (data: CategoryFormValues) => {
     console.log('Submitting category form with data:', data);
     try {
-      await createMutation.mutateAsync(data);
+      await saveMutation.mutateAsync(data);
     } catch (error) {
       console.error('Error submitting form:', error);
-      // Error handled in mutation onError and service
     }
   };
   
@@ -70,14 +83,18 @@ const CategoryFormDialog: React.FC<CategoryFormDialogProps> = ({ onSuccess }) =>
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm">
-          <Plus className="h-4 w-4 mr-1" />
-          Nova Categoria
-        </Button>
+        {trigger || (
+          <Button variant="outline" size="sm">
+            <Plus className="h-4 w-4 mr-1" />
+            Nova Categoria
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Adicionar Nova Categoria</DialogTitle>
+          <DialogTitle>
+            {isEditMode ? 'Editar Categoria' : 'Adicionar Nova Categoria'}
+          </DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
@@ -133,9 +150,9 @@ const CategoryFormDialog: React.FC<CategoryFormDialogProps> = ({ onSuccess }) =>
               <Button type="button" variant="outline" onClick={() => setOpen(false)}>
                 Cancelar
               </Button>
-              <Button type="submit" disabled={createMutation.isPending}>
-                {createMutation.isPending && <span className="mr-2 h-4 w-4 animate-spin">●</span>}
-                Salvar Categoria
+              <Button type="submit" disabled={saveMutation.isPending}>
+                {saveMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                {isEditMode ? 'Atualizar Categoria' : 'Salvar Categoria'}
               </Button>
             </div>
           </form>

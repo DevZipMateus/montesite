@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { 
   Table, 
@@ -12,15 +12,56 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Loader2, Eye, Edit, Star } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue,
+  SelectSeparator 
+} from '@/components/ui/select';
+import { Loader2, Eye, Edit, Star, Search, X, Filter } from 'lucide-react';
 import { fetchAdminShowcases } from '@/services/showcaseService';
+import { fetchCategories } from '@/services/templates';
 import ShowcaseFormDialog from './ShowcaseFormDialog';
 import DeleteShowcaseDialog from './DeleteShowcaseDialog';
 
 const AdminShowcasesTable: React.FC = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  const [featuredFilter, setFeaturedFilter] = useState<'all' | 'featured' | 'not-featured'>('all');
+
   const { data: showcases = [], isLoading, isError } = useQuery({
     queryKey: ['admin-showcases'],
     queryFn: fetchAdminShowcases,
+  });
+
+  const { data: categories = [], isLoading: isLoadingCategories } = useQuery({
+    queryKey: ['categories'],
+    queryFn: fetchCategories,
+  });
+
+  // Filter logic
+  const filteredShowcases = showcases.filter((showcase) => {
+    // Search by name or URL
+    const matchesSearch = 
+      showcase.client_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      showcase.site_url.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    // Filter by category
+    const matchesCategory = 
+      categoryFilter === 'all' || 
+      showcase.category_id === categoryFilter ||
+      (categoryFilter === 'uncategorized' && !showcase.category_id);
+    
+    // Filter by featured
+    const matchesFeatured = 
+      featuredFilter === 'all' ||
+      (featuredFilter === 'featured' && showcase.featured) ||
+      (featuredFilter === 'not-featured' && !showcase.featured);
+    
+    return matchesSearch && matchesCategory && matchesFeatured;
   });
 
   if (isLoading) {
@@ -41,8 +82,92 @@ const AdminShowcasesTable: React.FC = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-end">
-        <ShowcaseFormDialog />
+      {/* Filters Section */}
+      <div className="space-y-4 mb-6">
+        {/* Search bar */}
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            type="text"
+            placeholder="Buscar por nome do cliente ou URL do site..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-9 pr-9"
+          />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2 hover:bg-accent rounded-sm p-1"
+            >
+              <X className="h-4 w-4 text-muted-foreground hover:text-foreground" />
+            </button>
+          )}
+        </div>
+
+        {/* Filters */}
+        <div className="flex flex-wrap gap-3 items-center">
+          <Filter className="h-4 w-4 text-muted-foreground" />
+          
+          {/* Category filter */}
+          <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+            <SelectTrigger className="w-[200px]">
+              <SelectValue placeholder="Todas as categorias" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todas as categorias</SelectItem>
+              <SelectItem value="uncategorized">Sem categoria</SelectItem>
+              <SelectSeparator />
+              {isLoadingCategories ? (
+                <div className="flex items-center justify-center p-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                </div>
+              ) : (
+                categories.map((cat) => (
+                  <SelectItem key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </SelectItem>
+                ))
+              )}
+            </SelectContent>
+          </Select>
+
+          {/* Featured filter */}
+          <Select value={featuredFilter} onValueChange={(value: any) => setFeaturedFilter(value)}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Todos os sites" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos os sites</SelectItem>
+              <SelectItem value="featured">Apenas destaques</SelectItem>
+              <SelectItem value="not-featured">Sem destaque</SelectItem>
+            </SelectContent>
+          </Select>
+
+          {/* Clear filters button */}
+          {(searchQuery || categoryFilter !== 'all' || featuredFilter !== 'all') && (
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => {
+                setSearchQuery('');
+                setCategoryFilter('all');
+                setFeaturedFilter('all');
+              }}
+            >
+              <X className="h-4 w-4 mr-1" />
+              Limpar filtros
+            </Button>
+          )}
+
+          <div className="ml-auto">
+            <ShowcaseFormDialog />
+          </div>
+        </div>
+
+        {/* Result counter */}
+        <div className="text-sm text-muted-foreground">
+          Mostrando <strong>{filteredShowcases.length}</strong> de <strong>{showcases.length}</strong> sites
+        </div>
       </div>
       
       <div className="overflow-x-auto">
@@ -58,14 +183,16 @@ const AdminShowcasesTable: React.FC = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {showcases.length === 0 ? (
+            {filteredShowcases.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={5} className="h-24 text-center">
-                  Nenhum site encontrado na vitrine. Adicione um novo site.
+                  {showcases.length === 0 
+                    ? "Nenhum site encontrado na vitrine. Adicione um novo site."
+                    : "Nenhum site encontrado com os filtros aplicados."}
                 </TableCell>
               </TableRow>
             ) : (
-              showcases.map((showcase) => (
+              filteredShowcases.map((showcase) => (
                 <TableRow key={showcase.id}>
                   <TableCell className="font-medium">{showcase.client_name}</TableCell>
                   <TableCell>
