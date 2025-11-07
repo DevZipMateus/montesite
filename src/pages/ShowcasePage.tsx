@@ -101,7 +101,8 @@ const ShowcasePage: React.FC = () => {
             
             <FadeIn delay={100}>
               <div className="mb-8 space-y-4">
-                <div className="relative max-w-md mx-auto">
+                {/* Campo de busca - linha inteira */}
+                <div className="relative max-w-2xl mx-auto">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                   <Input
                     type="text"
@@ -123,7 +124,8 @@ const ShowcasePage: React.FC = () => {
                   )}
                 </div>
                 
-                <div className="flex justify-center">
+                {/* Ordenação e Categorias lado a lado */}
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <div className="flex items-center gap-2">
                     <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
                     <Select value={sortBy} onValueChange={(value) => setSortBy(value as SortOption)}>
@@ -138,12 +140,12 @@ const ShowcasePage: React.FC = () => {
                       </SelectContent>
                     </Select>
                   </div>
+                  
+                  <div className="w-px h-8 bg-border hidden sm:block" />
+                  
+                  <TemplateCategories categories={categories} activeCategory={activeCategory} onChange={setActiveCategory} />
                 </div>
               </div>
-            </FadeIn>
-            
-            <FadeIn delay={200}>
-              <TemplateCategories categories={categories} activeCategory={activeCategory} onChange={setActiveCategory} />
             </FadeIn>
             
             {(isLoadingCategories || isLoadingShowcases) && (

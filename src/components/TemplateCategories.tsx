@@ -59,22 +59,21 @@ const TemplateCategories: React.FC<TemplateCategoriesProps> = ({
   );
 
   return (
-    <div className="mb-8 sm:mb-12">
-      <div className="flex justify-center">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="flex items-center gap-3 bg-background hover:bg-accent min-w-[250px] justify-between shadow-sm"
-            >
-              <div className="flex items-center gap-2">
-                {activecat && renderIcon(activecat.icon)}
-                <span className="font-medium">{activecat?.name || 'Selecione uma categoria'}</span>
-              </div>
-              <ChevronDown className="h-5 w-5 text-muted-foreground" />
-            </Button>
-          </DropdownMenuTrigger>
+    <div className="inline-block">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button 
+            variant="outline" 
+            size="default" 
+            className="flex items-center gap-3 bg-background hover:bg-accent min-w-[200px] justify-between shadow-sm"
+          >
+            <div className="flex items-center gap-2">
+              {activecat && renderIcon(activecat.icon)}
+              <span className="font-medium text-sm">{activecat?.name || 'Categoria'}</span>
+            </div>
+            <ChevronDown className="h-4 w-4 text-muted-foreground" />
+          </Button>
+        </DropdownMenuTrigger>
           <DropdownMenuContent 
             align="center" 
             className="w-[400px] bg-background shadow-lg border z-[100] p-0"
@@ -148,9 +147,8 @@ const TemplateCategories: React.FC<TemplateCategoriesProps> = ({
                 {filteredCategories.length} de {categories.length} categorias
               </div>
             )}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 };
