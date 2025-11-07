@@ -2,7 +2,7 @@
 import React, { useState, useMemo } from 'react';
 import Header from '@/components/Header';
 import FadeIn from '@/components/animations/FadeIn';
-import { Loader2, Search, X } from 'lucide-react';
+import { Loader2, Search, X, ArrowUpDown } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { Showcase } from '@/types/database';
 import { fetchShowcases, fetchShowcaseCategories } from '@/services/showcaseService';
@@ -11,10 +11,14 @@ import ShowcaseCard from '@/components/ShowcaseCard';
 import Footer from '@/components/Footer';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
+type SortOption = 'newest' | 'oldest' | 'name-asc' | 'name-desc';
 
 const ShowcasePage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState<SortOption>('newest');
 
   const {
     data: categoriesData = [],
@@ -44,18 +48,41 @@ const ShowcasePage: React.FC = () => {
     }))
   ];
 
-  // Filtrar showcases pela busca
-  const filteredShowcases = useMemo(() => {
-    if (!searchQuery.trim()) return showcasesData;
+  // Filtrar e ordenar showcases
+  const filteredAndSortedShowcases = useMemo(() => {
+    // Primeiro aplica o filtro de busca
+    let result = showcasesData;
     
-    const query = searchQuery.toLowerCase().trim();
-    return showcasesData.filter((showcase: Showcase) => {
-      const clientName = showcase.client_name?.toLowerCase() || '';
-      const description = showcase.description?.toLowerCase() || '';
-      
-      return clientName.includes(query) || description.includes(query);
-    });
-  }, [showcasesData, searchQuery]);
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim();
+      result = showcasesData.filter((showcase: Showcase) => {
+        const clientName = showcase.client_name?.toLowerCase() || '';
+        const description = showcase.description?.toLowerCase() || '';
+        
+        return clientName.includes(query) || description.includes(query);
+      });
+    }
+    
+    // Depois aplica a ordenação
+    const sorted = [...result];
+    
+    switch (sortBy) {
+      case 'newest':
+        sorted.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+        break;
+      case 'oldest':
+        sorted.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+        break;
+      case 'name-asc':
+        sorted.sort((a, b) => a.client_name.localeCompare(b.client_name));
+        break;
+      case 'name-desc':
+        sorted.sort((a, b) => b.client_name.localeCompare(a.client_name));
+        break;
+    }
+    
+    return sorted;
+  }, [showcasesData, searchQuery, sortBy]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -72,7 +99,7 @@ const ShowcasePage: React.FC = () => {
             </FadeIn>
             
             <FadeIn delay={100}>
-              <div className="mb-8">
+              <div className="mb-8 space-y-4">
                 <div className="relative max-w-md mx-auto">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                   <Input
@@ -94,6 +121,23 @@ const ShowcasePage: React.FC = () => {
                     </Button>
                   )}
                 </div>
+                
+                <div className="flex justify-center">
+                  <div className="flex items-center gap-2">
+                    <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
+                    <Select value={sortBy} onValueChange={(value) => setSortBy(value as SortOption)}>
+                      <SelectTrigger className="w-[200px]">
+                        <SelectValue placeholder="Ordenar por" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="newest">Mais recentes</SelectItem>
+                        <SelectItem value="oldest">Mais antigos</SelectItem>
+                        <SelectItem value="name-asc">Nome (A-Z)</SelectItem>
+                        <SelectItem value="name-desc">Nome (Z-A)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
               </div>
             </FadeIn>
             
@@ -108,7 +152,7 @@ const ShowcasePage: React.FC = () => {
               </div>
             )}
             
-            {!isLoadingShowcases && filteredShowcases.length === 0 && (
+            {!isLoadingShowcases && filteredAndSortedShowcases.length === 0 && (
               <div className="text-center py-20">
                 <p className="text-lg text-muted-foreground">
                   {searchQuery ? (
@@ -120,17 +164,17 @@ const ShowcasePage: React.FC = () => {
               </div>
             )}
             
-            {!isLoadingShowcases && filteredShowcases.length > 0 && (
+            {!isLoadingShowcases && filteredAndSortedShowcases.length > 0 && (
               <>
                 {searchQuery && (
                   <div className="text-center mb-6">
                     <p className="text-sm text-muted-foreground">
-                      Encontrados {filteredShowcases.length} resultado{filteredShowcases.length !== 1 ? 's' : ''} para "{searchQuery}"
+                      Encontrados {filteredAndSortedShowcases.length} resultado{filteredAndSortedShowcases.length !== 1 ? 's' : ''} para "{searchQuery}"
                     </p>
                   </div>
                 )}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
-                  {filteredShowcases.map((showcase: Showcase, index: number) => (
+                  {filteredAndSortedShowcases.map((showcase: Showcase, index: number) => (
                     <FadeIn key={showcase.id} delay={index * 100}>
                       <ShowcaseCard {...showcase} />
                     </FadeIn>
