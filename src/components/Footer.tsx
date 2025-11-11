@@ -33,18 +33,18 @@ const Footer = () => {
   };
 
   return (
-    <footer className="w-full bg-gray-50 pt-16 pb-8">
-      <div className="max-w-7xl mx-auto px-8 md:px-14">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+    <footer className="w-full bg-gray-50 pt-12 md:pt-16 pb-6 md:pb-8">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-14">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
           {/* Company Info */}
           <div>
             <Link to="/" className="text-2xl font-bold text-primary tracking-tight mb-4 inline-block">
               Monte<span className="text-foreground">Site</span>
             </Link>
-            <p className="text-muted-foreground mb-6">
+            <p className="text-muted-foreground mb-4 md:mb-6 text-sm md:text-base">
               Soluções simples para sua presença digital através de templates profissionais e personalizáveis.
             </p>
-            <div className="flex space-x-4">
+            <div className="flex space-x-3 md:space-x-4">
               <a href="https://www.youtube.com/eGestorERP" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="text-gray-400 hover:text-primary transition-colors">
                 <Youtube size={20} />
               </a>
@@ -65,8 +65,8 @@ const Footer = () => {
           
           {/* Links */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">Links Rápidos</h3>
-            <ul className="space-y-3">
+            <h3 className="font-semibold text-base md:text-lg mb-3 md:mb-4">Links Rápidos</h3>
+            <ul className="space-y-2 md:space-y-3">
               <li>
                 <a 
                   href="/#home" 
@@ -95,19 +95,19 @@ const Footer = () => {
           
           {/* Contact */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">Contato</h3>
-            <ul className="space-y-3">
+            <h3 className="font-semibold text-base md:text-lg mb-3 md:mb-4">Contato</h3>
+            <ul className="space-y-2 md:space-y-3">
               <li className="flex items-center space-x-2">
-                <Mail size={16} className="text-primary" />
-                <span className="text-muted-foreground">atendimento@zipline.com.br</span>
+                <Mail size={16} className="text-primary flex-shrink-0" />
+                <span className="text-muted-foreground text-sm md:text-base break-all">atendimento@zipline.com.br</span>
               </li>
               <li className="flex items-center space-x-2">
-                <Phone size={16} className="text-primary" />
-                <span className="text-muted-foreground">0800 603 3336</span>
+                <Phone size={16} className="text-primary flex-shrink-0" />
+                <span className="text-muted-foreground text-sm md:text-base">0800 603 3336</span>
               </li>
               <li className="flex items-start space-x-2">
                 <MapPin size={16} className="text-primary mt-1 flex-shrink-0" />
-                <span className="text-muted-foreground">
+                <span className="text-muted-foreground text-sm md:text-base">
                   Rua do Acampamento nº 380 - Centro<br />
                   Santa Maria - RS - 97050-002<br />
                   CNPJ 04.693.497/0001-21
@@ -117,11 +117,11 @@ const Footer = () => {
           </div>
         </div>
         
-        <Separator className="my-8" />
+        <Separator className="my-6 md:my-8" />
         
-        <div className="flex flex-col md:flex-row justify-between items-center text-muted-foreground text-sm">
-          <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4">
-            <p>© 2025 MonteSite. Todos os direitos reservados.</p>
+        <div className="flex flex-col md:flex-row justify-between items-center text-muted-foreground text-xs md:text-sm gap-4">
+          <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4 text-center md:text-left">
+            <p className="text-xs md:text-sm">© 2025 MonteSite. Todos os direitos reservados.</p>
             <div className="flex items-center">
               <span className="text-xs mr-2">Desenvolvido por:</span>
               <img 
@@ -131,12 +131,12 @@ const Footer = () => {
               />
             </div>
           </div>
-          <div className="flex space-x-6 mt-4 md:mt-0">
+          <div className="flex flex-wrap justify-center md:justify-end gap-4 md:gap-6">
             <a 
               href="https://montesite.com.br/termos/Termos%20de%20Uso%20do%20Servi%C3%A7o%20de%20Cria%C3%A7%C3%A3o%20e%20Hospedagem%20de%20Sites.pdf" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="hover:text-primary transition-colors"
+              className="hover:text-primary transition-colors text-xs md:text-sm"
             >
               Termos de Uso
             </a>
@@ -144,7 +144,7 @@ const Footer = () => {
               href="https://egestor.com.br/politica_de_privacidade.php" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="hover:text-primary transition-colors"
+              className="hover:text-primary transition-colors text-xs md:text-sm"
             >
               Política de Privacidade
             </a>
