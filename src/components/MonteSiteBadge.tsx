@@ -43,7 +43,7 @@ export const MonteSiteBadge = () => {
 
   return (
     <div 
-      className="mt-6 pt-6 border-t border-border text-center"
+      className="border-t border-border text-center"
       dangerouslySetInnerHTML={{ __html: badgeHtml }}
     />
   );
