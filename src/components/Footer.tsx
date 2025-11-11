@@ -33,10 +33,8 @@ const Footer = () => {
   };
 
   return (
-    <footer className="relative w-full pt-12 md:pt-16 pb-6 md:pb-8">
-      {/* Full-bleed background */}
-      <div aria-hidden className="pointer-events-none absolute inset-y-0 left-1/2 -translate-x-1/2 w-screen bg-muted z-0" />
-      <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8 lg:px-14">
+    <footer className="relative w-full bg-muted pt-12 md:pt-16 pb-6 md:pb-8">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-14">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
           {/* Company Info */}
           <div>

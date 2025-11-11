@@ -132,3 +132,11 @@
 .btn-hover-effect:hover:after {
   left: 100%;
 }
+
+/* Ensure full width responsiveness */
+html, body, #root {
+  width: 100%;
+  min-width: 100%;
+  margin: 0;
+  padding: 0;
+}
