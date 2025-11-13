@@ -55,6 +55,8 @@ const CategoryFormDialog: React.FC<CategoryFormDialogProps> = ({ onSuccess, cate
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['categories'] });
       queryClient.invalidateQueries({ queryKey: ['category-usage'] });
+      queryClient.invalidateQueries({ queryKey: ['showcase-categories'] });
+      queryClient.invalidateQueries({ queryKey: ['templates'] });
       if (onSuccess) onSuccess();
       setOpen(false);
       form.reset();
