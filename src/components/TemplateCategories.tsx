@@ -1,11 +1,10 @@
-
 import React, { useState } from 'react';
-import * as LucideIcons from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { LayoutTemplate, ChevronDown, Search, X } from 'lucide-react';
+import { ChevronDown, Search, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import IconRenderer from './IconRenderer';
 
 export type TemplateCategory = {
   id: string;
@@ -26,32 +25,6 @@ const TemplateCategories: React.FC<TemplateCategoriesProps> = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Parse icon string or use provided ReactNode
-  const renderIcon = (icon?: string | React.ReactNode) => {
-    if (!icon) return <LayoutTemplate className="h-4 w-4" />;
-    
-    // Se for ReactNode, retorna diretamente
-    if (typeof icon !== 'string') {
-      return icon;
-    }
-    
-    // Remover prefixo "lucide:" se existir
-    let iconName = icon;
-    if (icon.startsWith('lucide:')) {
-      iconName = icon.split(':')[1];
-    }
-    
-    // Se for string, buscar no Lucide Icons
-    const IconComponent = (LucideIcons as any)[iconName];
-    
-    if (IconComponent && typeof IconComponent === 'function') {
-      return <IconComponent className="h-4 w-4" />;
-    }
-    
-    // Fallback para ícone padrão
-    return <LayoutTemplate className="h-4 w-4" />;
-  };
-
   // Encontrar a categoria ativa
   const activecat = categories.find(cat => cat.id === activeCategory);
   
@@ -70,7 +43,7 @@ const TemplateCategories: React.FC<TemplateCategoriesProps> = ({
             className="flex items-center gap-3 bg-background hover:bg-accent min-w-[200px] justify-between shadow-sm"
           >
             <div className="flex items-center gap-2">
-              {activecat && renderIcon(activecat.icon)}
+              {activecat && <IconRenderer name={activecat.icon as string} className="h-4 w-4" />}
               <span className="font-medium text-sm">{activecat?.name || 'Categoria'}</span>
             </div>
             <ChevronDown className="h-4 w-4 text-muted-foreground" />
@@ -128,7 +101,7 @@ const TemplateCategories: React.FC<TemplateCategoriesProps> = ({
                       )}
                     >
                       <span className="flex-shrink-0">
-                        {renderIcon(category.icon)}
+                        <IconRenderer name={category.icon as string} className="h-4 w-4" />
                       </span>
                       <span className="truncate">{category.name}</span>
                     </DropdownMenuItem>
