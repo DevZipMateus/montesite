@@ -35,8 +35,14 @@ const TemplateCategories: React.FC<TemplateCategoriesProps> = ({
       return icon;
     }
     
+    // Remover prefixo "lucide:" se existir
+    let iconName = icon;
+    if (icon.startsWith('lucide:')) {
+      iconName = icon.split(':')[1];
+    }
+    
     // Se for string, buscar no Lucide Icons
-    const IconComponent = (LucideIcons as any)[icon];
+    const IconComponent = (LucideIcons as any)[iconName];
     
     if (IconComponent && typeof IconComponent === 'function') {
       return <IconComponent className="h-4 w-4" />;
