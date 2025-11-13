@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-
+import * as LucideIcons from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -30,24 +30,20 @@ const TemplateCategories: React.FC<TemplateCategoriesProps> = ({
   const renderIcon = (icon?: string | React.ReactNode) => {
     if (!icon) return <LayoutTemplate className="h-4 w-4" />;
     
-    if (typeof icon === 'string') {
-      try {
-        // If it's a Lucide icon name (assuming format is 'lucide:IconName')
-        if (icon.startsWith('lucide:')) {
-          const iconName = icon.split(':')[1];
-          // This is a simplified approach, in a real app you'd import and use dynamic icons
-          return <LayoutTemplate className="h-4 w-4" />;
-        }
-        
-        // If it's an SVG string or URL
-        return <span className="h-4 w-4" dangerouslySetInnerHTML={{ __html: icon }} />;
-      } catch (e) {
-        return <LayoutTemplate className="h-4 w-4" />;
-      }
+    // Se for ReactNode, retorna diretamente
+    if (typeof icon !== 'string') {
+      return icon;
     }
     
-    // It's a ReactNode
-    return icon;
+    // Se for string, buscar no Lucide Icons
+    const IconComponent = (LucideIcons as any)[icon];
+    
+    if (IconComponent && typeof IconComponent === 'function') {
+      return <IconComponent className="h-4 w-4" />;
+    }
+    
+    // Fallback para ícone padrão
+    return <LayoutTemplate className="h-4 w-4" />;
   };
 
   // Encontrar a categoria ativa
