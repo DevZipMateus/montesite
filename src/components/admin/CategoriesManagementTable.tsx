@@ -9,6 +9,8 @@ import { Badge } from '@/components/ui/badge';
 import { Edit, Trash2, Loader2, AlertCircle } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import CategoryFormDialog from './CategoryFormDialog';
+import IconRenderer from '../IconRenderer';
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -133,7 +135,10 @@ const CategoriesManagementTable: React.FC = () => {
                       <TableCell className="font-mono text-xs">{category.slug}</TableCell>
                       <TableCell>
                         {category.icon ? (
-                          <Badge variant="outline">{category.icon}</Badge>
+                          <div className="flex items-center gap-2">
+                            <IconRenderer name={category.icon} className="h-4 w-4" />
+                            <span className="text-xs text-muted-foreground">{category.icon}</span>
+                          </div>
                         ) : (
                           <span className="text-xs text-muted-foreground">Sem ícone</span>
                         )}

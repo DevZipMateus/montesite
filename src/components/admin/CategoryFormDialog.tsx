@@ -19,6 +19,7 @@ import { createCategory, updateCategory } from '@/services/templates';
 import { Category } from '@/types/database';
 import { Loader2 } from 'lucide-react';
 import { IconPicker } from './category-form/IconPicker';
+import { normalizeIconName } from '../IconRenderer';
 
 interface CategoryFormDialogProps {
   onSuccess?: () => void;
@@ -66,7 +67,8 @@ const CategoryFormDialog: React.FC<CategoryFormDialogProps> = ({ onSuccess, cate
   const handleSubmit = async (data: CategoryFormValues) => {
     console.log('Submitting category form with data:', data);
     try {
-      await saveMutation.mutateAsync(data);
+      const normalized = normalizeIconName(data.icon);
+      await saveMutation.mutateAsync({ ...data, icon: normalized || '' });
     } catch (error) {
       console.error('Error submitting form:', error);
     }
