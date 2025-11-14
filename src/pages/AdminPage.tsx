@@ -5,6 +5,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import Header from '@/components/Header';
 import SeedDataButton from '@/components/admin/SeedDataButton';
 import AutoIconAssigner from '@/components/admin/AutoIconAssigner';
+import ClearCacheButton from '@/components/admin/ClearCacheButton';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -79,6 +80,9 @@ const AdminPage: React.FC = () => {
                   </div>
                   <div className="pt-6 border-t">
                     <AutoIconAssigner />
+                  </div>
+                  <div className="pt-6 border-t">
+                    <ClearCacheButton />
                   </div>
                 </div>
               </CardContent>

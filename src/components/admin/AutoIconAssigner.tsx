@@ -116,10 +116,12 @@ const AutoIconAssigner: React.FC = () => {
         }
       }
 
-      // Invalidar queries para atualizar a UI
-      queryClient.invalidateQueries({ queryKey: ['categories'] });
-      queryClient.invalidateQueries({ queryKey: ['showcase-categories'] });
-      queryClient.invalidateQueries({ queryKey: ['templates'] });
+      // Invalidar todas as queries relacionadas a categorias para atualizar a UI
+      await queryClient.invalidateQueries({ queryKey: ['categories'] });
+      await queryClient.invalidateQueries({ queryKey: ['showcase-categories'] });
+      await queryClient.invalidateQueries({ queryKey: ['template-categories'] });
+      await queryClient.invalidateQueries({ queryKey: ['templates'] });
+      await queryClient.invalidateQueries({ queryKey: ['showcases'] });
 
       toast({
         title: 'Ícones atualizados!',
