@@ -24,7 +24,7 @@ const IconRenderer: React.FC<IconRendererProps> = ({ name, className = 'h-4 w-4'
   
   const Icon = (icons as any)[iconName] || (LucideIcons as any)[iconName] || (LucideIcons as any)[`${iconName}Icon`];
   
-  if (Icon && typeof Icon === 'function') {
+  if (Icon) {
     return <Icon className={className} size={size} />;
   }
   
