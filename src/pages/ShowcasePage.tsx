@@ -202,24 +202,102 @@ const ShowcasePage: React.FC = () => {
               </div>
             )}
             
-            {!isLoadingShowcases && filteredAndSortedShowcases.length > 0 && (
-              <>
-                {searchQuery && (
-                  <div className="text-center mb-6">
-                    <p className="text-sm text-muted-foreground">
-                      Encontrados {filteredAndSortedShowcases.length} resultado{filteredAndSortedShowcases.length !== 1 ? 's' : ''} para "{searchQuery}"
-                    </p>
+            {!isLoadingShowcases && filteredAndSortedShowcases.length > 0 && (() => {
+              const totalPages = Math.ceil(filteredAndSortedShowcases.length / ITEMS_PER_PAGE);
+              const safePage = Math.min(currentPage, totalPages);
+              const startIdx = (safePage - 1) * ITEMS_PER_PAGE;
+              const paginatedShowcases = filteredAndSortedShowcases.slice(startIdx, startIdx + ITEMS_PER_PAGE);
+
+              const getPageNumbers = (): (number | 'ellipsis')[] => {
+                const pages: (number | 'ellipsis')[] = [];
+                if (totalPages <= 7) {
+                  for (let i = 1; i <= totalPages; i++) pages.push(i);
+                } else {
+                  pages.push(1);
+                  if (safePage > 3) pages.push('ellipsis');
+                  const start = Math.max(2, safePage - 1);
+                  const end = Math.min(totalPages - 1, safePage + 1);
+                  for (let i = start; i <= end; i++) pages.push(i);
+                  if (safePage < totalPages - 2) pages.push('ellipsis');
+                  pages.push(totalPages);
+                }
+                return pages;
+              };
+
+              const goToPage = (page: number) => {
+                setCurrentPage(page);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              };
+
+              return (
+                <>
+                  {searchQuery && (
+                    <div className="text-center mb-6">
+                      <p className="text-sm text-muted-foreground">
+                        Encontrados {filteredAndSortedShowcases.length} resultado{filteredAndSortedShowcases.length !== 1 ? 's' : ''} para "{searchQuery}"
+                      </p>
+                    </div>
+                  )}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
+                    {paginatedShowcases.map((showcase: Showcase, index: number) => (
+                      <FadeIn key={showcase.id} delay={index * 50}>
+                        <ShowcaseCard {...showcase} />
+                      </FadeIn>
+                    ))}
                   </div>
-                )}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
-                  {filteredAndSortedShowcases.map((showcase: Showcase, index: number) => (
-                    <FadeIn key={showcase.id} delay={index * 100}>
-                      <ShowcaseCard {...showcase} />
-                    </FadeIn>
-                  ))}
-                </div>
-              </>
-            )}
+
+                  {totalPages > 1 && (
+                    <div className="mt-12 flex flex-col items-center gap-3">
+                      <Pagination>
+                        <PaginationContent>
+                          <PaginationItem>
+                            <PaginationPrevious
+                              onClick={(e) => {
+                                e.preventDefault();
+                                if (safePage > 1) goToPage(safePage - 1);
+                              }}
+                              className={safePage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                            />
+                          </PaginationItem>
+                          {getPageNumbers().map((p, idx) =>
+                            p === 'ellipsis' ? (
+                              <PaginationItem key={`ellipsis-${idx}`}>
+                                <PaginationEllipsis />
+                              </PaginationItem>
+                            ) : (
+                              <PaginationItem key={p}>
+                                <PaginationLink
+                                  isActive={p === safePage}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    goToPage(p);
+                                  }}
+                                  className="cursor-pointer"
+                                >
+                                  {p}
+                                </PaginationLink>
+                              </PaginationItem>
+                            )
+                          )}
+                          <PaginationItem>
+                            <PaginationNext
+                              onClick={(e) => {
+                                e.preventDefault();
+                                if (safePage < totalPages) goToPage(safePage + 1);
+                              }}
+                              className={safePage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                            />
+                          </PaginationItem>
+                        </PaginationContent>
+                      </Pagination>
+                      <p className="text-sm text-muted-foreground">
+                        Página {safePage} de {totalPages} · {filteredAndSortedShowcases.length} sites
+                      </p>
+                    </div>
+                  )}
+                </>
+              );
+            })()}
           </div>
         </section>
       </main>
