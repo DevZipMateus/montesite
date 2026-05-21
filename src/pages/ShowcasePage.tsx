@@ -1,5 +1,5 @@
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Header from '@/components/Header';
 import FadeIn from '@/components/animations/FadeIn';
 import { Loader2, Search, X, ArrowUpDown, Star } from 'lucide-react';
@@ -12,14 +12,31 @@ import Footer from '@/components/Footer';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+  PaginationEllipsis,
+} from '@/components/ui/pagination';
 
 type SortOption = 'newest' | 'oldest' | 'name-asc' | 'name-desc';
+
+const ITEMS_PER_PAGE = 9;
 
 const ShowcasePage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<SortOption>('newest');
   const [showOnlyFeatured, setShowOnlyFeatured] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Reset to first page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeCategory, searchQuery, sortBy, showOnlyFeatured]);
 
   const {
     data: categoriesData = [],
