@@ -61,6 +61,10 @@ const KEYWORD_TO_ICON: Array<[RegExp, string]> = [
   [/gr[aá]fic/i, 'Printer'],
   [/madeir/i, 'TreePine'],
   [/m[aá]quin|equipament|aparelh/i, 'Cog'],
+  [/vidra[cç]ar|vidro/i, 'AppWindow'],
+  [/\bti\b|automa[cç][aã]o|inform[aá]tica/i, 'Bot'],
+  [/tatua|tattoo/i, 'PenTool'],
+  [/m[oó]vei|sof[aá]|decora[cç]/i, 'Sofa'],
 ];
 
 export const getCategoryIcon = (
