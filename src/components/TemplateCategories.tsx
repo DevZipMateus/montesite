@@ -44,7 +44,7 @@ const TemplateCategories: React.FC<TemplateCategoriesProps> = ({
             className="flex items-center gap-3 bg-background hover:bg-accent min-w-[200px] justify-between shadow-sm"
           >
             <div className="flex items-center gap-2">
-              {activecat && <IconRenderer name={activecat.icon as string} className="h-4 w-4" />}
+              {activecat && <IconRenderer name={getCategoryIcon(activecat.icon as string, activecat.name)} className="h-4 w-4" />}
               <span className="font-medium text-sm">{activecat?.name || 'Categoria'}</span>
             </div>
             <ChevronDown className="h-4 w-4 text-muted-foreground" />
