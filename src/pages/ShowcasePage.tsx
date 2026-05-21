@@ -312,7 +312,6 @@ const ShowcasePage: React.FC = () => {
                             }
                           }}
                           className="w-20 h-9 text-center"
-                          placeholder="#"
                         />
                         <Button
                           size="sm"
