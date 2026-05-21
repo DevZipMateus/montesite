@@ -102,7 +102,7 @@ const TemplateCategories: React.FC<TemplateCategoriesProps> = ({
                       )}
                     >
                       <span className="flex-shrink-0">
-                        <IconRenderer name={category.icon as string} className="h-4 w-4" />
+                        <IconRenderer name={getCategoryIcon(category.icon as string, category.name)} className="h-4 w-4" />
                       </span>
                       <span className="truncate">{category.name}</span>
                     </DropdownMenuItem>
