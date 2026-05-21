@@ -55,6 +55,9 @@ const KEYWORD_TO_ICON: Array<[RegExp, string]> = [
   [/transport|log[ií]stica|delivery|entrega/i, 'Truck'],
   [/ind[uú]stri|f[aá]brica|manufatura/i, 'Factory'],
   [/agro|fazenda|rural|agricultura|agr[ií]col|trator/i, 'Tractor'],
+  [/gr[aá]fic/i, 'Printer'],
+  [/madeir/i, 'TreePine'],
+  [/m[aá]quin|equipament|aparelh/i, 'Cog'],
 ];
 
 export const getCategoryIcon = (
