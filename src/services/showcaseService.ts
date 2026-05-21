@@ -105,8 +105,9 @@ export async function createShowcase(showcase: Omit<Showcase, 'id' | 'created_at
     console.log("Creating showcase with data:", showcase);
     
     // Ensure category_id is null if it's "null" string
+    const { categories: _omitCategories, ...rest } = showcase as any;
     const processedShowcase = {
-      ...showcase,
+      ...rest,
       category_id: showcase.category_id === "null" ? null : showcase.category_id
     };
     
@@ -145,8 +146,9 @@ export async function updateShowcase(id: string, showcase: Partial<Omit<Showcase
     console.log("Update payload:", showcase);
     
     // Ensure category_id is null if it's "null" string
+    const { categories: _omitCategories, ...rest } = showcase as any;
     const processedShowcase = {
-      ...showcase,
+      ...rest,
       category_id: showcase.category_id === "null" ? null : showcase.category_id
     };
     
