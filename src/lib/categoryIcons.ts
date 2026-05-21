@@ -46,7 +46,7 @@ const KEYWORD_TO_ICON: Array<[RegExp, string]> = [
   [/energia solar|solar/i, 'Sun'],
   [/energia|el[eé]tric/i, 'Zap'],
   [/limpeza|clean/i, 'Sparkles'],
-  [/advog|jur[ií]dic|law|legal/i, 'Scale'],
+  [/advog|jur[ií]dic|law|legal|advocaci/i, 'Scale'],
   [/financ|cont[aá]bil|contador|bank|invest/i, 'Landmark'],
   [/consult|coach|mentor|organiza/i, 'Briefcase'],
   [/marketing|ag[eê]ncia|publicidade|m[ií]dia/i, 'Megaphone'],
