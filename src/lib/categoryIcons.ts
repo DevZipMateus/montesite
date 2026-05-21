@@ -9,7 +9,7 @@ const KEYWORD_TO_ICON: Array<[RegExp, string]> = [
   [/distribuidora|atacad/i, 'PackageOpen'],
   [/embalag/i, 'Package'],
   [/loja|shop|store|ecommerce|e-commerce|com[eé]rcio|varejo/i, 'ShoppingBag'],
-  [/acess[oó]rio|moda|fashion|roupa|vestu[aá]rio|boutique/i, 'Shirt'],
+  [/acess[oó]rio|moda|fashion|roupa|vestu[aá]rio|boutique|uniform/i, 'Shirt'],
   [/cosm[eé]tic|perfum/i, 'Sparkles'],
   [/beleza|sal[aã]o|barbearia|barber|est[eé]tica|spa/i, 'Scissors'],
   [/sa[uú]de|cl[ií]nica|m[eé]dic|hospital|odont|dentist/i, 'Stethoscope'],
