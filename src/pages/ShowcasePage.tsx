@@ -32,6 +32,7 @@ const ShowcasePage: React.FC = () => {
   const [sortBy, setSortBy] = useState<SortOption>('newest');
   const [showOnlyFeatured, setShowOnlyFeatured] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [goToPageInput, setGoToPageInput] = useState('');
 
   // Reset to first page when filters change
   useEffect(() => {
