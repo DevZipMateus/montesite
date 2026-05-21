@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { ChevronDown, Search, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import IconRenderer from './IconRenderer';
+import { getCategoryIcon } from '@/lib/categoryIcons';
 
 export type TemplateCategory = {
   id: string;
