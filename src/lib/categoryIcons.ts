@@ -62,7 +62,13 @@ export const getCategoryIcon = (
 ): string => {
   if (explicitIcon && String(explicitIcon).trim()) {
     const trimmed = String(explicitIcon).trim();
-    return trimmed.startsWith('lucide:') ? trimmed.split(':')[1] : trimmed;
+    const normalized = trimmed.startsWith('lucide:') ? trimmed.split(':')[1] : trimmed;
+
+    // Alguns registros antigos foram salvos com o ícone genérico padrão.
+    // Nesses casos, usa o nome da categoria para escolher um ícone mais específico.
+    if (!['LayoutTemplate', 'layout-template'].includes(normalized)) {
+      return normalized;
+    }
   }
   const n = (name || '').toLowerCase();
   for (const [regex, icon] of KEYWORD_TO_ICON) {

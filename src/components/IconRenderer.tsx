@@ -1,6 +1,6 @@
 import React from 'react';
 import * as LucideIcons from 'lucide-react';
-import { LayoutTemplate } from 'lucide-react';
+import { icons, LayoutTemplate } from 'lucide-react';
 
 interface IconRendererProps {
   name?: string | null;
@@ -19,18 +19,14 @@ const IconRenderer: React.FC<IconRendererProps> = ({ name, className = 'h-4 w-4'
   const iconName = normalizeIconName(name);
   
   if (!iconName) {
-    console.log('IconRenderer: No icon name provided, using fallback');
     return <LayoutTemplate className={className} size={size} />;
   }
   
-  const Icon = (LucideIcons as any)[iconName];
+  const Icon = (icons as any)[iconName] || (LucideIcons as any)[iconName] || (LucideIcons as any)[`${iconName}Icon`];
   
-  if (Icon && typeof Icon === 'function') {
+  if (Icon) {
     return <Icon className={className} size={size} />;
   }
-  
-  // Debug: Log when icon is not found
-  console.warn(`IconRenderer: Icon "${iconName}" not found in Lucide icons, using fallback`);
   
   return <LayoutTemplate className={className} size={size} />;
 };
