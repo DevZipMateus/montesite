@@ -75,9 +75,19 @@ const ShowcaseForm: React.FC<ShowcaseFormProps> = ({ showcase, onSubmit, isSubmi
     }
   };
   
+  const onInvalid = (errors: any) => {
+    console.error("Form validation errors:", errors);
+    const firstError = Object.values(errors)[0] as any;
+    toast({
+      title: "Verifique os campos do formulário",
+      description: firstError?.message || "Há campos obrigatórios não preenchidos ou inválidos.",
+      variant: "destructive",
+    });
+  };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(handleSubmit, onInvalid)} className="space-y-6">
         <ClientDetails form={form} />
         
         <ImageUploadField 
