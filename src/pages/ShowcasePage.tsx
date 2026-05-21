@@ -294,6 +294,39 @@ const ShowcasePage: React.FC = () => {
                       <p className="text-sm text-muted-foreground">
                         Página {safePage} de {totalPages} · {filteredAndSortedShowcases.length} sites
                       </p>
+                      <div className="flex items-center gap-2 mt-2">
+                        <span className="text-sm text-muted-foreground">Ir para página</span>
+                        <Input
+                          type="number"
+                          min={1}
+                          max={totalPages}
+                          value={goToPageInput}
+                          onChange={(e) => setGoToPageInput(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              const page = parseInt(goToPageInput, 10);
+                              if (page >= 1 && page <= totalPages) {
+                                goToPage(page);
+                                setGoToPageInput('');
+                              }
+                            }
+                          }}
+                          className="w-20 h-9 text-center"
+                          placeholder="#"
+                        />
+                        <Button
+                          size="sm"
+                          onClick={() => {
+                            const page = parseInt(goToPageInput, 10);
+                            if (page >= 1 && page <= totalPages) {
+                              goToPage(page);
+                              setGoToPageInput('');
+                            }
+                          }}
+                        >
+                          Ir
+                        </Button>
+                      </div>
                     </div>
                   )}
                 </>
