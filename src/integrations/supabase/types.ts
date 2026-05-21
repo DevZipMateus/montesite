@@ -129,6 +129,89 @@ export type Database = {
           },
         ]
       }
+      delivery_terms: {
+        Row: {
+          comentarios: string | null
+          cpf: string
+          created_at: string | null
+          data_aceite: string
+          email: string | null
+          id: string
+          ip_address: string | null
+          nome_completo: string
+          nota_atendimento: number
+          project_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          comentarios?: string | null
+          cpf: string
+          created_at?: string | null
+          data_aceite?: string
+          email?: string | null
+          id?: string
+          ip_address?: string | null
+          nome_completo: string
+          nota_atendimento: number
+          project_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          comentarios?: string | null
+          cpf?: string
+          created_at?: string | null
+          data_aceite?: string
+          email?: string | null
+          id?: string
+          ip_address?: string | null
+          nome_completo?: string
+          nota_atendimento?: number
+          project_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "delivery_terms_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      integration_settings: {
+        Row: {
+          active: boolean | null
+          api_key: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          integration_name: string
+          updated_at: string | null
+          webhook_url: string | null
+        }
+        Insert: {
+          active?: boolean | null
+          api_key?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          integration_name: string
+          updated_at?: string | null
+          webhook_url?: string | null
+        }
+        Update: {
+          active?: boolean | null
+          api_key?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          integration_name?: string
+          updated_at?: string | null
+          webhook_url?: string | null
+        }
+        Relationships: []
+      }
       lead_agendamentos: {
         Row: {
           completed_at: string | null
@@ -182,6 +265,30 @@ export type Database = {
           },
         ]
       }
+      lead_form_drafts: {
+        Row: {
+          created_at: string
+          draft_data: Json
+          form_hash: string
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          draft_data?: Json
+          form_hash: string
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          draft_data?: Json
+          form_hash?: string
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       lead_notes: {
         Row: {
           created_at: string
@@ -221,6 +328,7 @@ export type Database = {
           data_ultimo_contato: string
           email: string | null
           empresa: string
+          form_hash: string | null
           id: string
           link_blaster: string | null
           link_chat: string | null
@@ -230,6 +338,7 @@ export type Database = {
           observacoes: string | null
           project_id: string | null
           situacao: string
+          tipo_servico: string
           updated_at: string
           vendedor: string | null
         }
@@ -239,6 +348,7 @@ export type Database = {
           data_ultimo_contato?: string
           email?: string | null
           empresa: string
+          form_hash?: string | null
           id?: string
           link_blaster?: string | null
           link_chat?: string | null
@@ -248,6 +358,7 @@ export type Database = {
           observacoes?: string | null
           project_id?: string | null
           situacao?: string
+          tipo_servico?: string
           updated_at?: string
           vendedor?: string | null
         }
@@ -257,6 +368,7 @@ export type Database = {
           data_ultimo_contato?: string
           email?: string | null
           empresa?: string
+          form_hash?: string | null
           id?: string
           link_blaster?: string | null
           link_chat?: string | null
@@ -266,6 +378,7 @@ export type Database = {
           observacoes?: string | null
           project_id?: string | null
           situacao?: string
+          tipo_servico?: string
           updated_at?: string
           vendedor?: string | null
         }
@@ -409,6 +522,7 @@ export type Database = {
           created_at: string | null
           customization_deadline: string | null
           data_formulario: string | null
+          delivery_term_hash: string | null
           domain: string | null
           email_complementar: string | null
           formulario_preenchido: boolean | null
@@ -424,15 +538,18 @@ export type Database = {
           partner_webhook_url: string | null
           payment_date: string | null
           personalization_id: string | null
+          project_link: string | null
           project_source: string | null
           provider_credentials: string | null
           remove_from_hostinger: boolean
           requires_paid_customization: boolean | null
           responsible_name: string | null
+          showcase_link: string | null
           site_ready_date: string | null
           status: string | null
           telefone: string | null
           template: string | null
+          tipo_servico: string
           updated_at: string | null
         }
         Insert: {
@@ -445,6 +562,7 @@ export type Database = {
           created_at?: string | null
           customization_deadline?: string | null
           data_formulario?: string | null
+          delivery_term_hash?: string | null
           domain?: string | null
           email_complementar?: string | null
           formulario_preenchido?: boolean | null
@@ -460,15 +578,18 @@ export type Database = {
           partner_webhook_url?: string | null
           payment_date?: string | null
           personalization_id?: string | null
+          project_link?: string | null
           project_source?: string | null
           provider_credentials?: string | null
           remove_from_hostinger?: boolean
           requires_paid_customization?: boolean | null
           responsible_name?: string | null
+          showcase_link?: string | null
           site_ready_date?: string | null
           status?: string | null
           telefone?: string | null
           template?: string | null
+          tipo_servico?: string
           updated_at?: string | null
         }
         Update: {
@@ -481,6 +602,7 @@ export type Database = {
           created_at?: string | null
           customization_deadline?: string | null
           data_formulario?: string | null
+          delivery_term_hash?: string | null
           domain?: string | null
           email_complementar?: string | null
           formulario_preenchido?: boolean | null
@@ -496,15 +618,18 @@ export type Database = {
           partner_webhook_url?: string | null
           payment_date?: string | null
           personalization_id?: string | null
+          project_link?: string | null
           project_source?: string | null
           provider_credentials?: string | null
           remove_from_hostinger?: boolean
           requires_paid_customization?: boolean | null
           responsible_name?: string | null
+          showcase_link?: string | null
           site_ready_date?: string | null
           status?: string | null
           telefone?: string | null
           template?: string | null
+          tipo_servico?: string
           updated_at?: string | null
         }
         Relationships: [
@@ -643,18 +768,24 @@ export type Database = {
       site_personalizacoes: {
         Row: {
           botaowhatsapp: boolean | null
+          cnpj_cpf: string | null
           created_at: string | null
           depoimento_urls: string[] | null
           depoimentos: string | null
           descricao: string
+          edit_count: number | null
+          edited_fields: string[] | null
           email: string
           endereco: string
           estilo_visual: string | null
           fonte: string | null
+          historia_empresa: string | null
           horario_funcionamento: string | null
           id: string
+          last_edited_at: string | null
           linkmapa: string | null
           logo_url: string | null
+          mercado_atuacao: string | null
           midia_urls: string[] | null
           modelo: string | null
           officenome: string
@@ -662,6 +793,7 @@ export type Database = {
           planos: string | null
           possuimapa: boolean | null
           possuiplanos: boolean | null
+          produtos: string | null
           redessociais: string | null
           responsavelnome: string
           servicos: string
@@ -669,21 +801,28 @@ export type Database = {
           status: string | null
           telefone: string
           updated_at: string | null
+          visao_missao_valores: string | null
         }
         Insert: {
           botaowhatsapp?: boolean | null
+          cnpj_cpf?: string | null
           created_at?: string | null
           depoimento_urls?: string[] | null
           depoimentos?: string | null
           descricao: string
+          edit_count?: number | null
+          edited_fields?: string[] | null
           email: string
           endereco: string
           estilo_visual?: string | null
           fonte?: string | null
+          historia_empresa?: string | null
           horario_funcionamento?: string | null
           id?: string
+          last_edited_at?: string | null
           linkmapa?: string | null
           logo_url?: string | null
+          mercado_atuacao?: string | null
           midia_urls?: string[] | null
           modelo?: string | null
           officenome: string
@@ -691,6 +830,7 @@ export type Database = {
           planos?: string | null
           possuimapa?: boolean | null
           possuiplanos?: boolean | null
+          produtos?: string | null
           redessociais?: string | null
           responsavelnome: string
           servicos: string
@@ -698,21 +838,28 @@ export type Database = {
           status?: string | null
           telefone: string
           updated_at?: string | null
+          visao_missao_valores?: string | null
         }
         Update: {
           botaowhatsapp?: boolean | null
+          cnpj_cpf?: string | null
           created_at?: string | null
           depoimento_urls?: string[] | null
           depoimentos?: string | null
           descricao?: string
+          edit_count?: number | null
+          edited_fields?: string[] | null
           email?: string
           endereco?: string
           estilo_visual?: string | null
           fonte?: string | null
+          historia_empresa?: string | null
           horario_funcionamento?: string | null
           id?: string
+          last_edited_at?: string | null
           linkmapa?: string | null
           logo_url?: string | null
+          mercado_atuacao?: string | null
           midia_urls?: string[] | null
           modelo?: string | null
           officenome?: string
@@ -720,6 +867,7 @@ export type Database = {
           planos?: string | null
           possuimapa?: boolean | null
           possuiplanos?: boolean | null
+          produtos?: string | null
           redessociais?: string | null
           responsavelnome?: string
           servicos?: string
@@ -727,6 +875,7 @@ export type Database = {
           status?: string | null
           telefone?: string
           updated_at?: string | null
+          visao_missao_valores?: string | null
         }
         Relationships: []
       }
@@ -875,7 +1024,7 @@ export type Database = {
         Returns: string
       }
       auto_link_leads_projects: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           confidence_score: number
           lead_id: string
@@ -887,14 +1036,8 @@ export type Database = {
         Args: { data_contato: string }
         Returns: number
       }
-      create_bucket_policy: {
-        Args: { bucket_name: string }
-        Returns: boolean
-      }
-      extract_blaster_id: {
-        Args: { blaster_url: string }
-        Returns: string
-      }
+      create_bucket_policy: { Args: { bucket_name: string }; Returns: boolean }
+      extract_blaster_id: { Args: { blaster_url: string }; Returns: string }
       get_project_by_submission_hash: {
         Args: { p_hash: string }
         Returns: {
@@ -907,6 +1050,7 @@ export type Database = {
           created_at: string | null
           customization_deadline: string | null
           data_formulario: string | null
+          delivery_term_hash: string | null
           domain: string | null
           email_complementar: string | null
           formulario_preenchido: boolean | null
@@ -922,16 +1066,25 @@ export type Database = {
           partner_webhook_url: string | null
           payment_date: string | null
           personalization_id: string | null
+          project_link: string | null
           project_source: string | null
           provider_credentials: string | null
           remove_from_hostinger: boolean
           requires_paid_customization: boolean | null
           responsible_name: string | null
+          showcase_link: string | null
           site_ready_date: string | null
           status: string | null
           telefone: string | null
           template: string | null
+          tipo_servico: string
           updated_at: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "projects"
+          isOneToOne: true
+          isSetofReturn: false
         }
       }
       string_similarity: {
